@@ -1,0 +1,6 @@
+*.swp
+*.swo
+tags
+*.o
+Session.vim
+run_game
