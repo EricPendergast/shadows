@@ -11,12 +11,15 @@
 #include <algorithm>
 
 #include "shader.h"
+#include "frame_buffer.h"
+#include "printer.h"
 
 void display(void);
 void reshape (int, int);
 void key_down(unsigned char key, int x, int y);
 void key_up(unsigned char key, int x, int y);
 
+FrameBuffer* frame_buffer;
 // Applying various settings to glut, as well as assigning functions
 void init(int argc,  char** argv) {
     glutInit(&argc, argv);
@@ -37,6 +40,8 @@ void init(int argc,  char** argv) {
     ShaderProgram shader("shaders/vert.vert", "shaders/frag.frag");
     
     glUseProgram(shader.get_handle());
+    
+    glEnable(GL_TEXTURE_2D);
 }
 
 void reshape(int width, int height) {
@@ -55,21 +60,22 @@ GLfloat counter = 0;
 void key_up(unsigned char key, int x, int y) {  
     (void)x;
     (void)y;
-    std::cout << "UP" << key << std::endl;
+    (void)key;
+    //std::cout << "UP" << key << std::endl;
 }  
   
 void key_down(unsigned char key, int x, int y) {  
     (void)x;
     (void)y;
     counter += 10;
-    std::cout << "DOWN" << std::endl;
+    //std::cout << "DOWN" << std::endl;
     if (key == 0x001b) //Escape key
         exit(0);
-}  
+}
 
 void draw_world(void) {
+    glBindTexture(GL_TEXTURE_2D, frame_buffer->get_tex_handle());
     glBegin(GL_QUADS);
-    std::cout << counter << std::endl;
     glVertex2f(counter, 0);
     glVertex2f(125, 375);
     glVertex2f(375, 375);
@@ -86,6 +92,21 @@ void display(void) {
 }
 
 int main(int argc, char** argv) {
+    
     init(argc, argv);
+    
+    FrameBuffer fb(500, 500);
+    frame_buffer = &fb;
+    fb.draw_stuff();
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, fb.get_fbo_handle());
+    int pix;
+    glReadPixels(1,1, 1,1, GL_GREEN, GL_INT, &pix);
+    //pix = 0x00FFFF00;
+    //glRasterPos2i(48,56);
+    //glDrawPixels(1,1, GL_RGB, GL_INT, &pix);
+    std::cout << "HERE " << std::hex << pix << std::endl;
+    
+    printFramebufferInfo(fb.get_fbo_handle());
     glutMainLoop();
 }
