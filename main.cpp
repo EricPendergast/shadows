@@ -20,7 +20,6 @@ void key_up(unsigned char key, int x, int y);
 // Applying various settings to glut, as well as assigning functions
 void init(int argc,  char** argv) {
     glutInit(&argc, argv);
-    // Single buffering TODO make double
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA); 
     glutInitWindowSize(500,500);
     glutInitWindowPosition(100,100);
@@ -41,12 +40,8 @@ void init(int argc,  char** argv) {
 }
 
 void reshape(int width, int height) {
-    (void)width;
-    (void)height;
     glLoadIdentity();
-    //gluOrtho2D(0, width, 0, height);
-    //glViewport(0,0,std::min(width,height), (int)(std::min(width,height)*.7));
-    //glViewport(0,0,std::min(width,height), (int)(std::min(width,height)*.7));
+    glViewport(0,0, width, height);
     gluOrtho2D(0, 500, 0, 500);
     glScalef(1, -1, 1);
     glTranslatef(0, -(GLfloat)500, 0);
