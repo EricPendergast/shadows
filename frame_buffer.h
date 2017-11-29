@@ -3,6 +3,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glext.h>
+#include <iostream>
 
 #ifndef FRAME_BUFFER_H
 #define FRAME_BUFFER_H

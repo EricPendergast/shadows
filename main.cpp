@@ -13,13 +13,16 @@
 #include "shader.h"
 #include "frame_buffer.h"
 #include "printer.h"
+#include "light.h"
 
 void display(void);
 void reshape (int, int);
 void key_down(unsigned char key, int x, int y);
 void key_up(unsigned char key, int x, int y);
 
+ShaderProgram* shad;
 FrameBuffer* frame_buffer;
+Light* light;
 // Applying various settings to glut, as well as assigning functions
 void init(int argc,  char** argv) {
     glutInit(&argc, argv);
@@ -37,11 +40,8 @@ void init(int argc,  char** argv) {
         exit(1);
     }
     
-    ShaderProgram shader("shaders/vert.vert", "shaders/frag.frag");
-    
-    glUseProgram(shader.get_handle());
-    
     glEnable(GL_TEXTURE_2D);
+    
 }
 
 void reshape(int width, int height) {
@@ -74,7 +74,13 @@ void key_down(unsigned char key, int x, int y) {
 }
 
 void draw_world(void) {
-    glBindTexture(GL_TEXTURE_2D, frame_buffer->get_tex_handle());
+    
+    light->fill_frame_buffer();
+    
+    glUseProgram(shad->get_handle());
+    //glBindTexture(GL_TEXTURE_2D, frame_buffer->get_tex_handle());
+    glBindTexture(GL_TEXTURE_2D, light->get_tex_handle());
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glBegin(GL_QUADS);
     glVertex2f(counter, 0);
     glVertex2f(125, 375);
@@ -95,17 +101,25 @@ int main(int argc, char** argv) {
     
     init(argc, argv);
     
+    ShaderProgram shader("shaders/main.vert", "shaders/main.frag");
+    shad = &shader;
+    
+    
     FrameBuffer fb(500, 500);
     frame_buffer = &fb;
     fb.draw_stuff();
     
-    glBindFramebuffer(GL_FRAMEBUFFER, fb.get_fbo_handle());
-    int pix;
-    glReadPixels(1,1, 1,1, GL_GREEN, GL_INT, &pix);
+    
+    Light l;
+    light = &l;
+    
+    //glBindFramebuffer(GL_FRAMEBUFFER, fb.get_fbo_handle());
+    //int pix;
+    //glReadPixels(1,1, 1,1, GL_GREEN, GL_INT, &pix);
     //pix = 0x00FFFF00;
     //glRasterPos2i(48,56);
     //glDrawPixels(1,1, GL_RGB, GL_INT, &pix);
-    std::cout << "HERE " << std::hex << pix << std::endl;
+    //std::cout << "HERE " << std::hex << pix << std::endl;
     
     printFramebufferInfo(fb.get_fbo_handle());
     glutMainLoop();
