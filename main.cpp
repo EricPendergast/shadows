@@ -14,6 +14,7 @@
 #include "frame_buffer.h"
 #include "printer.h"
 #include "light.h"
+#include "world.h"
 
 void display(void);
 void reshape (int, int);
@@ -23,11 +24,16 @@ void key_up(unsigned char key, int x, int y);
 ShaderProgram* shad;
 FrameBuffer* frame_buffer;
 Light* light;
+World* world;
+int screen_width;
+int screen_height;
+
 // Applying various settings to glut, as well as assigning functions
 void init(int argc,  char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA); 
     glutInitWindowSize(500,500);
+    screen_width = screen_height = 500;
     glutInitWindowPosition(100,100);
     glutCreateWindow("Shadows");
     glutIdleFunc(display);
@@ -45,6 +51,8 @@ void init(int argc,  char** argv) {
 }
 
 void reshape(int width, int height) {
+    screen_width = width;
+    screen_height = height;
     glLoadIdentity();
     glViewport(0,0, width, height);
     gluOrtho2D(0, 500, 0, 500);
@@ -75,18 +83,14 @@ void key_down(unsigned char key, int x, int y) {
 
 void draw_world(void) {
     
-    light->fill_frame_buffer();
+    light->fill_frame_buffer(*world);
     
     glUseProgram(shad->get_handle());
     //glBindTexture(GL_TEXTURE_2D, frame_buffer->get_tex_handle());
     glBindTexture(GL_TEXTURE_2D, light->get_tex_handle());
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    glBegin(GL_QUADS);
-    glVertex2f(counter, 0);
-    glVertex2f(125, 375);
-    glVertex2f(375, 375);
-    glVertex2f(375, 125);
-    glEnd();
+    world->draw();
+    light->draw_light(screen_width,screen_height);
 }
 
 void display(void) {
@@ -104,14 +108,11 @@ int main(int argc, char** argv) {
     ShaderProgram shader("shaders/main.vert", "shaders/main.frag");
     shad = &shader;
     
-    
-    FrameBuffer fb(500, 500);
-    frame_buffer = &fb;
-    fb.draw_stuff();
-    
-    
     Light l;
     light = &l;
+    
+    World w;
+    world = &w;
     
     //glBindFramebuffer(GL_FRAMEBUFFER, fb.get_fbo_handle());
     //int pix;
@@ -121,6 +122,6 @@ int main(int argc, char** argv) {
     //glDrawPixels(1,1, GL_RGB, GL_INT, &pix);
     //std::cout << "HERE " << std::hex << pix << std::endl;
     
-    printFramebufferInfo(fb.get_fbo_handle());
+    //printFramebufferInfo(fb.get_fbo_handle());
     glutMainLoop();
 }

@@ -1,5 +1,7 @@
 void main(void) {
     vec4 a = gl_Vertex;
-    a.y = -1.0;
-    gl_Position = a;
-}       
+    float distance = sqrt(a.x*a.x + a.y*a.y);
+    float angle = atan(a.x, a.y)/3.141;
+    
+    gl_Position = vec4(angle,-1, 0, 1);
+}

@@ -7,6 +7,7 @@
 #include "frame_buffer.h"
 #include "shader.h"
 #include "printer.h"
+#include "world.h"
 
 #ifndef LIGHT_H
 #define LIGHT_H
@@ -20,7 +21,8 @@ class Light {
 
 public:
     Light(void);
-    void fill_frame_buffer();
+    void fill_frame_buffer(World& world);
+    void draw_light(int screen_width, int screen_height);
     GLuint get_tex_handle();
 };
 

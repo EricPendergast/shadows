@@ -1,3 +1,3 @@
 void main (void) {
-    gl_FragData[0] = vec4(.5,.5,0,1);
+    gl_FragData[0] = vec4(0,.5,0,1);
 }

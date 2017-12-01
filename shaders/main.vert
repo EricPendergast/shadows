@@ -1,5 +1,7 @@
 varying vec2 pos;
 
+// Assumes coordinates passed in are world
+// coordinates.
 void main(void) {
     vec4 a = gl_Vertex;
     
