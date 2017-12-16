@@ -27,13 +27,16 @@ Light* light;
 World* world;
 int screen_width;
 int screen_height;
+const int render_width = 500;
+const int render_height = 500;
 
 // Applying various settings to glut, as well as assigning functions
 void init(int argc,  char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode (GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA); 
-    glutInitWindowSize(500,500);
-    screen_width = screen_height = 500;
+    screen_width = render_width;
+    screen_height = render_height;
+    glutInitWindowSize(screen_width, screen_height);
     glutInitWindowPosition(100,100);
     glutCreateWindow("Shadows");
     glutIdleFunc(display);
@@ -55,9 +58,9 @@ void reshape(int width, int height) {
     screen_height = height;
     glLoadIdentity();
     glViewport(0,0, width, height);
-    gluOrtho2D(0, 500, 0, 500);
+    gluOrtho2D(0, render_width, 0, render_height);
     glScalef(1, -1, 1);
-    glTranslatef(0, -(GLfloat)500, 0);
+    glTranslatef(0, -(GLfloat)render_height, 0);
 
     // Switch back to the model view matrix, so that we can start drawing
     // shapes correctly
@@ -82,15 +85,15 @@ void key_down(unsigned char key, int x, int y) {
 }
 
 void draw_world(void) {
-    
     light->fill_frame_buffer(*world);
     
+    glViewport(0,0, screen_width, screen_height);
     glUseProgram(shad->get_handle());
     //glBindTexture(GL_TEXTURE_2D, frame_buffer->get_tex_handle());
     glBindTexture(GL_TEXTURE_2D, light->get_tex_handle());
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     world->draw();
-    light->draw_light(screen_width,screen_height);
+    light->draw_light(render_width, render_height);
 }
 
 void display(void) {
@@ -102,7 +105,6 @@ void display(void) {
 }
 
 int main(int argc, char** argv) {
-    
     init(argc, argv);
     
     ShaderProgram shader("shaders/main.vert", "shaders/main.frag");

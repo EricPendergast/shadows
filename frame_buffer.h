@@ -13,7 +13,9 @@ class FrameBuffer {
     GLuint rboHandle;
     GLuint texHandle;
 public:
-    FrameBuffer(int width, int height);
+    const int width;
+    const int height;
+    FrameBuffer(int w, int h);
     void draw_stuff();
     void begin_render_to();
     void end_render_to();

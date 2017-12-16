@@ -1,29 +1,31 @@
 #include "light.h"
 
+using namespace std;
 
-Light::Light(void): projection(500,1), shader("shaders/light.vert", "shaders/light.frag") {
-}
+Light::Light(void): projection(resolution,1), shader("shaders/light.vert", "shaders/light.frag") {}
 
 void Light::fill_frame_buffer(World& world) {
-    (void)world;
     //printFramebufferInfo(projection.get_fbo_handle());
     //printFramebufferInfo(0);
     glBindFramebuffer(GL_FRAMEBUFFER, projection.get_fbo_handle());
+    
 
     glClearColor(1, .5, 0, 1);
     glClear(GL_COLOR_BUFFER_BIT);
     
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
-    
+    glLoadIdentity();
     
     // TODO: Translate with x and y
-    glTranslatef(0, 0, 0);
+    //glTranslatef(0, 0, 0);
     glUseProgram(shader.get_handle());
     glBindTexture(GL_TEXTURE_2D, 0);
     
     glLineWidth(2);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    
+    glViewport(0,0, projection.width, projection.height);
     world.draw();
     //glLoadIdentity();
 
@@ -32,10 +34,6 @@ void Light::fill_frame_buffer(World& world) {
     //glVertex2f(250, 250);
     //glVertex2f(250, 300);
     //glEnd();
-    
-    float pix[4];
-    glReadPixels(64, 0, 1, 1, GL_RGBA, GL_FLOAT, &pix);
-    std::cout << "HERE " << pix[0] << std::endl;
     
     glPopMatrix();
     

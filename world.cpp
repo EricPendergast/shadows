@@ -1,7 +1,7 @@
 #include "world.h"
 
 
-// Only draws polygons.
+// Only draws polygons. Uses world coordinates.
 void World::draw() {
     glBegin(GL_QUADS);
     //glVertex2f(5, 0);

@@ -12,9 +12,8 @@
 #ifndef LIGHT_H
 #define LIGHT_H
 
-// 
 class Light {
-    int resolution = 500;
+    int resolution = 4000;
     FrameBuffer projection;
     ShaderProgram shader;
     int x,y;

@@ -1,6 +1,6 @@
 #include "frame_buffer.h"
 
-FrameBuffer::FrameBuffer(int width, int height) {
+FrameBuffer::FrameBuffer(int w, int h) : width(w), height(h) {
     // create a texture object
     glGenTextures(1, &texHandle);
     glBindTexture(GL_TEXTURE_2D, texHandle);
@@ -38,7 +38,7 @@ void FrameBuffer::draw_stuff() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     // draw a rotating teapot at the origin
-    //glPushMatrix();
+//glPushMatrix();
     //glRotatef(45*0.5f, 1, 0, 0);
     //glRotatef(45, 0, 1, 0);
     //glRotatef(45*0.7f, 0, 0, 1);
