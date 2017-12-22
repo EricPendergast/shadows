@@ -4,14 +4,15 @@ varying vec2 pos;
 
 bool in_shadow();
 
-void main (void) {     
+void main(void) {     
     float angle = atan(pos.y, pos.x);
     float tex_lookup = (angle + 3.141)/6.28;
     
-    gl_FragColor = texture2D(texture, vec2(tex_lookup, 0.0));
+    vec4 looked_up = texture2D(texture, vec2(tex_lookup, 0.0));
+    
+    float dist = sqrt(pos.x*pos.x + pos.y*pos.y);
+    if (dist > looked_up.g)
+        gl_FragColor = vec4(1,1,1,1);
+    else
+        gl_FragColor = vec4(0,0,0,1);
 }  
-
-/*bool in_shadow() {*/
-/*    float sample = atan(pos.y,pos.x)/6.28;*/
-/*    return texture2D(texture, vec2(sample*2.0,0.0)).r == 0.0;*/
-/*}*/

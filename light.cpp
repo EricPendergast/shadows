@@ -10,7 +10,7 @@ void Light::fill_frame_buffer(World& world) {
     glBindFramebuffer(GL_FRAMEBUFFER, projection.get_fbo_handle());
     
 
-    glClearColor(1, .5, 0, 1);
+    glClearColor(0, 0, 0, 1);
     glClear(GL_COLOR_BUFFER_BIT);
     
     glMatrixMode(GL_MODELVIEW);
@@ -22,7 +22,6 @@ void Light::fill_frame_buffer(World& world) {
     glUseProgram(shader.get_handle());
     glBindTexture(GL_TEXTURE_2D, 0);
     
-    glLineWidth(2);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     
     glViewport(0,0, projection.width, projection.height);
@@ -49,6 +48,10 @@ void Light::draw_light(int screen_width, int screen_height) {
     glVertex2f((GLfloat)screen_width,(GLfloat)screen_height);
     glVertex2f(0,(GLfloat)screen_height);
     glEnd();
+    
+    //GLint dims[2];
+    //glGetIntegerv(GL_MAX_VIEWPORT_DIMS, dims);
+    //cout << "Dims " << dims[0] << " " << dims[1] << endl;
 }
 
 GLuint Light::get_tex_handle() {

@@ -9,6 +9,7 @@
 #define FRAME_BUFFER_H
 
 class FrameBuffer {
+protected:
     GLuint fboHandle;
     GLuint rboHandle;
     GLuint texHandle;
@@ -19,9 +20,14 @@ public:
     void draw_stuff();
     void begin_render_to();
     void end_render_to();
-    void pass_as_uniform();
+    //void pass_as_uniform();
     GLuint get_fbo_handle();
     GLuint get_tex_handle();
+};
+
+class DepthBuffer : public FrameBuffer {
+public:
+    DepthBuffer(int w, int h);
 };
 
 #endif

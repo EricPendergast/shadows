@@ -14,7 +14,7 @@
 
 class Light {
     int resolution = 4000;
-    FrameBuffer projection;
+    DepthBuffer projection;
     ShaderProgram shader;
     int x,y;
 
