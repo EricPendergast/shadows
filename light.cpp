@@ -2,15 +2,16 @@
 
 using namespace std;
 
-Light::Light(void): projection(resolution,1), shader("shaders/light.vert", "shaders/light.frag") {}
+Light::Light(void): projection(resolution,1), light_shader("shaders/light.vert", "shaders/light.frag"), background_shader("shaders/shadow_background.vert", "shaders/shadow_background.frag") {}
 
 void Light::fill_frame_buffer(World& world) {
+    glBindTexture(GL_TEXTURE_2D, get_tex_handle());
     //printFramebufferInfo(projection.get_fbo_handle());
     //printFramebufferInfo(0);
     glBindFramebuffer(GL_FRAMEBUFFER, projection.get_fbo_handle());
     
 
-    glClearColor(0, 0, 0, 1);
+    glClearColor(10000000, 10000000, 10000000, 1);
     glClear(GL_COLOR_BUFFER_BIT);
     
     glMatrixMode(GL_MODELVIEW);
@@ -19,7 +20,7 @@ void Light::fill_frame_buffer(World& world) {
     
     // TODO: Translate with x and y
     //glTranslatef(0, 0, 0);
-    glUseProgram(shader.get_handle());
+    glUseProgram(light_shader.get_handle());
     glBindTexture(GL_TEXTURE_2D, 0);
     
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -40,6 +41,10 @@ void Light::fill_frame_buffer(World& world) {
 }
 
 void Light::draw_light(int screen_width, int screen_height) {
+    glBindTexture(GL_TEXTURE_2D, get_tex_handle());
+    
+    glUseProgram(background_shader.get_handle());
+    
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glBegin(GL_QUADS);

@@ -13,9 +13,12 @@
 #define LIGHT_H
 
 class Light {
-    int resolution = 4000;
+    // TODO: Platform independence. Is this the max framebuffer width for every
+    // computer?
+    int resolution = 8192;
     DepthBuffer projection;
-    ShaderProgram shader;
+    ShaderProgram light_shader;
+    ShaderProgram background_shader;
     int x,y;
 
 public:

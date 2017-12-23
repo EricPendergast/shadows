@@ -1,24 +1,20 @@
-uniform sampler2D texture;
+/*uniform sampler1D texture;*/
+uniform sampler2D tex;
+// pos is the interpolated world coordinates
 varying vec2 pos;
 
 bool in_shadow();
 
-void main (void) {     
-    /*float val = atan(pos.x,pos.y)/6.28*500.0;*/
+void main(void) {
+    float angle = atan(pos.y, pos.x);
+    float tex_lookup = (angle + 3.141)/6.28;
     
-    // put it in the range from zero to
-    // one
+    /*vec4 looked_up = vec4(0);*/
+    vec4 looked_up = texture2D(tex, vec2(tex_lookup,0));
     
-    /*gl_FragColor = vec4(val,val,val,1);*/
-    gl_FragColor = (texture2D(texture, vec2(pos.x/500.0,0.0)));
-    /*gl_FragColor = vec4(val01,val01,val01,1);*/
-    
-    /*gl_FragColor = vec4(in_shadow(), 1.0,1.0,1.0);//shadow*/
-    /*gl_FragColor = (texture2D(texture, vec2(val01*2.0,0.0)));*/
+    float dist = sqrt(pos.x*pos.x + pos.y*pos.y);
+    if (dist < looked_up.g)
+        gl_FragColor = vec4(1,1,1,1);
+    else
+        gl_FragColor = vec4(0,0,0,1);
 }  
-
-
-bool in_shadow() {
-    float sample = atan(pos.x,pos.y)/6.28;
-    return texture2D(texture, vec2(sample*2.0,0.0)).r == 0.0;
-}

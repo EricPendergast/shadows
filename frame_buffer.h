@@ -4,6 +4,7 @@
 #include <GL/glu.h>
 #include <GL/glext.h>
 #include <iostream>
+#include <assert.h>
 
 #ifndef FRAME_BUFFER_H
 #define FRAME_BUFFER_H
@@ -28,6 +29,11 @@ public:
 class DepthBuffer : public FrameBuffer {
 public:
     DepthBuffer(int w, int h);
+};
+
+class BasicBuffer : public FrameBuffer {
+public:
+    BasicBuffer(int w, int h);
 };
 
 #endif

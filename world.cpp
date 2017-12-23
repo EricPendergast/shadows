@@ -1,5 +1,11 @@
 #include "world.h"
 
+World::World() : shader("shaders/main.vert", "shaders/main.frag") {}
+
+void World::render_with_shader() {
+    glUseProgram(shader.get_handle());
+    draw();
+}
 
 // Only draws polygons. Uses world coordinates.
 void World::draw() {

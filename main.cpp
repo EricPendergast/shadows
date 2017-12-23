@@ -88,12 +88,9 @@ void draw_world(void) {
     light->fill_frame_buffer(*world);
     
     glViewport(0,0, screen_width, screen_height);
-    glUseProgram(shad->get_handle());
-    //glBindTexture(GL_TEXTURE_2D, frame_buffer->get_tex_handle());
-    glBindTexture(GL_TEXTURE_2D, light->get_tex_handle());
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    world->draw();
     light->draw_light(render_width, render_height);
+    world->render_with_shader();
 }
 
 void display(void) {
