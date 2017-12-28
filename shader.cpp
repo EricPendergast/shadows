@@ -7,7 +7,6 @@ ShaderProgram::ShaderProgram(Filename vert_filename, Filename frag_filename) {
     
     GLuint vertShader = glCreateShader(GL_VERTEX_SHADER);
     GLuint fragShader = glCreateShader(GL_FRAGMENT_SHADER);
-    //GLuint fragShader = glCreateShader(GL_VERTEX_SHADER);
     
     load_compile_shader(vertShader, vert_filename);
     load_compile_shader(fragShader, frag_filename);
@@ -45,7 +44,6 @@ void load_compile_shader(GLuint handle, std::string filename) {
     std::istreambuf_iterator<char>());
     
     //Send the vertex shader source code to GL
-    //Note that std::string's .c_str is NULL character terminated.
     const GLchar *source = (const GLchar *)sc.c_str();
     glShaderSource(handle, 1, &source, 0);
 

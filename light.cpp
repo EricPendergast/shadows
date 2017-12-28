@@ -2,17 +2,16 @@
 
 using namespace std;
 
-Light::Light(void): projection(resolution,1), light_shader("shaders/light.vert", "shaders/light.frag"), background_shader("shaders/shadow_background.vert", "shaders/shadow_background.frag") {}
+Light::Light(void): projection(resolution), light_shader("shaders/light.vert", "shaders/light.frag"), background_shader("shaders/shadow_background.vert", "shaders/shadow_background.frag") {}
 
 void Light::fill_frame_buffer(World& world) {
+    glEnable(GL_DEPTH_TEST);
     glBindTexture(GL_TEXTURE_2D, get_tex_handle());
-    //printFramebufferInfo(projection.get_fbo_handle());
-    //printFramebufferInfo(0);
     glBindFramebuffer(GL_FRAMEBUFFER, projection.get_fbo_handle());
     
 
     glClearColor(10000000, 10000000, 10000000, 1);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
@@ -25,7 +24,7 @@ void Light::fill_frame_buffer(World& world) {
     
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     
-    glViewport(0,0, projection.width, projection.height);
+    glViewport(0,0, projection.width, 1);
     world.draw();
     //glLoadIdentity();
 
@@ -38,6 +37,7 @@ void Light::fill_frame_buffer(World& world) {
     glPopMatrix();
     
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glDisable(GL_DEPTH_TEST);
 }
 
 void Light::draw_light(int screen_width, int screen_height) {

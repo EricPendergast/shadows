@@ -1,5 +1,7 @@
 #include "printer.h"
 
+// Not written by me
+
 void printFramebufferInfo(GLuint fbo) {
     // bind fbo
     glBindFramebuffer(GL_FRAMEBUFFER, fbo);

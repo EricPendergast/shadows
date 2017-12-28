@@ -28,7 +28,7 @@ public:
 
 class DepthBuffer : public FrameBuffer {
 public:
-    DepthBuffer(int w, int h);
+    DepthBuffer(int w);
 };
 
 class BasicBuffer : public FrameBuffer {

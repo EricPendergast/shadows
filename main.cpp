@@ -50,7 +50,6 @@ void init(int argc,  char** argv) {
     }
     
     glEnable(GL_TEXTURE_2D);
-    
 }
 
 void reshape(int width, int height) {
@@ -72,14 +71,12 @@ void key_up(unsigned char key, int x, int y) {
     (void)x;
     (void)y;
     (void)key;
-    //std::cout << "UP" << key << std::endl;
 }  
   
 void key_down(unsigned char key, int x, int y) {  
     (void)x;
     (void)y;
     counter += 10;
-    //std::cout << "DOWN" << std::endl;
     if (key == 0x001b) //Escape key
         exit(0);
 }
