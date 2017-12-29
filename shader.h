@@ -20,5 +20,7 @@ private:
 public:
     ShaderProgram(Filename vert_filename, Filename frag_filename);
     GLuint get_handle();
+    GLint get_uniform(std::string name);
+    void use();
 };
 #endif

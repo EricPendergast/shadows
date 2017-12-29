@@ -34,8 +34,19 @@ ShaderProgram::ShaderProgram(Filename vert_filename, Filename frag_filename) {
     }
 }
 
+void ShaderProgram::use() {
+    glUseProgram(get_handle());
+}
 GLuint ShaderProgram::get_handle() {
     return program;
+}
+GLint ShaderProgram::get_uniform(std::string name) {
+    GLint loc = glGetUniformLocation(program, name.c_str());
+    if (loc == -1) {
+        std::cerr << "Invalid uniform \"" << name << "\"" << std::endl;
+        exit(1);
+    }
+    return loc;
 }
 
 void load_compile_shader(GLuint handle, std::string filename) {

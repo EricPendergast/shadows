@@ -19,12 +19,13 @@ void Light::fill_frame_buffer(World& world) {
     
     // TODO: Translate with x and y
     //glTranslatef(0, 0, 0);
-    glUseProgram(light_shader.get_handle());
+    light_shader.use();
+    glUniform2f(light_shader.get_uniform("light_pos"), light_x, light_y);
     glBindTexture(GL_TEXTURE_2D, 0);
     
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     
-    glViewport(0,0, projection.width, 1);
+    glViewport(0,0, projection.width, projection.height);
     world.draw();
     //glLoadIdentity();
 
@@ -44,6 +45,7 @@ void Light::draw_light(int screen_width, int screen_height) {
     glBindTexture(GL_TEXTURE_2D, get_tex_handle());
     
     glUseProgram(background_shader.get_handle());
+    glUniform2f(light_shader.get_uniform("light_pos"), light_x, light_y);
     
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

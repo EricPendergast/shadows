@@ -20,6 +20,7 @@ void display(void);
 void reshape (int, int);
 void key_down(unsigned char key, int x, int y);
 void key_up(unsigned char key, int x, int y);
+void mouse_move(int x, int y);
 
 ShaderProgram* shad;
 FrameBuffer* frame_buffer;
@@ -43,6 +44,7 @@ void init(int argc,  char** argv) {
     glutReshapeFunc(reshape);
     glutKeyboardFunc(key_down);
     glutKeyboardUpFunc(key_up);
+    glutMotionFunc(mouse_move);
     
     if(glewInit() != GLEW_OK) {
         std::cout << "GLEW bad" << std::endl;
@@ -79,6 +81,15 @@ void key_down(unsigned char key, int x, int y) {
     counter += 10;
     if (key == 0x001b) //Escape key
         exit(0);
+}
+
+void mouse_move(int x, int y) {
+    (void)x;
+    (void)y;
+    std::cout << "HELLO" << std::endl;
+    light->light_x = (float)x;
+    light->light_y = (float)y;
+
 }
 
 void draw_world(void) {

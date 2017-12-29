@@ -19,9 +19,9 @@ class Light {
     DepthBuffer projection;
     ShaderProgram light_shader;
     ShaderProgram background_shader;
-    int x,y;
 
 public:
+    float light_x = 500, light_y = 500;
     Light(void);
     void fill_frame_buffer(World& world);
     void draw_light(int screen_width, int screen_height);

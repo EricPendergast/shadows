@@ -16,7 +16,7 @@ GLuint FrameBuffer::get_tex_handle() {
 
 
 // Using the color buffer as a depth buffer
-DepthBuffer::DepthBuffer(int w) : FrameBuffer(w, 20) {
+DepthBuffer::DepthBuffer(int w) : FrameBuffer(w, 2) {
     // create a texture object
     glGenTextures(1, &texHandle);
     glBindTexture(GL_TEXTURE_2D, texHandle);
