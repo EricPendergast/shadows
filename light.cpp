@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Light::Light(void): projection(resolution), light_shader("shaders/light.vert", "shaders/light.frag"), background_shader("shaders/shadow_background.vert", "shaders/shadow_background.frag") {}
+Light::Light(void): projection(resolution), light_shader("shaders/light_box.vert", "shaders/light_box.frag"), background_shader("shaders/shadow_background_box.vert", "shaders/shadow_background_box.frag") {}
 
 void Light::fill_frame_buffer(World& world) {
     glEnable(GL_DEPTH_TEST);
@@ -25,15 +25,13 @@ void Light::fill_frame_buffer(World& world) {
     
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     
-    glViewport(0,0, projection.width, projection.height);
+    glViewport(0,1, projection.width, 1);
+    glUniform1f(light_shader.get_uniform("right_or_left"), 1);
     world.draw();
-    //glLoadIdentity();
-
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    //glBegin(GL_LINES);
-    //glVertex2f(250, 250);
-    //glVertex2f(250, 300);
-    //glEnd();
+    glViewport(0,0, projection.width, 1);
+    glUniform1f(light_shader.get_uniform("right_or_left"), -1);
+    world.draw();
+    
     
     glPopMatrix();
     
