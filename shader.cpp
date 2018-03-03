@@ -2,7 +2,7 @@
 
 void load_compile_shader(GLuint handle, std::string filename);
     
-ShaderProgram::ShaderProgram(Filename vert_filename, Filename frag_filename) {
+ShaderProgram::ShaderProgram(std::string vert_filename, std::string frag_filename) {
     program = glCreateProgram();
     
     GLuint vertShader = glCreateShader(GL_VERTEX_SHADER);
@@ -27,11 +27,15 @@ ShaderProgram::ShaderProgram(Filename vert_filename, Filename frag_filename) {
         //The maxLength includes the NULL character
         std::vector<GLchar> infoLog(maxLength);
         glGetProgramInfoLog(program, maxLength, &maxLength, &infoLog[0]);
+        
+     
 
         glDeleteProgram(program);
 
         exit(1);
     }
+    
+    glBindAttribLocation(program, 0, "in_Position");
 }
 
 void ShaderProgram::use() {
@@ -42,10 +46,10 @@ GLuint ShaderProgram::get_handle() {
 }
 GLint ShaderProgram::get_uniform(std::string name) {
     GLint loc = glGetUniformLocation(program, name.c_str());
-    if (loc == -1) {
-        std::cerr << "Invalid uniform \"" << name << "\"" << std::endl;
-        exit(1);
-    }
+    //if (loc == -1) {
+    //    std::cerr << "Invalid uniform \"" << name << "\"" << std::endl;
+    //    exit(1);
+    //}
     return loc;
 }
 
@@ -72,6 +76,8 @@ void load_compile_shader(GLuint handle, std::string filename) {
         glGetShaderInfoLog(handle, maxLength, &maxLength, &infoLog[0]);
 
         std::cout << "Shader " << filename << " did not compile." << std::endl;
+        for (GLchar c : infoLog)
+            std::cout << c;
         //TODO: can use infolog
         exit(1);
     }

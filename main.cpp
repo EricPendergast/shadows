@@ -86,7 +86,6 @@ void key_down(unsigned char key, int x, int y) {
 void mouse_move(int x, int y) {
     (void)x;
     (void)y;
-    std::cout << "HELLO" << std::endl;
     light->light_x = (float)x;
     light->light_y = (float)y;
 
@@ -110,8 +109,9 @@ void display(void) {
 }
 
 int main(int argc, char** argv) {
+    (void)argv;
+    (void)argc;
     init(argc, argv);
-    
     ShaderProgram shader("shaders/main.vert", "shaders/main.frag");
     shad = &shader;
     

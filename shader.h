@@ -8,6 +8,7 @@
 #include <string>
 #include <fstream>
 #include <streambuf>
+#include <assert.h>
 
 #ifndef SHADER_H
 #define SHADER_H

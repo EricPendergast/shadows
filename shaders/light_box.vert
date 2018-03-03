@@ -1,33 +1,59 @@
+#version 150
 // Assumes coordinates passed in are world
 // coordinates.
 
-varying float distance_atan;
-varying float distance;
-varying float in_range;
-varying vec4 rel_pos;
+uniform mat4 proj;
+uniform mat4 projproj;
 uniform vec2 light_pos;
-// Says whether to render polygons on the right side of the light or the left
-// side. -1 for left, 1 for right.
-uniform float right_or_left;
+// Says whether to render polygons onto the horizontal projection planes or the
+// vertical ones side. -1 for horizontal, 1 for vertical.
+uniform float horiz_or_vert;
+
+in vec4 in_Position;
+
+out float distance_inv;
+out float distance;
+out float in_range;
+out vec4 rel_pos;
+
+float sign(float v) {
+    return  v > 0.0 ? 1.0 : -1.0;
+}
+
 
 void main(void) {
-    float pi = 3.141592654;
-    rel_pos = gl_Vertex - vec4(light_pos.x, light_pos.y,0,0);
-    // For some reason doing perspective interpolation on atan(distance) gives
-    // the (kind of) right result for fragment distance when fragment position
-    // is proportional to that fragment's angle to the light. This was found
-    // through trial and error.
+    /*if (proj * vec4()*/
+    /*rel_pos = gl_Vertex - vec4(light_pos.x, light_pos.y,0,0);*/
+    /*rel_pos = gl_Vertex - vec4(proj[0][0], proj[0][1],0,0);*/
+    rel_pos = proj * in_Position;
+    /*if (horiz_or_vert < 0.0) { //if horiz_or_vert == -1*/
+    /*    float tmp = rel_pos.x;*/
+    /*    rel_pos.x = rel_pos.y;*/
+    /*    rel_pos.y = tmp;*/
+    /*}*/
     distance = sqrt(rel_pos.x*rel_pos.x + rel_pos.y*rel_pos.y);
-    distance_atan = atan(distance);
-
-    // Note the negative
-    float angle = atan(rel_pos.y, right_or_left*rel_pos.x);
+    distance_inv = 1.0/(distance*distance);
 
     in_range = 1.0;
+    
+    float plane_proj = rel_pos.x / abs(rel_pos.y);
 
-    if (abs(angle) > pi/2.0) {
-        in_range = 0.0;
-    }
-
-    gl_Position = vec4(angle/pi, 0, distance/5000.0, 1);
+    gl_Position = vec4(plane_proj, .5*sign(rel_pos.y), 0, 1);
 }
+
+// Horizontal
+/*void main(void) {*/
+/*    rel_pos = gl_Vertex - vec4(light_pos.x, light_pos.y,0,0);*/
+/*    // For some reason doing perspective interpolation on atan(distance) gives*/
+/*    // the (kind of) right result for fragment distance when fragment position*/
+/*    // is proportional to that fragment's angle to the light. This was found*/
+/*    // through trial and error.*/
+/*    distance = 1.0/sqrt(rel_pos.x*rel_pos.x + rel_pos.y*rel_pos.y);*/
+/*    distance_atan = atan(distance);*/
+/**/
+/*    in_range = 1.0;*/
+/*    */
+/*    float plane_proj = rel_pos.x / abs(rel_pos.y);*/
+/**/
+/*    gl_Position = vec4(plane_proj, .5*sign(rel_pos.y), 1.0/distance/5000.0, 1);*/
+/*}*/
