@@ -1,4 +1,4 @@
-#version 150
+#version 450
 
 in float distance_inv;
 in float distance;

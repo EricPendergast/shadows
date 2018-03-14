@@ -31,6 +31,7 @@ int screen_height;
 const int render_width = 500;
 const int render_height = 500;
 
+
 // Applying various settings to glut, as well as assigning functions
 void init(int argc,  char** argv) {
     glutInit(&argc, argv);
@@ -55,6 +56,7 @@ void init(int argc,  char** argv) {
 }
 
 void reshape(int width, int height) {
+    glMatrixMode(GL_MODELVIEW);
     screen_width = width;
     screen_height = height;
     glLoadIdentity();
@@ -62,10 +64,6 @@ void reshape(int width, int height) {
     gluOrtho2D(0, render_width, 0, render_height);
     glScalef(1, -1, 1);
     glTranslatef(0, -(GLfloat)render_height, 0);
-
-    // Switch back to the model view matrix, so that we can start drawing
-    // shapes correctly
-    glMatrixMode(GL_MODELVIEW);
 } 
 
 GLfloat counter = 0;

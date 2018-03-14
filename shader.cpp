@@ -1,6 +1,8 @@
 #include "shader.h"
 
+void print_program_info_log(GLuint obj);
 void load_compile_shader(GLuint handle, std::string filename);
+void print_shader_info_log(GLuint obj);
     
 ShaderProgram::ShaderProgram(std::string vert_filename, std::string frag_filename) {
     program = glCreateProgram();
@@ -35,7 +37,9 @@ ShaderProgram::ShaderProgram(std::string vert_filename, std::string frag_filenam
         exit(1);
     }
     
-    glBindAttribLocation(program, 0, "in_Position");
+    print_program_info_log(program);
+    print_shader_info_log(vertShader);
+    print_shader_info_log(fragShader);
 }
 
 void ShaderProgram::use() {
@@ -44,13 +48,18 @@ void ShaderProgram::use() {
 GLuint ShaderProgram::get_handle() {
     return program;
 }
-GLint ShaderProgram::get_uniform(std::string name) {
-    GLint loc = glGetUniformLocation(program, name.c_str());
+
+GLint ShaderProgram::get_uniform(const char* name) {
+    GLint loc = glGetUniformLocation(program, name);
     //if (loc == -1) {
     //    std::cerr << "Invalid uniform \"" << name << "\"" << std::endl;
     //    exit(1);
     //}
     return loc;
+}
+
+GLint ShaderProgram::get_uniform(std::string name) {
+    return get_uniform(name.c_str());
 }
 
 void load_compile_shader(GLuint handle, std::string filename) {
@@ -80,5 +89,37 @@ void load_compile_shader(GLuint handle, std::string filename) {
             std::cout << c;
         //TODO: can use infolog
         exit(1);
+    }
+}
+
+
+void print_program_info_log(GLuint obj) {
+    int infologLength = 0;
+    int charsWritten  = 0;
+    char *infoLog;
+ 
+    glGetProgramiv(obj, GL_INFO_LOG_LENGTH,&infologLength);
+ 
+    if (infologLength > 0) {
+        infoLog = (char *)malloc(infologLength);
+        glGetProgramInfoLog(obj, infologLength, &charsWritten, infoLog);
+        printf("%s\n",infoLog);
+        free(infoLog);
+    }
+}
+
+
+void print_shader_info_log(GLuint obj) {
+    int infologLength = 0;
+    int charsWritten  = 0;
+    char *infoLog;
+ 
+    glGetShaderiv(obj, GL_INFO_LOG_LENGTH,&infologLength);
+ 
+    if (infologLength > 0) {
+        infoLog = (char *)malloc(infologLength);
+        glGetShaderInfoLog(obj, infologLength, &charsWritten, infoLog);
+        printf("%s\n",infoLog);
+        free(infoLog);
     }
 }

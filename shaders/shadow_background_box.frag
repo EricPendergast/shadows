@@ -1,8 +1,10 @@
+#version 450
 uniform sampler2D tex;
 
 // pos is the interpolated world coordinates
-varying vec2 pos;
-varying vec2 rel_pos;
+/*in vec2 pos;*/
+in vec2 rel_pos;
+
 
 float get_light_reach(vec2 r_pos);
 
@@ -10,12 +12,20 @@ float sign(float v) {
     return  v > 0.0 ? 1.0 : -1.0;
 }
 
+float dbg(vec2 r_pos) {
+    if (r_pos.x < r_pos.y)
+        return 0;
+    else 
+        return 1000;
+    
+}
+
 void main(void) {
     float reach = get_light_reach(rel_pos);
     float dist = sqrt(rel_pos.x*rel_pos.x + rel_pos.y*rel_pos.y);
-    if (dist < reach)
+    if (dist < reach) {
         gl_FragColor = vec4(1,1,1,1);
-    else
+    } else
         gl_FragColor = vec4(0,0,0,1);
 }
 

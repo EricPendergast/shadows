@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "glm/ext.hpp"
 
@@ -41,14 +42,22 @@ void Light::fill_frame_buffer(World& world) {
     glDisable(GL_DEPTH_TEST);
 }
 
+
 void Light::draw_light(int screen_width, int screen_height) {
+    glViewport(0,0, screen_width, screen_height);
+    
     glBindTexture(GL_TEXTURE_2D, get_tex_handle());
+    // For debugging
+    float data[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    glTexSubImage2D(GL_TEXTURE_2D, 0, /*x*/0,/*y*/0, /*width*/20, /*height*/1, GL_RGBA32F, GL_FLOAT, data);
     
-    glUseProgram(background_shader.get_handle());
     
-    glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(-light_x, -light_y, 0));
-    glUniformMatrix4fv(light_shader.get_uniform("proj"), 1, GL_FALSE, glm::value_ptr(translate));
+    background_shader.use();
     
+    glm::mat4 transform = glm::scale(glm::vec3(2.0f/(float)screen_width, 2.0f/(float)screen_height, 1.0f));
+    transform = glm::translate(glm::vec3(-1,-1,0)) * transform;
+
+    glUniformMatrix4fv(background_shader.get_uniform("mat"), 1, GL_FALSE, glm::value_ptr(transform));
     
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -59,9 +68,6 @@ void Light::draw_light(int screen_width, int screen_height) {
     glVertex2f(0,(GLfloat)screen_height);
     glEnd();
     
-    //GLint dims[2];
-    //glGetIntegerv(GL_MAX_VIEWPORT_DIMS, dims);
-    //cout << "Dims " << dims[0] << " " << dims[1] << endl;
 }
 
 GLuint Light::get_tex_handle() {

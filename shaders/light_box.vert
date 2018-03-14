@@ -1,15 +1,14 @@
-#version 150
+#version 450
 // Assumes coordinates passed in are world
 // coordinates.
 
 uniform mat4 proj;
-uniform mat4 projproj;
 uniform vec2 light_pos;
 // Says whether to render polygons onto the horizontal projection planes or the
 // vertical ones side. -1 for horizontal, 1 for vertical.
 uniform float horiz_or_vert;
 
-in vec4 in_Position;
+layout(location = 0) in vec4 in_Position;
 
 out float distance_inv;
 out float distance;
