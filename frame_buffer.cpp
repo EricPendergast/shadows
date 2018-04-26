@@ -2,10 +2,6 @@
 
 FrameBuffer::FrameBuffer(int w, int h) : width(w), height(h) {}
 
-//void FrameBuffer::begin_render_to() {
-//    glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);
-//}
-
 GLuint FrameBuffer::get_fbo_handle() {
     return fboHandle;
 }
@@ -14,6 +10,34 @@ GLuint FrameBuffer::get_tex_handle() {
     return texHandle;
 }
 
+int FrameBuffer::read_pixel(int x, int y) {
+    bind();
+    GLubyte pixel[4];
+    glReadPixels(x,y, 1,1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
+    int ret = 0;
+    for (int i = 0; i < 4; i++) {
+        ret <<= 8;
+        ret += pixel[i];
+    }
+    return ret;
+}
+
+void FrameBuffer::write_pixel(int x, int y, unsigned int pixel) {
+    bind();
+    GLubyte byte_arr[4];
+    for (int i = 3; i >= 0; i--) {
+        byte_arr[i] = (char)(pixel & 0xff);
+        pixel >>= 8;
+    }
+    
+    glRasterPos2i(x,y);
+    glDrawPixels(1,1, GL_RGBA, GL_UNSIGNED_BYTE, byte_arr);
+}
+
+
+void FrameBuffer::bind() {
+    glBindFramebuffer(GL_FRAMEBUFFER, get_fbo_handle());
+}
 
 // Using the color buffer as a depth buffer
 DepthBuffer::DepthBuffer(int w) : FrameBuffer(w, 4) {
