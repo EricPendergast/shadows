@@ -12,7 +12,8 @@ Light::Light(void): projection(resolution), light_shader("shaders/light_box.vert
 
 void Light::fill_frame_buffer(World& world) {
     glEnable(GL_DEPTH_TEST);
-    glBindTexture(GL_TEXTURE_2D, get_tex_handle());
+    // 
+    glBindTexture(GL_TEXTURE_2D, projection.get_tex_handle());
     glBindFramebuffer(GL_FRAMEBUFFER, projection.get_fbo_handle());
     
 
@@ -46,7 +47,7 @@ void Light::fill_frame_buffer(World& world) {
 void Light::draw_light(int screen_width, int screen_height) {
     glViewport(0,0, screen_width, screen_height);
     
-    glBindTexture(GL_TEXTURE_2D, get_tex_handle());
+    glBindTexture(GL_TEXTURE_2D, projection.get_tex_handle());
     // For debugging
     float data[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     glTexSubImage2D(GL_TEXTURE_2D, 0, /*x*/0,/*y*/0, /*width*/20, /*height*/1, GL_RGBA32F, GL_FLOAT, data);
@@ -70,6 +71,3 @@ void Light::draw_light(int screen_width, int screen_height) {
     
 }
 
-GLuint Light::get_tex_handle() {
-    return projection.get_tex_handle();
-}

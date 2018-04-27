@@ -43,3 +43,7 @@ void Tester::run_tests() {
     basic_frame_buffer_test();
     //light_shader_test();
 }
+
+Tester::~Tester() {
+    
+}

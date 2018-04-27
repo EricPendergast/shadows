@@ -25,7 +25,6 @@ public:
     Light(void);
     void fill_frame_buffer(World& world);
     void draw_light(int screen_width, int screen_height);
-    GLuint get_tex_handle();
 };
 
 #endif

@@ -10,6 +10,7 @@ class Tester: public OpenGLContext::GameManagerInterface {
     
     virtual void display();
     void run_tests();
+    ~Tester();
 };
 
 #endif

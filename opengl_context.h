@@ -26,16 +26,16 @@ namespace OpenGLContext {
     class GameManagerInterface {
     public:
         virtual void display(){}
-        virtual void mouse_move(int x, int y){}
+        virtual void mouse_move(int x, int y){(void)x; (void)y;}
         // Should be called after the opengl context exists. Could do things
         // such as initializing shaders, frame buffers, VBOs, etc.
         virtual void init_after_opengl_context(){}
         int screen_width;
         int screen_height;
         
-        // TODO: This is probably a good idea:
-        //virtual ~GameManagerInterface()=0;
+        virtual ~GameManagerInterface(){};
     };
+    
     extern GameManagerInterface* manager;
     
     
