@@ -10,16 +10,12 @@ GLuint FrameBuffer::get_tex_handle() {
     return texHandle;
 }
 
-int FrameBuffer::read_pixel(int x, int y) {
+std::vector<float> FrameBuffer::read_pixel(int x, int y) {
     bind();
-    GLubyte pixel[4];
-    glReadPixels(x,y, 1,1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
-    int ret = 0;
-    for (int i = 0; i < 4; i++) {
-        ret <<= 8;
-        ret += pixel[i];
-    }
-    return ret;
+    GLfloat pixel[4];
+    glReadPixels(x,y, 1,1, GL_RGBA, GL_FLOAT, pixel);
+    
+    return std::vector<float>(pixel, pixel+4);
 }
 
 void FrameBuffer::write_pixel(int x, int y, unsigned int pixel) {
@@ -39,8 +35,11 @@ void FrameBuffer::bind() {
     glBindFramebuffer(GL_FRAMEBUFFER, get_fbo_handle());
 }
 
-// Using the color buffer as a depth buffer
-DepthBuffer::DepthBuffer(int w) : FrameBuffer(w, 4) {
+
+const std::vector<float> DepthBoxBuffer::DEFAULT_DEPTH({1000000, 0, 0, 1});
+
+// Using the color buffer as a depth buffer. 
+DepthBoxBuffer::DepthBoxBuffer(int w) : FrameBuffer(w, 4), projection_shader("shaders/light_box.vert", "shaders/light_box.frag") {
     // create a texture object
     glGenTextures(1, &texHandle);
     glBindTexture(GL_TEXTURE_2D, texHandle);
@@ -77,6 +76,31 @@ DepthBuffer::DepthBuffer(int w) : FrameBuffer(w, 4) {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     
 }
+
+void DepthBoxBuffer::begin_draw(int row) {
+    glEnable(GL_DEPTH_TEST);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    projection_shader.use();
+    set_render_row(row);
+}
+
+void DepthBoxBuffer::clear() {
+    // Setting the default depth to far away
+    glClearColor(DEFAULT_DEPTH[0], DEFAULT_DEPTH[1], DEFAULT_DEPTH[2], DEFAULT_DEPTH[3]);
+    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+}
+
+ShaderProgram* DepthBoxBuffer::shader() {
+    return &projection_shader;
+}
+
+void DepthBoxBuffer::set_render_row(int row) {
+    assert(row >= 0 && row < 4);
+    
+    glViewport(0, row, width, 1);
+}
+
+
 
 BasicBuffer::BasicBuffer(int w, int h): FrameBuffer(w,h) {
     // create a texture object

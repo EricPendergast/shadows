@@ -16,8 +16,7 @@ class Light {
     // TODO: Platform independence. Is this the max framebuffer width for every
     // computer?
     int resolution = 8192;
-    DepthBuffer projection;
-    ShaderProgram light_shader;
+    DepthBoxBuffer projection;
     ShaderProgram background_shader;
 
 public:

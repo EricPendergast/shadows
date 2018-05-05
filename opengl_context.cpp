@@ -53,9 +53,6 @@ namespace OpenGLContext {
     }
 
     void mouse_move(int x, int y) {
-        (void)x;
-        (void)y;
-        
         manager->mouse_move(x, y);
     }
 

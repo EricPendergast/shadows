@@ -8,8 +8,9 @@
 
 using namespace std;
 
-Light::Light(void): projection(resolution), light_shader("shaders/light_box.vert", "shaders/light_box.frag"), background_shader("shaders/shadow_background_box.vert", "shaders/shadow_background_box.frag") {}
+Light::Light(void): projection(resolution), background_shader("shaders/shadow_background_box.vert", "shaders/shadow_background_box.frag") {}
 
+// TODO: Fix function name. Which frame buffer? Why are we filling it?
 void Light::fill_frame_buffer(World& world) {
     glEnable(GL_DEPTH_TEST);
     // 
@@ -22,21 +23,21 @@ void Light::fill_frame_buffer(World& world) {
     
     // TODO: Translate with x and y
     //glTranslatef(0, 0, 0);
-    light_shader.use();
-    glUniform2f(light_shader.get_uniform("light_pos"), light_x, light_y);
+    projection.begin_draw(DepthBoxBuffer::UP);
+    glUniform2f(projection.shader()->get_uniform("light_pos"), light_x, light_y);
     
     glBindTexture(GL_TEXTURE_2D, 0);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     
     glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(-light_x, -light_y, 0));
     
-    glUniformMatrix4fv(light_shader.get_uniform("proj"), 1, GL_FALSE, glm::value_ptr(translate));
+    glUniformMatrix4fv(projection.shader()->get_uniform("proj"), 1, GL_FALSE, glm::value_ptr(translate));
     
     //glViewport(0,0, projection.width, 2);
     //glUniform1f(light_shader.get_uniform("horiz_or_vert"), -1);
     //world.draw();
     glViewport(0,2, projection.width, 2);
-    glUniform1f(light_shader.get_uniform("horiz_or_vert"), 1);
+    glUniform1f(projection.shader()->get_uniform("horiz_or_vert"), 1);
     world.draw();
     
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
