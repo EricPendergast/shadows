@@ -51,6 +51,8 @@ GLuint ShaderProgram::get_handle() {
 
 GLint ShaderProgram::get_uniform(const char* name) {
     GLint loc = glGetUniformLocation(program, name);
+    // This is commented because it is often very annoying since unused
+    // uniforms are optimized out of shaders.
     //if (loc == -1) {
     //    std::cerr << "Invalid uniform \"" << name << "\"" << std::endl;
     //    exit(1);

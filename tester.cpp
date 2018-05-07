@@ -74,12 +74,12 @@ void light_shader_test_1() {
     projection.begin_draw(DepthBoxBuffer::UP);
     glUniform2f(projection.shader()->get_uniform("light_pos"), 0, 0);
     // Tests default depth
-    //assert(equal(projection.read_pixel(0, DepthBoxBuffer::UP),
-                 //DepthBoxBuffer::DEFAULT_DEPTH));
+    assert(equal(projection.read_pixel(0, DepthBoxBuffer::UP),
+                 DepthBoxBuffer::DEFAULT_DEPTH));
     draw_square(-1,10,1.25);
     // Tests depth interpolation
-    //assert(equal(projection.read_pixel(50, DepthBoxBuffer::UP),
-                 //{10,0,0,1}));
+    assert(equal(projection.read_pixel(50, DepthBoxBuffer::UP),
+                 {10,0,0,1}));
     
 
     projection.clear();
@@ -115,6 +115,7 @@ void light_shader_test_1() {
     assert(equal(projection.read_pixel(25, DepthBoxBuffer::DOWN),
                  DepthBoxBuffer::DEFAULT_DEPTH));
     
+    // This commented code is nice for debugging.
     //for (int i = 0; i < 4; i++) {
     //    for (int j = 0; j < 100; j++) {
     //        std::cout << projection.read_pixel(j, i)[0] << " ";
