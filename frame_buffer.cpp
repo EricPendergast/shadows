@@ -73,8 +73,14 @@ DepthBoxBuffer::DepthBoxBuffer(int w) : FrameBuffer(w, 4), projection_shader("sh
         exit(1);
     }
         
+    
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     
+    // TODO: Do we need to bind the shader?
+    //glUniform1i(shader()->get_uniform("UP"), UP);
+    //glUniform1i(shader()->get_uniform("DOWN"), DOWN);
+    //glUniform1i(shader()->get_uniform("RIGHT"), RIGHT);
+    //glUniform1i(shader()->get_uniform("LEFT"), LEFT);
 }
 
 void DepthBoxBuffer::begin_draw(int row) {
@@ -82,6 +88,7 @@ void DepthBoxBuffer::begin_draw(int row) {
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     projection_shader.use();
     set_render_row(row);
+    glUniform1i(shader()->get_uniform("side"), row);
 }
 
 void DepthBoxBuffer::clear() {

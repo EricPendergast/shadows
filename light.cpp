@@ -8,37 +8,44 @@
 
 using namespace std;
 
-Light::Light(void): projection(resolution), background_shader("shaders/shadow_background_box.vert", "shaders/shadow_background_box.frag") {}
+void draw_sqr(float x, float y, float width) {
+    glBegin(GL_QUADS);
+    glVertex2f(x,y);
+    glVertex2f(x+width,y);
+    glVertex2f(x+width,y+width);
+    glVertex2f(x,y+width);
+    glEnd();
+}
+
+Light::Light(void): projection(100), background_shader("shaders/shadow_background_box.vert", "shaders/shadow_background_box.frag") {}
+//Light::Light(void): projection(resolution), background_shader("shaders/shadow_background_box.vert", "shaders/shadow_background_box.frag") {}
 
 // TODO: Fix function name. Which frame buffer? Why are we filling it?
 void Light::fill_frame_buffer(World& world) {
-    glEnable(GL_DEPTH_TEST);
-    // 
-    glBindTexture(GL_TEXTURE_2D, projection.get_tex_handle());
-    glBindFramebuffer(GL_FRAMEBUFFER, projection.get_fbo_handle());
+    projection.bind();
+    projection.clear();
+    projection.shader()->use();
     
-
-    glClearColor(10000000, 10000000, 10000000, 1);
-    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-    
-    // TODO: Translate with x and y
-    //glTranslatef(0, 0, 0);
-    projection.begin_draw(DepthBoxBuffer::UP);
     glUniform2f(projection.shader()->get_uniform("light_pos"), light_x, light_y);
     
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    for (int i = 0; i < 4; i++) {
+        // Drawing to row i
+        projection.begin_draw(i);
+        world.draw();
+    }
     
-    glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(-light_x, -light_y, 0));
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 100; j++) {
+            std::cout << projection.read_pixel(j, i)[0] << " ";
+        }
+        std::cout << std::endl;
+    }
+    std::cout << std::endl;
     
-    glUniformMatrix4fv(projection.shader()->get_uniform("proj"), 1, GL_FALSE, glm::value_ptr(translate));
-    
-    //glViewport(0,0, projection.width, 2);
-    //glUniform1f(light_shader.get_uniform("horiz_or_vert"), -1);
-    //world.draw();
-    glViewport(0,2, projection.width, 2);
-    glUniform1f(projection.shader()->get_uniform("horiz_or_vert"), 1);
-    world.draw();
+    //projection.begin_draw(DepthBoxBuffer::UP);
+    //glUniform2f(projection.shader()->get_uniform("light_pos"), 0, 0);
+    //draw_sqr(-1,10,1.25);
+    //std::cout << projection.read_pixel(50, DepthBoxBuffer::UP)[0] << std::endl;
     
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glDisable(GL_DEPTH_TEST);
@@ -50,25 +57,28 @@ void Light::draw_light(int screen_width, int screen_height) {
     
     glBindTexture(GL_TEXTURE_2D, projection.get_tex_handle());
     // For debugging
-    float data[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    glTexSubImage2D(GL_TEXTURE_2D, 0, /*x*/0,/*y*/0, /*width*/20, /*height*/1, GL_RGBA32F, GL_FLOAT, data);
+    //float data[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    //glTexSubImage2D(GL_TEXTURE_2D, 0, [>x<]0,[>y<]0, [>width<]20, [>height<]1, GL_RGBA32F, GL_FLOAT, data);
     
     
     background_shader.use();
+    glUniform2f(background_shader.get_uniform("light_pos"), light_x, light_y);
     
     glm::mat4 transform = glm::scale(glm::vec3(2.0f/(float)screen_width, 2.0f/(float)screen_height, 1.0f));
     transform = glm::translate(glm::vec3(-1,-1,0)) * transform;
 
     glUniformMatrix4fv(background_shader.get_uniform("mat"), 1, GL_FALSE, glm::value_ptr(transform));
     
+    
+    // Binding the deafult frame buffer
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    
     glBegin(GL_QUADS);
     glVertex2f(0,0);
     glVertex2f((GLfloat)screen_width,0);
     glVertex2f((GLfloat)screen_width,(GLfloat)screen_height);
     glVertex2f(0,(GLfloat)screen_height);
     glEnd();
-    
 }
 
