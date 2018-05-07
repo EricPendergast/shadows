@@ -35,8 +35,6 @@ float get_light_reach(vec2 r_pos) {
     float plane_proj = r_pos.x / abs(r_pos.y);
 
     float tex_x = plane_proj/2.0 + .5;
-    // Prevents texture lookup from wrapping
-    tex_x = clamp(tex_x, .0001, .9999);
     vec4 looked_up = texture2D(tex, vec2(tex_x, shift - .125*sign(r_pos.y)));
 
     return looked_up.x;
