@@ -7,6 +7,8 @@ uniform vec2 light_pos;
 // Says which side of the projection square to project onto
 uniform int side;
 
+// Note: These are the same values as defined in DepthBoxBuffer in
+// frame_buffer.h
 uniform int UP = 0;
 uniform int DOWN = 1;
 uniform int RIGHT = 2;
@@ -32,7 +34,7 @@ void main(void) {
     rel_pos = in_Position.xyz - vec3(light_pos,0);
     
     // gl_Position is the clip coordinate, so (say in the UP case), OpenGL
-    // divides rel_pos.x by rel_pos.y to get the final vertex coordinate.  The
+    // divides rel_pos.x by rel_pos.y to get the final vertex coordinate. The
     // reason this is not done manually by this shader is that this way
     // clipping is done automatically and we also get the correct depth
     // interpolation. 

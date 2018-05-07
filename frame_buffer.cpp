@@ -38,7 +38,6 @@ void FrameBuffer::bind() {
 
 const std::vector<float> DepthBoxBuffer::DEFAULT_DEPTH({1000000, 0, 0, 1});
 
-// Using the color buffer as a depth buffer. 
 DepthBoxBuffer::DepthBoxBuffer(int w) : FrameBuffer(w, 4), projection_shader("shaders/light_box.vert", "shaders/light_box.frag") {
     // create a texture object
     glGenTextures(1, &texHandle);
@@ -76,11 +75,10 @@ DepthBoxBuffer::DepthBoxBuffer(int w) : FrameBuffer(w, 4), projection_shader("sh
     
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     
-    // TODO: Do we need to bind the shader?
-    //glUniform1i(shader()->get_uniform("UP"), UP);
-    //glUniform1i(shader()->get_uniform("DOWN"), DOWN);
-    //glUniform1i(shader()->get_uniform("RIGHT"), RIGHT);
-    //glUniform1i(shader()->get_uniform("LEFT"), LEFT);
+    glUniform1i(shader()->get_uniform("UP"), UP);
+    glUniform1i(shader()->get_uniform("DOWN"), DOWN);
+    glUniform1i(shader()->get_uniform("RIGHT"), RIGHT);
+    glUniform1i(shader()->get_uniform("LEFT"), LEFT);
 }
 
 void DepthBoxBuffer::begin_draw(int row) {

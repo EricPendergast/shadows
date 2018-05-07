@@ -45,6 +45,7 @@ class DepthBoxBuffer : public FrameBuffer {
 public:
     // These constants specify which row corresponds to each side of the
     // square.
+    // Note: These are the same values as defined in light_box.vert
     static const int UP = 0;
     static const int DOWN = 1;
     static const int RIGHT = 2;
