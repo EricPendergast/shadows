@@ -40,7 +40,7 @@ void Light::draw_light(int screen_width, int screen_height) {
     glm::mat4 transform = glm::scale(glm::vec3(2.0f/(float)screen_width, -2.0f/(float)screen_height, 1.0f));
     transform = glm::translate(glm::vec3(-1,1,0)) * transform;
 
-    glUniformMatrix4fv(background_shader.get_uniform("mat"), 1, GL_FALSE, glm::value_ptr(transform));
+    glUniformMatrix4fv(background_shader.get_uniform("world_to_screen"), 1, GL_FALSE, glm::value_ptr(transform));
     
     // Binding the deafult frame buffer
     glBindFramebuffer(GL_FRAMEBUFFER, 0);

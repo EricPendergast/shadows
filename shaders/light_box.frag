@@ -8,5 +8,4 @@ void main (void) {
     // Depth needs to be small for some reason. Maybe TODO figure out why it
     // needs to be small.
     gl_FragDepth = depth/1000000;
-    
 }
