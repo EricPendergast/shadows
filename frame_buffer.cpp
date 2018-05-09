@@ -30,6 +30,14 @@ void FrameBuffer::write_pixel(int x, int y, unsigned int pixel) {
     glDrawPixels(1,1, GL_RGBA, GL_UNSIGNED_BYTE, byte_arr);
 }
 
+void FrameBuffer::copy_to(GLuint other_fb_handle) {
+    glBlitNamedFramebuffer(
+            get_fbo_handle(), other_fb_handle, 
+            0,0, width, height,
+            0,0, width, height,
+            GL_COLOR_BUFFER_BIT,
+            GL_NEAREST);
+}
 
 void FrameBuffer::bind() {
     glBindFramebuffer(GL_FRAMEBUFFER, get_fbo_handle());

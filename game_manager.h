@@ -5,12 +5,10 @@
 
 class GameManager: public OpenGLContext::GameManagerInterface {
 public:
-    ShaderProgram* shad;
-    //FrameBuffer frame_buffer;
+    ShaderProgram* main_shader;
     Light* light;
     World* world;
-    int screen_width;
-    int screen_height;
+    BasicBuffer* casted_shadows;
     
     virtual void display(void);
     virtual void mouse_move(int x, int y);

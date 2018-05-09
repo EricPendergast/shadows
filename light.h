@@ -22,8 +22,10 @@ class Light {
 public:
     float light_x = 500, light_y = 500;
     Light(void);
-    void fill_frame_buffer(World& world);
-    void draw_light(int screen_width, int screen_height);
+    void cast_shadows(World& world, int screen_width, int screen_height, FrameBuffer& drawto);
+    
+private:
+    void fill_projection_buffer(World& world);
 };
 
 #endif

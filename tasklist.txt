@@ -1,4 +1,3 @@
- - Fix depth interpolation for shadows
- - Add ability to change the position of the light
+ - Movable character
  - Multiple lights
  - Collisions

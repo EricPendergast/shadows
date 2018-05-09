@@ -9,12 +9,12 @@
 #ifndef WORLD_H
 #define WORLD_H
 
+// This class is in charge of managing the position of blocks or various
+// objects in the background of the world.
 class World {
-    ShaderProgram shader;
 public:
     World();
     void draw();
-    void render_with_shader();
 };
 
 #endif

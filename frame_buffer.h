@@ -34,6 +34,9 @@ public:
     std::vector<float> read_pixel(int x, int y); 
     // Not yet working
     void write_pixel(int x, int y, unsigned int pixel); 
+    // Copies this frame buffer to the frame buffer with handle other_fb. Note:
+    // Assumes the two frame buffers are the same size. Only copies colors.
+    void copy_to(GLuint other_fb);
     void bind();
 };
 

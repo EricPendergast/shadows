@@ -1,4 +1,6 @@
 #version 450
+// Maps from world coordinates to screen coordinates, where screen coordinates
+// have -1 <= x,y <= 1, w=1
 uniform mat4 world_to_screen;
 
 uniform vec2 light_pos;
