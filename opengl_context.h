@@ -31,9 +31,7 @@ namespace OpenGLContext {
         virtual void mouse_move(int x, int y){(void)x; (void)y;}
         virtual void key_up(unsigned char key, int x, int y){(void)key; (void)x; (void)y;}
         virtual void key_down(unsigned char key, int x, int y){(void)key; (void)x; (void)y;}
-        // Should be called after the opengl context exists. Could do things
-        // such as initializing shaders, frame buffers, VBOs, etc.
-        virtual void init_after_opengl_context(){}
+        // These are for changing the aspect ratio.
         int screen_width;
         int screen_height;
         
