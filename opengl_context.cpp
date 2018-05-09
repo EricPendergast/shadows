@@ -38,16 +38,11 @@ namespace OpenGLContext {
 
 
     void key_up(unsigned char key, int x, int y) {  
-        (void)x;
-        (void)y;
-        (void)key;
+        manager->key_up(key, x, y);
     }
 
-    GLfloat counter = 0;
     void key_down(unsigned char key, int x, int y) {  
-        (void)x;
-        (void)y;
-        counter += 10;
+        manager->key_down(key, x, y);
         if (key == 0x001b) //Escape key
             exit(0);
     }

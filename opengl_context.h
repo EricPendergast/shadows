@@ -25,8 +25,12 @@ namespace OpenGLContext {
     // A class which encapsulates GLUT. Should contain most of game logic.
     class GameManagerInterface {
     public:
+        // These functions are all implemented and do nothing because it is
+        // convenient for the inheriting classes.
         virtual void display(){}
         virtual void mouse_move(int x, int y){(void)x; (void)y;}
+        virtual void key_up(unsigned char key, int x, int y){(void)key; (void)x; (void)y;}
+        virtual void key_down(unsigned char key, int x, int y){(void)key; (void)x; (void)y;}
         // Should be called after the opengl context exists. Could do things
         // such as initializing shaders, frame buffers, VBOs, etc.
         virtual void init_after_opengl_context(){}

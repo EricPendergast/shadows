@@ -8,6 +8,9 @@ void GameManager::display(void) {
     main_shader->use();
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     world->draw();
+    
+    player.move(move_right - move_left, false);
+    player.draw();
 }
 
 void GameManager::mouse_move(int x, int y) {
@@ -22,6 +25,20 @@ void GameManager::init_after_opengl_context() {
     casted_shadows = new BasicBuffer(OpenGLContext::render_width, OpenGLContext::render_height);
 }
 
+
+void GameManager::key_up(unsigned char key, int x, int y) {
+    if (key == 'd')
+        move_right = false;
+    if (key == 'a')
+        move_left = false;
+}
+
+void GameManager::key_down(unsigned char key, int x, int y) {
+    if (key == 'd')
+        move_right = true;
+    if (key == 'a')
+        move_left = true;
+}
 
 GameManager::~GameManager() { 
     if (main_shader)

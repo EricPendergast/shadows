@@ -1,3 +1,6 @@
  - Movable character
  - Multiple lights
  - Collisions
+ 
+ DONE:
+ - Player class
