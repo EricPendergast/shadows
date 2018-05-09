@@ -11,6 +11,7 @@ void Tester::display() {
 
 
 
+// Checks that the two vectors are componentwise equal within an epsilon
 bool equal(std::vector<float> a, std::vector<float> b) {
     float epsilon = .1f;
     if (a.size() != b.size())
@@ -30,9 +31,6 @@ void print(std::vector<float> v) {
     std::cout << "]" << std::endl;
 }
 
-// These tests are here not only as tests, but also as notes for how these
-// things should be used.
-
 
 void basic_frame_buffer_test() {
     BasicBuffer buf(100,100);
@@ -41,13 +39,12 @@ void basic_frame_buffer_test() {
     glClearColor(1.0f, 0.5f, 0.25f, .5f);
     glClear(GL_COLOR_BUFFER_BIT);
     
-    //int thing = buf.read_pixel(0,0);
-    //assert(thing == (int)0xff804080);
     assert(equal(buf.read_pixel(0,0), {1.0f, 0.5f, 0.25f, .5f}));
     
     
     
-    // WHY DOES write_pixel NOT WORK!?
+    // write_pixel does not work right now.
+     
     //buf.write_pixel(0,0, 0x11111111);
     //thing = buf.read_pixel(0,0);
     //assert(thing == (int)0x11111111);
@@ -67,10 +64,10 @@ void light_shader_test_1() {
     DepthBoxBuffer projection(100);
     
     projection.bind();
-    // We are rendering to the top of the box
     
     
     projection.clear();
+    // Rendering to the top of the box
     projection.begin_draw(DepthBoxBuffer::UP);
     glUniform2f(projection.shader()->get_uniform("light_pos"), 0, 0);
     // Tests default depth
