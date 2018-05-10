@@ -15,4 +15,9 @@ void Player::draw() {
 
 void Player::move(int direction_lr, bool jump) {
     dx = 1.0f*(float)direction_lr;
+    
+    dy += .1f;
+    
+    if (jump)
+        dy = -5;
 }

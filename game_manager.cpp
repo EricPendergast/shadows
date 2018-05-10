@@ -15,7 +15,7 @@ void GameManager::display(void) {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     world.draw();
     
-    player.move(move_right - move_left, false);
+    player.move(move_right - move_left, jump);
     player.draw();
 }
 
@@ -31,6 +31,9 @@ void GameManager::key_up(unsigned char key, int x, int y) {
         move_right = false;
     if (key == 'a')
         move_left = false;
+    if (key == ' ')
+        jump = false;
+        
 }
 
 void GameManager::key_down(unsigned char key, int x, int y) {
@@ -40,4 +43,6 @@ void GameManager::key_down(unsigned char key, int x, int y) {
         move_right = true;
     if (key == 'a')
         move_left = true;
+    if (key == ' ')
+        jump = true;
 }

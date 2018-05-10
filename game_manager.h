@@ -14,6 +14,7 @@ public:
     Player player;
     
     bool move_left = false, move_right = false;
+    bool jump = false;
     
     GameManager();
     virtual void display(void);
