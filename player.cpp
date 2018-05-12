@@ -2,22 +2,25 @@
 #include "opengl_context.h"
 
 void Player::draw() {
-    x += dx;
-    y += dy;
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glBegin(GL_QUADS);
-    glVertex2f(x + 0,  y + 0);
-    glVertex2f(x + 50, y + 0);
-    glVertex2f(x + 50, y + 50);
-    glVertex2f(x + 0,  y + 50);
+    glVertex2f((float)x + 0,  (float)y + 0);
+    glVertex2f((float)x + 50, (float)y + 0);
+    glVertex2f((float)x + 50, (float)y + 50);
+    glVertex2f((float)x + 0,  (float)y + 50);
     glEnd();
 }
 
-void Player::move(int direction_lr, bool jump) {
-    dx = 1.0f*(float)direction_lr;
+void Player::move(int direction_lr, bool jump, double time_step) {
+    dx = move_speed*(double)direction_lr;
     
-    dy += .1f;
+    // TODO: What should this be multiplied by?
+    dy += gravity;
     
     if (jump)
-        dy = -5;
+        dy = -jump_speed;
+    
+    x += time_step*dx;
+    y += time_step*dy;
+    //std::cout << y << std::endl;
 }

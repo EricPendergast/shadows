@@ -40,6 +40,7 @@ namespace OpenGLContext {
     
     extern GameManagerInterface* manager;
     
+    extern FrameBuffer* default_frame_buffer;
     
     void init_context(int argc,  char** argv);
     void reshape(int width, int height);

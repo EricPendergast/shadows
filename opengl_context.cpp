@@ -1,6 +1,19 @@
 #include "opengl_context.h"
 
 namespace OpenGLContext {
+    namespace {
+        // A frame buffer which represents the screen. This is a singleton class.
+        class DefaultFrameBuffer : public FrameBuffer {
+        public:
+            // TODO: Figure out width and height
+            DefaultFrameBuffer() : FrameBuffer(-1,-1) {
+                fboHandle = 0;
+                texHandle = -1;
+            }
+        };
+    }
+    
+    FrameBuffer* default_frame_buffer = new DefaultFrameBuffer();
     GameManagerInterface* manager;
     
     void init_context(int argc,  char** argv) {
@@ -61,5 +74,6 @@ namespace OpenGLContext {
     void start_running(void) {
         glutMainLoop();
     }
+    
 
 }

@@ -26,18 +26,18 @@ public:
     const int height;
     //void end_render_to();
     //void pass_as_uniform();
-    GLuint get_fbo_handle();
-    GLuint get_tex_handle();
+    virtual GLuint get_fbo_handle();
+    virtual GLuint get_tex_handle();
     
     // For testing. Warning: binds this framebuffer, and does not unbind.
     // Assumes RGBA format. Not tested on types other than floats.
     std::vector<float> read_pixel(int x, int y); 
     // Not yet working
-    void write_pixel(int x, int y, unsigned int pixel); 
+    virtual void write_pixel(int x, int y, unsigned int pixel); 
     // Copies this frame buffer to the frame buffer with handle other_fb. Note:
     // Assumes the two frame buffers are the same size. Only copies colors.
-    void copy_to(GLuint other_fb);
-    void bind();
+    virtual void copy_to(FrameBuffer& other);
+    virtual void bind();
 };
 
 // Intended to be used as a shadow buffer which is a square around a
@@ -68,11 +68,25 @@ private:
     void set_render_row(int row);
 };
 
-// A FrameBuffer which is as simple as possible. No depth testing, or anything
+// A frame buffer which is as simple as possible. No depth testing, or anything
 // fancy.
 class BasicBuffer : public FrameBuffer {
 public:
     BasicBuffer(int w, int h);
 };
+
+
+class Compressor {
+    int in_width, in_height;
+    int out_width, out_height;
+    BasicBuffer intermediate;
+    BasicBuffer out;
+    ShaderProgram compression_shader;
+    // Specify the width that the input will always be
+    Compressor(int w_i, int h_i, int w_o, int h_o, ShaderProgram compression_shader_in);
+    
+    void compress(FrameBuffer input);
+};
+//void compress_to(FrameBuffer in, FrameBuffer out, ShaderProgram compressor);
 
 #endif

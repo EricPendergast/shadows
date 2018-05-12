@@ -1,5 +1,6 @@
 #include "frame_buffer.h"
 
+
 FrameBuffer::FrameBuffer(int w, int h) : width(w), height(h) {}
 
 GLuint FrameBuffer::get_fbo_handle() {
@@ -30,9 +31,9 @@ void FrameBuffer::write_pixel(int x, int y, unsigned int pixel) {
     glDrawPixels(1,1, GL_RGBA, GL_UNSIGNED_BYTE, byte_arr);
 }
 
-void FrameBuffer::copy_to(GLuint other_fb_handle) {
+void FrameBuffer::copy_to(FrameBuffer& other) {
     glBlitNamedFramebuffer(
-            get_fbo_handle(), other_fb_handle, 
+            get_fbo_handle(), other.get_fbo_handle(), 
             0,0, width, height,
             0,0, width, height,
             GL_COLOR_BUFFER_BIT,
@@ -138,5 +139,29 @@ BasicBuffer::BasicBuffer(int w, int h): FrameBuffer(w,h) {
     }
         
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    
+}
+
+
+Compressor::Compressor(int w_i, int h_i, int w_o, int h_o, ShaderProgram compression_shader_in):
+        in_width(w_i), in_height(h_i),
+        out_width(w_o), out_height(h_o),
+        intermediate(w_i, h_i),
+        out(w_o, h_o),
+        compression_shader(compression_shader_in) {
+            
+        // These asserts may be temporary.
+        assert(w_i == h_i && w_o == h_o);
+        while (w_i > 1) {
+            assert(w_i % 2 == 0);
+            w_i /= 2;
+            if (w_i == w_o)
+                break;
+        }
+        assert(w_i == w_o);
+    }
+
+void Compressor::compress(FrameBuffer input) {
+    assert(input.width == in_width && input.height == in_height);
     
 }
