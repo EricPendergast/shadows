@@ -1,5 +1,4 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#pragma once
 
 #include "depth_box_buffer.h"
 #include "opengl_context.h"
@@ -22,7 +21,4 @@ private:
     double move_speed = 200;
     double gravity = 10;
     double jump_speed = 500;
-    
 };
-
-#endif

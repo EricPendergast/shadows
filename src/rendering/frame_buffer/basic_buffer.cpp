@@ -1,4 +1,6 @@
+
 #include "basic_buffer.h"
+
 
 BasicBuffer::BasicBuffer(int w, int h): FrameBuffer(w,h) {
     // create a texture object

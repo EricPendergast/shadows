@@ -6,6 +6,9 @@
 
 #include "opengl_context.h"
 #include "shader.h"
+#include "basic_buffer.h"
+#include "depth_box_buffer.h"
+#include "compressor.h"
 
 // This class "pretends" to be a game engine, but just runs all the tests
 // during the first loop, and then exits.

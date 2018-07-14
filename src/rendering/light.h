@@ -4,13 +4,12 @@
 #include <GL/glu.h>
 #include <GL/glext.h>
 
-#include "frame_buffer.h"
+#include "depth_box_buffer.h"
 #include "shader.h"
 #include "printer.h"
 #include "world.h"
 
-#ifndef LIGHT_H
-#define LIGHT_H
+#pragma once
 
 class Light {
     // TODO: Platform independence. Is this the max framebuffer width for every
@@ -27,5 +26,3 @@ public:
 private:
     void fill_projection_buffer(World& world);
 };
-
-#endif

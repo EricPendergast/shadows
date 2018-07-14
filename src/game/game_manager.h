@@ -1,8 +1,8 @@
-#ifndef GAME_MANAGER_H
-#define GAME_MANAGER_H
+#pragma once
 
 #include "opengl_context.h"
 #include "player.h"
+#include "basic_buffer.h"
 
 class GameManager: public OpenGLContext::GameManagerInterface {
 public:
@@ -25,5 +25,3 @@ public:
     virtual void key_up(unsigned char key, int x, int y);
     virtual void key_down(unsigned char key, int x, int y);
 };
-
-#endif
