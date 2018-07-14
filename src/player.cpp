@@ -1,5 +1,4 @@
 #include "player.h"
-#include "opengl_context.h"
 
 void Player::draw() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);

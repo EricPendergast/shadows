@@ -2,5 +2,6 @@
 *.swo
 tags
 *.o
+*.d
 Session.vim
 run_game

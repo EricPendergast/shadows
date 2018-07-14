@@ -41,8 +41,6 @@ void basic_frame_buffer_test() {
     
     assert(equal(buf.read_pixel(0,0), {1.0f, 0.5f, 0.25f, .5f}));
     
-    
-    
     // write_pixel does not work right now.
      
     //buf.write_pixel(0,0, 0x11111111);
@@ -112,6 +110,7 @@ void light_shader_test_1() {
     assert(equal(projection.read_pixel(25, DepthBoxBuffer::DOWN),
                  DepthBoxBuffer::DEFAULT_DEPTH));
     
+    
     // This commented code is nice for debugging.
     //for (int i = 0; i < 4; i++) {
     //    for (int j = 0; j < 100; j++) {
@@ -139,7 +138,10 @@ void light_shader_test_2() {
     draw_square(-41,-20,40);
     assert(equal(projection.read_pixel(50, DepthBoxBuffer::UP), DepthBoxBuffer::DEFAULT_DEPTH));
     assert(!equal(projection.read_pixel(0, DepthBoxBuffer::UP), DepthBoxBuffer::DEFAULT_DEPTH));
+    
+    projection.write_to_tga_file("debug_output/basic.tga");
 }
+
 
 void compression_test_1() {
     BasicBuffer source(16,16);

@@ -1,7 +1,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "frame_buffer.h"
+#include "depth_box_buffer.h"
+#include "opengl_context.h"
 
 // Speeds are in units of world coordinates per second.
 class Player {
