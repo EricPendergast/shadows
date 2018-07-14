@@ -24,3 +24,9 @@ void Player::move(int direction_lr, bool jump, double time_step) {
     y += time_step*dy;
     //std::cout << y << std::endl;
 }
+
+void Player::collide(FrameBuffer& map) {
+    static int count = 0;
+    if (map.read_pixel((int)x,(int)y)[0] == 1)
+        std::cout << "Collide " << count++ << std::endl;
+}

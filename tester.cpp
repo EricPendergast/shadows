@@ -141,6 +141,15 @@ void light_shader_test_2() {
     assert(!equal(projection.read_pixel(0, DepthBoxBuffer::UP), DepthBoxBuffer::DEFAULT_DEPTH));
 }
 
+void compression_test_1() {
+    BasicBuffer source(16,16);
+    
+    
+    Compressor c(16,16, 1,1, ShaderProgram("basic_compression.vert", "basic_compression.frag"));
+    
+    c.compress(&source);
+}
+
 void Tester::run_tests() {
     basic_frame_buffer_test();
     light_shader_test_1();

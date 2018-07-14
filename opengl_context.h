@@ -43,12 +43,6 @@ namespace OpenGLContext {
     extern FrameBuffer* default_frame_buffer;
     
     void init_context(int argc,  char** argv);
-    void reshape(int width, int height);
-    void key_up(unsigned char key, int x, int y);
-    void key_down(unsigned char key, int x, int y);
-    void mouse_move(int x, int y);
-    void draw_world(void);
-    void display(void);
     void start_running(void);
 }
 

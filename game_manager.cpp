@@ -38,6 +38,7 @@ void GameManager::display(void) {
     }
     
     player.move(move_right - move_left, jump, difference);
+    player.collide(casted_shadows);
     last_update_time = get_current_time_secs();
     
 }

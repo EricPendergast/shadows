@@ -4,6 +4,9 @@ GLFLAGS = -lglut -lGL -lGLU -lGLEW
 OBJECTS	= $(SOURCES:%.cpp=%.o)
 test: compile
 	optirun ./run_game run_tests
+
+renderdoc: compile
+	/opt/renderdoc_1.0/bin/renderdoccmd capture run_game
 	
 all: $(OBJECTS) compile
 	@#Requires opengl 3, glsl 4.5.

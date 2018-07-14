@@ -82,10 +82,11 @@ class Compressor {
     BasicBuffer intermediate;
     BasicBuffer out;
     ShaderProgram compression_shader;
+public:
     // Specify the width that the input will always be
     Compressor(int w_i, int h_i, int w_o, int h_o, ShaderProgram compression_shader_in);
     
-    void compress(FrameBuffer input);
+    void compress(FrameBuffer* source);
 };
 //void compress_to(FrameBuffer in, FrameBuffer out, ShaderProgram compressor);
 
