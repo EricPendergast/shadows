@@ -12,6 +12,8 @@ GLFLAGS = -lglut -lGL -lGLU -lGLEW
 DIRSFLAGS = $(addprefix -I, $(DIRECTORIES))
 CXXFLAGS = -std=c++17 -Wconversion -Wall -Wextra -pedantic -g3 -DRUNTESTS $(GLFLAGS) $(DIRSFLAGS)
 
+GDB = gdb -ex='set confirm on' -ex=run -ex=bt -ex=quit -quiet
+
 test: compile
 	optirun ./run_game run_tests
 
@@ -20,8 +22,7 @@ renderdoc: compile
 	
 all: $(OFILES) compile
 	@#Requires opengl 3, glsl 4.5.
-	optirun ./run_game
-	
+	optirun $(GDB) ./run_game
 	
 compile: $(OFILES)
 	@echo "$(DIRSFLAGS)" | tr " " "\n" > .include_dirs
