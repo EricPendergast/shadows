@@ -8,7 +8,7 @@ class Player {
 public:
     // 'direction_lr' specifies the direction the player is trying to move and
     // 'jump' specifies whether the player just tried to jump.
-    void move(int direction_lr, bool jump, double time_step);
+    void move(int direction_lr, int direction_ud, bool jump, double time_step);
     void collide(FrameBuffer& map);
     void draw();
 private:

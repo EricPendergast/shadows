@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 
 #include "opengl_context.h"
 #include "player.h"
@@ -13,8 +14,7 @@ public:
     World world;
     Player player;
     
-    bool move_left = false, move_right = false;
-    bool jump = false;
+    std::vector<bool> keys;
     
     double last_update_time = -1;
     

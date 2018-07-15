@@ -6,9 +6,17 @@ namespace OpenGLContext {
         class DefaultFrameBuffer : public FrameBuffer {
         public:
             // TODO: Figure out width and height
-            DefaultFrameBuffer() : FrameBuffer(-1,-1) {
+            DefaultFrameBuffer() : FrameBuffer(500, 500) {
                 fboHandle = 0;
                 texHandle = -1;
+            }
+            
+            void set_width(int w) {
+                width = w;
+            }
+            
+            void set_height(int h) {
+                height = h;
             }
         };
     }
@@ -17,16 +25,15 @@ namespace OpenGLContext {
     void key_up(unsigned char key, int x, int y);
     void key_down(unsigned char key, int x, int y);
     void mouse_move(int x, int y);
-    void draw_world(void);
     void display(void);
     
-    FrameBuffer* default_frame_buffer = new DefaultFrameBuffer();
+    FrameBuffer * const screen = new DefaultFrameBuffer();
     GameManagerInterface* manager;
     
     void init_context(int argc,  char** argv) {
         glutInit(&argc, argv);
         glutInitDisplayMode (GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA); 
-        glutInitWindowSize(render_width, render_height);
+        glutInitWindowSize(screen->get_width(), screen->get_height());
         glutInitWindowPosition(100,100);
         glutCreateWindow("Shadows");
         glutIdleFunc(display);
@@ -49,9 +56,9 @@ namespace OpenGLContext {
         manager->screen_height = height;
         glLoadIdentity();
         glViewport(0,0, width, height);
-        gluOrtho2D(0, render_width, 0, render_height);
+        gluOrtho2D(0, screen->get_width(), 0, screen->get_height());
         glScalef(1, -1, 1);
-        glTranslatef(0, -(GLfloat)render_height, 0);
+        glTranslatef(0, -(GLfloat)screen->get_width(), 0);
     } 
 
 
@@ -81,6 +88,4 @@ namespace OpenGLContext {
     void start_running(void) {
         glutMainLoop();
     }
-    
-
 }

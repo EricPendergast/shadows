@@ -20,8 +20,6 @@
 #include "world.h"
 
 namespace OpenGLContext {
-    const int render_width = 500;
-    const int render_height = 500;
     // A class which encapsulates GLUT. Should contain most of game logic.
     class GameManagerInterface {
     public:
@@ -40,7 +38,7 @@ namespace OpenGLContext {
     
     extern GameManagerInterface* manager;
     
-    extern FrameBuffer* default_frame_buffer;
+    extern FrameBuffer * const screen;
     
     void init_context(int argc,  char** argv);
     void start_running(void);

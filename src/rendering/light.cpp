@@ -31,7 +31,7 @@ void Light::fill_projection_buffer(World& world) {
 }
 
 
-void Light::cast_shadows(World& world, int screen_width, int screen_height, FrameBuffer& draw_to) {
+void Light::cast_shadows(World& world, FrameBuffer& draw_to) {
     fill_projection_buffer(world);
     
     glBindTexture(GL_TEXTURE_2D, projection.get_tex_handle());
@@ -39,7 +39,7 @@ void Light::cast_shadows(World& world, int screen_width, int screen_height, Fram
     background_shader.use();
     glUniform2f(background_shader.get_uniform("light_pos"), light_x, light_y);
     
-    glm::mat4 transform = glm::scale(glm::vec3(2.0f/(float)screen_width, -2.0f/(float)screen_height, 1.0f));
+    glm::mat4 transform = glm::scale(glm::vec3(2.0f/(float)draw_to.get_width(), -2.0f/(float)draw_to.get_height(), 1.0f));
     transform = glm::translate(glm::vec3(-1,1,0)) * transform;
 
     glUniformMatrix4fv(background_shader.get_uniform("world_to_screen"), 1, GL_FALSE, glm::value_ptr(transform));
@@ -47,13 +47,13 @@ void Light::cast_shadows(World& world, int screen_width, int screen_height, Fram
     draw_to.bind();
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     
-    glViewport(0,0, screen_width, screen_height);
+    glViewport(0,0, draw_to.get_width(), draw_to.get_height());
     
     glBegin(GL_QUADS);
     glVertex2f(0,0);
-    glVertex2f((GLfloat)screen_width,0);
-    glVertex2f((GLfloat)screen_width,(GLfloat)screen_height);
-    glVertex2f(0,(GLfloat)screen_height);
+    glVertex2f((GLfloat)draw_to.get_width(),0);
+    glVertex2f((GLfloat)draw_to.get_width(),(GLfloat)draw_to.get_height());
+    glVertex2f(0,(GLfloat)draw_to.get_height());
     glEnd();
 }
 

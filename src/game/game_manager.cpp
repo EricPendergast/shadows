@@ -10,16 +10,16 @@ double get_current_time_secs() {
 
 GameManager::GameManager() : 
         main_shader("shaders/main.vert", "shaders/main.frag"),
-        casted_shadows(OpenGLContext::render_width,
-                       OpenGLContext::render_height),
-        light(), world(), player() {}
+        casted_shadows(OpenGLContext::screen->get_width(),
+                       OpenGLContext::screen->get_height()),
+        light(), world(), player(),
+        keys(256, false) {}
 
         
 void GameManager::display(void) {
-    light.cast_shadows(world, OpenGLContext::render_width, OpenGLContext::render_height, casted_shadows);
+    light.cast_shadows(world, casted_shadows);
 
-    // Drawing the shadows to the screen
-    casted_shadows.copy_to(*OpenGLContext::default_frame_buffer);
+    casted_shadows.copy_to(*OpenGLContext::screen);
     
     main_shader.use();
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -37,7 +37,7 @@ void GameManager::display(void) {
         difference = 0;
     }
     
-    player.move(move_right - move_left, jump, difference);
+    player.move(keys['d'] - keys['a'], keys['s'] - keys['w'], keys[' '], difference);
     player.collide(casted_shadows);
     last_update_time = get_current_time_secs();
     
@@ -51,22 +51,11 @@ void GameManager::mouse_move(int x, int y) {
 void GameManager::key_up(unsigned char key, int x, int y) {
     (void)x; (void)y;
     
-    if (key == 'd')
-        move_right = false;
-    if (key == 'a')
-        move_left = false;
-    if (key == ' ')
-        jump = false;
-        
+    keys[key] = false;
 }
 
 void GameManager::key_down(unsigned char key, int x, int y) {
     (void)x; (void)y;
     
-    if (key == 'd')
-        move_right = true;
-    if (key == 'a')
-        move_left = true;
-    if (key == ' ')
-        jump = true;
+    keys[key] = true;
 }

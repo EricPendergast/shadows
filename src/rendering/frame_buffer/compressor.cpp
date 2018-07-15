@@ -19,6 +19,6 @@ Compressor::Compressor(int w_i, int h_i, int w_o, int h_o, ShaderProgram compres
     }
 
 void Compressor::compress(FrameBuffer* source) {
-    assert(source->width == in_width && source->height == in_height);
+    assert(source->get_width() == in_width && source->get_height() == in_height);
     
 }

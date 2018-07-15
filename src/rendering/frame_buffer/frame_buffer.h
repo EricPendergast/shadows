@@ -1,5 +1,3 @@
-#pragma once
-
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <GL/gl.h>
@@ -12,18 +10,20 @@
 
 #include "shader.h"
 
+#pragma once
+
 // Provides some helper methods for dealing with frame buffers. Child classes
 // should initialize frame buffers.
 
 
 class FrameBuffer {
 protected:
+    int width;
+    int height;
     GLuint fboHandle;
     GLuint texHandle;
     FrameBuffer(int w, int h);
 public:
-    const int width;
-    const int height;
     //void end_render_to();
     //void pass_as_uniform();
     virtual GLuint get_fbo_handle();
@@ -40,4 +40,11 @@ public:
     virtual void bind();
     
     virtual void write_to_tga_file(const std::string& filename);
+    
+    virtual int get_width() {
+        return width;
+    }
+    virtual int get_height() {
+        return height;
+    }
 };
