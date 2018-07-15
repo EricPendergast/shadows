@@ -4,8 +4,6 @@
 #include <GL/glu.h>
 #include <GL/glext.h>
 
-#include <assert.h>
-#include <iostream>
 #include <vector>
 
 #include "shader.h"
@@ -14,7 +12,6 @@
 
 // Provides some helper methods for dealing with frame buffers. Child classes
 // should initialize frame buffers.
-
 
 class FrameBuffer {
 protected:
@@ -37,6 +34,7 @@ public:
     // Copies this frame buffer to the frame buffer with handle other_fb. Note:
     // Assumes the two frame buffers are the same size. Only copies colors.
     virtual void copy_to(FrameBuffer& other);
+    virtual void copy_to(FrameBuffer& other, int this_x, int this_y, int this_w, int this_h, int other_x, int other_y, int other_w, int other_h);
     virtual void bind();
     
     virtual void write_to_tga_file(const std::string& filename);
@@ -47,4 +45,6 @@ public:
     virtual int get_height() {
         return height;
     }
+    
+    virtual bool is_in_bounds(int x, int y);
 };

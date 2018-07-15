@@ -22,7 +22,8 @@ void GameManager::display(void) {
     casted_shadows.copy_to(*OpenGLContext::screen);
     
     main_shader.use();
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    OpenGLContext::screen->bind();
+    
     world.draw();
     
     player.draw();
@@ -36,8 +37,15 @@ void GameManager::display(void) {
         difference = 0;
     }
     
+    
+    casted_shadows.copy_to(player.pixels_around_player,
+            (int)player.x, 500-50-(int)player.y, 50, 50,
+            0, 0, 256, 256);
+    
+    player.pixels_around_player.copy_to(*OpenGLContext::screen);
+    
     player.move(keys['d'] - keys['a'], keys['s'] - keys['w'], keys[' '], difference);
-    player.collide(casted_shadows);
+    player.collide();
     last_update_time = get_current_time_secs();
     
 }

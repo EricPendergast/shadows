@@ -1,5 +1,8 @@
 #include "player.h"
 
+Player::Player() : pixels_around_player(256, 256) {
+}
+
 void Player::draw() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glBegin(GL_QUADS);
@@ -24,8 +27,8 @@ void Player::move(int direction_lr, int direction_ud, bool jump, double time_ste
     y += time_step*dy;
 }
 
-void Player::collide(FrameBuffer& map) {
+void Player::collide() {
     static int count = 0;
-    if (map.read_pixel((int)x,500 - (int)y)[0] == 0)
+    if (pixels_around_player.read_pixel(0,0)[0] == 0)
         std::cout << "Collide " << count++ << std::endl;
 }
