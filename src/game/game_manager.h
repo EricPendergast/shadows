@@ -1,9 +1,10 @@
-#pragma once
 #include <vector>
 
 #include "opengl_context.h"
 #include "player.h"
 #include "basic_buffer.h"
+
+#pragma once
 
 class GameManager: public OpenGLContext::GameManagerInterface {
     ShaderProgram main_shader;
