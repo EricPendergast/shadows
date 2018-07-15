@@ -27,7 +27,6 @@ void GameManager::display(void) {
     
     player.draw();
     
-    
     double current_time = get_current_time_secs();
     double difference = current_time - last_update_time;
     

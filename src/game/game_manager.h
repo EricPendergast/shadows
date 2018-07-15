@@ -6,7 +6,6 @@
 #include "basic_buffer.h"
 
 class GameManager: public OpenGLContext::GameManagerInterface {
-public:
     ShaderProgram main_shader;
     BasicBuffer casted_shadows;
     
@@ -15,7 +14,7 @@ public:
     Player player;
     
     std::vector<bool> keys;
-    
+public:
     double last_update_time = -1;
     
     GameManager();
