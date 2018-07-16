@@ -40,14 +40,10 @@ void GameManager::display(void) {
     
     casted_shadows.copy_to(player.pixels_around_player,
             (int)player.x, 500-50-(int)player.y, 50, 50,
-            0, 0, 256, 256);
-    
-    player.pixels_around_player.copy_to(*OpenGLContext::screen);
+            0, 0, player.pixels_around_player.get_width(), player.pixels_around_player.get_height());
     
     player.move(keys['d'] - keys['a'], keys['s'] - keys['w'], keys[' '], difference);
-    player.collide();
     last_update_time = get_current_time_secs();
-    
 }
 
 void GameManager::mouse_move(int x, int y) {

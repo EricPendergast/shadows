@@ -12,7 +12,6 @@ public:
     // 'direction_lr' specifies the direction the player is trying to move and
     // 'jump' specifies whether the player just tried to jump.
     void move(int direction_lr, int direction_ud, bool jump, double time_step);
-    void collide();
     void draw();
     // TODO: make private
     double x = 0;
@@ -21,6 +20,7 @@ public:
     double dy = 0;
 private:
     
+    void collide();
     
     double move_speed = 200;
     double gravity = 10;

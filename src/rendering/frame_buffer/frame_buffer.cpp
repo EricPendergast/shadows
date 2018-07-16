@@ -58,6 +58,17 @@ void FrameBuffer::bind() {
     glBindFramebuffer(GL_FRAMEBUFFER, get_fbo_handle());
 }
 
+void FrameBuffer::write_to(std::vector<float>& vec) {
+    bind();
+    vec.clear();
+    vec.resize(4*get_width()*get_height(), 0);
+    
+    glGetError();
+    glReadnPixels(0, 0, get_width(), get_height(), GL_RGBA, GL_FLOAT, 4*get_width()*get_height()*(int)sizeof(float), &vec[0]);
+    assert(glGetError() == 0);
+}
+
+// WARNING: Will break if dimensions are not powers of two
 void FrameBuffer::write_to_tga_file(const std::string& filename) {
     glGetError();
     bind();

@@ -1,6 +1,6 @@
 #include "player.h"
 
-Player::Player() : pixels_around_player(256, 256) {
+Player::Player() : pixels_around_player(64, 64) {
 }
 
 void Player::draw() {
@@ -25,10 +25,19 @@ void Player::move(int direction_lr, int direction_ud, bool jump, double time_ste
     
     x += time_step*dx;
     y += time_step*dy;
+    
+    collide();
 }
 
 void Player::collide() {
     static int count = 0;
-    if (pixels_around_player.read_pixel(0,0)[0] == 0)
-        std::cout << "Collide " << count++ << std::endl;
+    std::vector<float> asdf;
+    pixels_around_player.write_to(asdf);
+    
+    for (float f : asdf) {
+        if (f == 0) {
+            std::cout << f << "Collide " << count++ << std::endl;
+            break;
+        }
+    }
 }

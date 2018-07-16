@@ -37,6 +37,7 @@ public:
     virtual void copy_to(FrameBuffer& other, int this_x, int this_y, int this_w, int this_h, int other_x, int other_y, int other_w, int other_h);
     virtual void bind();
     
+    virtual void write_to(std::vector<float>& vec);
     virtual void write_to_tga_file(const std::string& filename);
     
     virtual int get_width() {
