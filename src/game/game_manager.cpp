@@ -17,8 +17,9 @@ GameManager::GameManager() :
 
         
 void GameManager::display(void) {
+    std::cout << "LOOP" << std::endl;
     light.cast_shadows(world, casted_shadows);
-
+    
     casted_shadows.copy_to(*OpenGLContext::screen);
     
     main_shader.use();
@@ -37,9 +38,8 @@ void GameManager::display(void) {
         difference = 0;
     }
     
-    
     casted_shadows.copy_to(player.pixels,
-            (int)player.x, 500-50-(int)player.y, 50, 50,
+            (int)(player.x-player.width), (int)(500-player.height-player.y-player.height), (int)player.width*3, (int)player.height*3,
             0, 0, player.pixels.get_width(), player.pixels.get_height());
     
     player.move(keys['d'] - keys['a'], keys['s'] - keys['w'], keys[' '], difference);

@@ -5,12 +5,11 @@ Player::Player() : pixels(64, 64), sum_squares(64, 64) {
 }
 
 void Player::draw() {
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glBegin(GL_QUADS);
-    glVertex2f((float)x + 0,  (float)y + 0);
-    glVertex2f((float)x + 50, (float)y + 0);
-    glVertex2f((float)x + 50, (float)y + 50);
-    glVertex2f((float)x + 0,  (float)y + 50);
+    glVertex2f((float)x + 0,       (float)y + 0);
+    glVertex2f((float)x + width,   (float)y + 0);
+    glVertex2f((float)x + width,   (float)y + height);
+    glVertex2f((float)x + 0,       (float)y + height);
     glEnd();
 }
 
@@ -18,8 +17,8 @@ void Player::move(int direction_lr, int direction_ud, bool jump, double time_ste
     dx = move_speed*(double)direction_lr;
     
     // TODO: What should this be multiplied by?
-    //dy += gravity;
     dy = move_speed*(double)direction_ud;
+    //dy += gravity;
     
     if (jump)
         dy = -jump_speed;
@@ -27,38 +26,51 @@ void Player::move(int direction_lr, int direction_ud, bool jump, double time_ste
     x += time_step*dx;
     y += time_step*dy;
     
+    std::cout << "x y " << x << " " << y << std::endl;
+    std::cout << "dx dy " << dx << " " << dy << std::endl;
+    
     collide();
 }
 
 void Player::collide() {
     //static int count = 0;
-    std::vector<float> asdf;
-    pixels.write_to(asdf);
+    std::vector<float> pixels_array;
+    pixels.write_to(pixels_array);
     
     sum_squares.populate([&](int x, int y) -> float {
             if (x < 0 || x >= pixels.get_width() || y < 0 || y >= pixels.get_height())
                 return 0;
             else
-                return 1 - asdf[(x + y*64)*4];
-        });
+                return 1 - pixels_array[(x + (pixels.get_height()-1-y)*pixels.get_width())*4];
+        }, 21, 21);
     
-    bool found = false;
-    int min_x = 0, min_y = 0;
-    for (int x = 0; x < pixels.get_width(); x++) {
-        for (int y = 0; y < pixels.get_height(); y++) {
-            if (sum_squares.get_sum(x, y) == 0 && (!found || x*x + y*y < min_x*min_x + min_y*min_y)) {
-                found = true;
+    // Takes in coordinates relative to the lower left corner of player, in
+    // world scale. range is x in [-width, width], y in [-height, height]
+    auto cost_function = [&] (float x, float y) -> float {
+            int x_in_square = (int)((x/width + 1)*(float)pixels.get_width()/3);
+            int y_in_square = (int)((y/height + 1)*(float)pixels.get_height()/3);
+            if (sum_squares.get_sum(x_in_square, y_in_square) != 0)
+                return 1000000;
+            else {
+                return x*x + y*y;
+            }
+        };
+    
+    float min_x = 0, min_y = 0;
+    
+    for (float x = -width; x < width; x++) {
+        for (float y = -height; y < height; y++) {
+            if (cost_function(x, y) < cost_function(min_x, min_y)) {
                 min_x = x;
                 min_y = y;
             }
         }
     }
-    //x += min_x/(64/3)*50 - 50;
-    x += min_x;
-    //x -= min_y/(64/3)*50 - 50;
-    y -= min_y;
-    x = round(x);
-    y = round(y);
     
-    std::cout << sum_squares.get_sum(min_x, min_y) << "  " << min_x << " " << min_y << std::endl;
+    dx += min_x/2;
+    dy += min_y/2;
+    x += min_x;
+    y += min_y;
+    
+    std::cout << "Collision: " << cost_function(min_x, min_y) << "  " << min_x << " " << min_y << std::endl;
 }

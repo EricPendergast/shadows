@@ -20,6 +20,8 @@ public:
     double y = 0;
     double dx = 0;
     double dy = 0;
+    float width = 50;
+    float height = 50;
 private:
     
     void collide();

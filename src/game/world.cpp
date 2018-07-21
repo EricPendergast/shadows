@@ -19,6 +19,11 @@ void World::draw() {
     glVertex2f(300, 250);
     glVertex2f(350, 250);
     glVertex2f(350, 250);
+    
+    glVertex2f(0, 500);
+    glVertex2f(400, 500);
+    glVertex2f(400, 490);
+    glVertex2f(0, 490);
 
     glEnd();
 }
