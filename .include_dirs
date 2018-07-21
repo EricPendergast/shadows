@@ -3,4 +3,4 @@
 -Isrc/rendering/frame_buffer
 -Isrc/game
 -Isrc/testing
--Isrc/util
+-Isrc/algorithms

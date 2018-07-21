@@ -3,11 +3,13 @@
 #include "depth_box_buffer.h"
 #include "opengl_context.h"
 #include "basic_buffer.h"
+#include "sum_squares.h"
 
 // Speeds are in units of world coordinates per second.
 class Player {
 public:
-    BasicBuffer pixels_around_player;
+    BasicBuffer pixels;
+    SumSquares<float> sum_squares;
     Player();
     // 'direction_lr' specifies the direction the player is trying to move and
     // 'jump' specifies whether the player just tried to jump.

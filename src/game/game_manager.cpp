@@ -38,9 +38,9 @@ void GameManager::display(void) {
     }
     
     
-    casted_shadows.copy_to(player.pixels_around_player,
+    casted_shadows.copy_to(player.pixels,
             (int)player.x, 500-50-(int)player.y, 50, 50,
-            0, 0, player.pixels_around_player.get_width(), player.pixels_around_player.get_height());
+            0, 0, player.pixels.get_width(), player.pixels.get_height());
     
     player.move(keys['d'] - keys['a'], keys['s'] - keys['w'], keys[' '], difference);
     last_update_time = get_current_time_secs();
