@@ -60,7 +60,6 @@ void FrameBuffer::bind() {
 
 void FrameBuffer::write_to(std::vector<float>& vec) {
     bind();
-    vec.clear();
     vec.resize(4*get_width()*get_height(), 0);
     
     glGetError();

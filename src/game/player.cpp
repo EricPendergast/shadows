@@ -20,18 +20,20 @@ void Player::move(int direction_lr, int direction_ud, bool jump, double time_ste
     if (direction_lr != 0)
         dx = move_speed*(double)direction_lr;
     
-    dy += gravity*time_step;
+    dx += gravity_x*time_step;
+    dy += gravity_y*time_step;
     
-    if (jump)
+    if (jump && time_since_touched_platform < max_jump_delay)
         dy = -jump_speed;
     
     x += time_step*dx;
     y += time_step*dy;
+    
+    time_since_touched_platform += time_step;
 }
 
-void Player::collide(double time_step) {
-    (void)time_step;
-    std::vector<float> pixels_array;
+void Player::collide() {
+    static std::vector<float> pixels_array;
     pixels.write_to(pixels_array);
     
     sum_squares.populate([&](int x, int y) -> double {
@@ -49,7 +51,7 @@ void Player::collide(double time_step) {
             if (sum_squares.get_sum(x_in_square, y_in_square) != 0)
                 return 1000000;
             else {
-                return (double)(x*x + y*y);
+                return (double)(x*x + y*y) + vec::angle(x, y, dx, dy)*5;
             }
         };
     
@@ -66,11 +68,13 @@ void Player::collide(double time_step) {
     
     if (vec::dot(dx, dy, min_x, min_y) < -.001) {
         vec::reject(&dx, &dy, min_x, min_y);
-        vec::mult(&dx, &dy, .9);
+        vec::mult(&dx, &dy, .5);
     }
     
-    //dx += min_x*time_step;
-    //dy += min_y*time_step;
+    if (vec::dot(gravity_x, gravity_y, min_x, min_y) < -.001) {
+        time_since_touched_platform = 0;
+    }
+    
     this->x += min_x;
     this->y += min_y;
 }

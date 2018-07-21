@@ -17,10 +17,9 @@ namespace vec {
     double dot(double x1, double y1, double x2, double y2) {
         return x1 * x2 + y1 * y2;
     }
-
+    
     void project(double* proj_x, double* proj_y, double onto_x, double onto_y) {
         double scale = dot(*proj_x, *proj_y, onto_x, onto_y)/mag_sq(onto_x, onto_y);
-        std::cout << scale << std::endl;
         *proj_x = onto_x * scale;
         *proj_y = onto_y * scale;
     }
@@ -33,4 +32,7 @@ namespace vec {
         *rej_y -= proj_y;
     }
     
+    double angle(double x1, double y1, double x2, double y2) {
+        return acos(dot(x1, y1, x2, y2)/(mag(x1, y1)*mag(x2, y2)));
+    }
 }

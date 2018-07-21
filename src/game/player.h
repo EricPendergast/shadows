@@ -23,9 +23,15 @@ public:
     double dy = 0;
     int width = 64;
     int height = 64;
-    void collide(double time_step);
+    void collide();
 private:
     double move_speed = 250;
-    double gravity = 800;
+    double gravity_x = 0;
+    double gravity_y = 800;
     double jump_speed = 500;
+    
+    // Number of seconds between stopping touching a platform and being able to
+    // jump.
+    double max_jump_delay = .1;
+    double time_since_touched_platform = 1000000;
 };

@@ -36,7 +36,7 @@ void GameManager::display(void) {
             (int)(player.x-player.width), (int)(500-player.height-player.y-player.height), (int)player.width*3, (int)player.height*3,
             0, 0, player.pixels.get_width(), player.pixels.get_height());
     
-    player.collide(difference);
+    player.collide();
     
     casted_shadows.copy_to(*OpenGLContext::screen);
     
