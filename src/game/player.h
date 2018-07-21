@@ -20,13 +20,11 @@ public:
     double y = 0;
     double dx = 0;
     double dy = 0;
-    float width = 50;
-    float height = 50;
-private:
-    
+    const int width = 64;
+    const int height = 64;
     void collide();
-    
+private:
     double move_speed = 200;
-    double gravity = 10;
+    double gravity = 800;
     double jump_speed = 500;
 };

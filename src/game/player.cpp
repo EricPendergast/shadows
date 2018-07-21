@@ -1,15 +1,15 @@
 #include "player.h"
 #include <math.h>
 
-Player::Player() : pixels(64, 64), sum_squares(64, 64) {
+Player::Player() : pixels(64*3, 64*3), sum_squares(64*3, 64*3) {
 }
 
 void Player::draw() {
     glBegin(GL_QUADS);
-    glVertex2f((float)x + 0,       (float)y + 0);
-    glVertex2f((float)x + width,   (float)y + 0);
-    glVertex2f((float)x + width,   (float)y + height);
-    glVertex2f((float)x + 0,       (float)y + height);
+    glVertex2f((int)(x + 0),       (int)(y + 0));
+    glVertex2f((int)(x + width),   (int)(y + 0));
+    glVertex2f((int)(x + width),   (int)(y + height));
+    glVertex2f((int)(x + 0),       (int)(y + height));
     glEnd();
 }
 
@@ -17,8 +17,8 @@ void Player::move(int direction_lr, int direction_ud, bool jump, double time_ste
     dx = move_speed*(double)direction_lr;
     
     // TODO: What should this be multiplied by?
-    dy = move_speed*(double)direction_ud;
-    //dy += gravity;
+    //dy = move_speed*(double)direction_ud;
+    dy += gravity*time_step;
     
     if (jump)
         dy = -jump_speed;
@@ -26,14 +26,11 @@ void Player::move(int direction_lr, int direction_ud, bool jump, double time_ste
     x += time_step*dx;
     y += time_step*dy;
     
-    std::cout << "x y " << x << " " << y << std::endl;
-    std::cout << "dx dy " << dx << " " << dy << std::endl;
-    
-    collide();
+    //std::cout << "x y " << x << " " << y << std::endl;
+    //std::cout << "dx dy " << dx << " " << dy << std::endl;
 }
 
 void Player::collide() {
-    //static int count = 0;
     std::vector<float> pixels_array;
     pixels.write_to(pixels_array);
     
@@ -42,7 +39,7 @@ void Player::collide() {
                 return 0;
             else
                 return 1 - pixels_array[(x + (pixels.get_height()-1-y)*pixels.get_width())*4];
-        }, 21, 21);
+        }, pixels.get_width()/3, pixels.get_height()/3);
     
     // Takes in coordinates relative to the lower left corner of player, in
     // world scale. range is x in [-width, width], y in [-height, height]
@@ -69,8 +66,10 @@ void Player::collide() {
     
     dx += min_x/2;
     dy += min_y/2;
-    x += min_x;
-    y += min_y;
+    this->x += min_x;
+    this->y += min_y;
     
-    std::cout << "Collision: " << cost_function(min_x, min_y) << "  " << min_x << " " << min_y << std::endl;
+    //std::cout << "Collision: " << cost_function(min_x, min_y) << "  " << min_x << " " << min_y << std::endl;
+    //std::cout << "x y " << x << " " << y << std::endl;
+    //std::cout << "dx dy " << dx << " " << dy << std::endl;
 }
