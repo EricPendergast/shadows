@@ -9,8 +9,9 @@
 class Player {
 public:
     BasicBuffer pixels;
-    SumSquares<float> sum_squares;
+    SumSquares<double> sum_squares;
     Player();
+    Player(int w, int h);
     // 'direction_lr' specifies the direction the player is trying to move and
     // 'jump' specifies whether the player just tried to jump.
     void move(int direction_lr, int direction_ud, bool jump, double time_step);
@@ -20,11 +21,11 @@ public:
     double y = 0;
     double dx = 0;
     double dy = 0;
-    const int width = 64;
-    const int height = 64;
-    void collide();
+    int width = 64;
+    int height = 64;
+    void collide(double time_step);
 private:
-    double move_speed = 200;
+    double move_speed = 400;
     double gravity = 800;
     double jump_speed = 500;
 };

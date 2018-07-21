@@ -57,6 +57,13 @@ public:
     T get_sum(int x, int y) {
         return boxSums.get(x, y);
     }
+    
+    int get_width() {
+        return boxSums.width;
+    }
+    int get_height() {
+        return boxSums.height;
+    }
 };
 
 
