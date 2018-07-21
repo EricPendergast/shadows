@@ -16,7 +16,9 @@ void Player::draw() {
 
 void Player::move(int direction_lr, int direction_ud, bool jump, double time_step) {
     (void)direction_ud;
-    dx = move_speed*(double)direction_lr;
+    
+    if (direction_lr != 0)
+        dx = move_speed*(double)direction_lr;
     
     dy += gravity*time_step;
     
@@ -60,6 +62,11 @@ void Player::collide(double time_step) {
                 min_y = (int)y;
             }
         }
+    }
+    
+    if (vec::dot(dx, dy, min_x, min_y) < -.001) {
+        vec::reject(&dx, &dy, min_x, min_y);
+        vec::mult(&dx, &dy, .9);
     }
     
     //dx += min_x*time_step;

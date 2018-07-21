@@ -25,7 +25,7 @@ public:
     int height = 64;
     void collide(double time_step);
 private:
-    double move_speed = 400;
+    double move_speed = 250;
     double gravity = 800;
     double jump_speed = 500;
 };
