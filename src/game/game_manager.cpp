@@ -12,7 +12,7 @@ GameManager::GameManager() :
         main_shader("shaders/main.vert", "shaders/main.frag"),
         casted_shadows(OpenGLContext::screen->get_width(),
                        OpenGLContext::screen->get_height()),
-        light(), world(), player(),
+        light(), world(), player(), drawer(),
         keys(256, false) {}
 
         
@@ -27,7 +27,7 @@ void GameManager::display(void) {
         difference = 0;
     }
     
-    light.cast_shadows(world, casted_shadows);
+    light.cast_shadows(world, casted_shadows, &drawer);
     
     player.move(keys['d'] - keys['a'], keys[' '], difference);
     
@@ -43,9 +43,9 @@ void GameManager::display(void) {
     main_shader.use();
     OpenGLContext::screen->bind();
     
-    world.draw();
+    world.draw(&drawer);
     
-    player.draw();
+    player.draw(&drawer);
     
 }
 

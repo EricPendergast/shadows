@@ -7,13 +7,12 @@
 Player::Player() : Player(64,64) {}
 Player::Player(int w, int h) : pixels(w*3, h*3), sum_squares(w*3, h*3), width(w), height(h) {}
 
-void Player::draw() {
-    glBegin(GL_QUADS);
-    glVertex2i((int)(x + 0),       (int)(y + 0));
-    glVertex2i((int)(x + width),   (int)(y + 0));
-    glVertex2i((int)(x + width),   (int)(y + height));
-    glVertex2i((int)(x + 0),       (int)(y + height));
-    glEnd();
+void Player::draw(Drawer* drawer) const {
+    drawer->draw_quad(
+            (int)(x + 0),       (int)(y + 0),
+            (int)(x + width),   (int)(y + 0),
+            (int)(x + width),   (int)(y + height),
+            (int)(x + 0),       (int)(y + height));
 }
 
 void Player::move(int direction_lr, bool jump, double time_step) {
@@ -66,12 +65,13 @@ void Player::collide() {
         }
     }
     
+    // If pressing up against the surface
     if (vec::dot(dx, dy, min_x, min_y) < -.001) {
-        std::cout << "HI" << std::endl;
         vec::reject(&dx, &dy, min_x, min_y);
         vec::mult(&dx, &dy, .5);
     }
     
+    // If surface normal and gravity are pointing in opposite directions
     if (vec::dot(gravity_x, gravity_y, min_x, min_y) < -.001) {
         time_since_touched_platform = 0;
         last_push_x = min_x;

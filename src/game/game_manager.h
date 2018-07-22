@@ -14,6 +14,8 @@ class GameManager: public OpenGLContext::GameManagerInterface {
     World world;
     Player player;
     
+    Drawer drawer;
+    
     std::vector<bool> keys;
 public:
     double last_update_time = -1;

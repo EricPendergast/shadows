@@ -1,20 +1,11 @@
-#include <GL/glew.h>
-#include <GL/glut.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glext.h>
+#include "drawer.h"
 
-#include "shader.h"
-
-#ifndef WORLD_H
-#define WORLD_H
+#pragma once
 
 // This class is in charge of managing the position of blocks or various
 // objects in the background of the world.
-class World {
+class World : Drawable {
 public:
     World();
-    void draw();
+    void draw(Drawer* drawer) const;
 };
-
-#endif

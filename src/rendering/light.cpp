@@ -13,7 +13,7 @@ using namespace std;
 
 Light::Light(void): projection(resolution), background_shader("shaders/shadow_background_box.vert", "shaders/shadow_background_box.frag") {}
 
-void Light::fill_projection_buffer(World& world) {
+void Light::fill_projection_buffer(World& world, Drawer* drawer) {
     projection.bind();
     projection.clear();
     projection.shader()->use();
@@ -23,7 +23,7 @@ void Light::fill_projection_buffer(World& world) {
     // Projecting onto each side of the box
     for (int i = 0; i < 4; i++) {
         projection.begin_draw(i);
-        world.draw();
+        world.draw(drawer);
     }
     
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -31,8 +31,8 @@ void Light::fill_projection_buffer(World& world) {
 }
 
 
-void Light::cast_shadows(World& world, FrameBuffer& draw_to) {
-    fill_projection_buffer(world);
+void Light::cast_shadows(World& world, FrameBuffer& draw_to, Drawer* drawer) {
+    fill_projection_buffer(world, drawer);
     
     glBindTexture(GL_TEXTURE_2D, projection.get_tex_handle());
     

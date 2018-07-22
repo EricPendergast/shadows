@@ -8,6 +8,7 @@
 #include "shader.h"
 #include "printer.h"
 #include "world.h"
+#include "drawer.h"
 
 #pragma once
 
@@ -21,8 +22,8 @@ class Light {
 public:
     float light_x = 500, light_y = 500;
     Light(void);
-    void cast_shadows(World& world, FrameBuffer& drawto);
+    void cast_shadows(World& world, FrameBuffer& drawto, Drawer* drawer);
     
 private:
-    void fill_projection_buffer(World& world);
+    void fill_projection_buffer(World& world, Drawer* drawer);
 };

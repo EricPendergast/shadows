@@ -4,9 +4,10 @@
 #include "opengl_context.h"
 #include "basic_buffer.h"
 #include "sum_squares.h"
+#include "drawer.h"
 
 // Speeds are in units of world coordinates per second.
-class Player {
+class Player : Drawable {
 public:
     BasicBuffer pixels;
     SumSquares<double> sum_squares;
@@ -15,7 +16,7 @@ public:
     // 'direction_lr' specifies the direction the player is trying to move and
     // 'jump' specifies whether the player just tried to jump.
     void move(int direction_lr, bool jump, double time_step);
-    void draw();
+    void draw(Drawer* drawer) const;
     // TODO: make private
     double x = 0;
     double y = 0;
