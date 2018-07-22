@@ -35,4 +35,11 @@ namespace vec {
     double angle(double x1, double y1, double x2, double y2) {
         return acos(dot(x1, y1, x2, y2)/(mag(x1, y1)*mag(x2, y2)));
     }
+    
+    void norm(double x1, double y1, double* x2, double* y2) {
+        *x2 = x1;
+        *y2 = y1;
+        
+        
+    }
 }

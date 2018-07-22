@@ -1,9 +1,11 @@
-#include "player.h"
+#include <algorithm>
 #include <math.h>
+
+#include "player.h"
 #include "vector_math.h"
 
 Player::Player() : Player(64,64) {}
-Player::Player(int w, int h) : pixels(w*3, h*3), sum_squares(w*3, h*3), width(w), height(w) {}
+Player::Player(int w, int h) : pixels(w*3, h*3), sum_squares(w*3, h*3), width(w), height(h) {}
 
 void Player::draw() {
     glBegin(GL_QUADS);
@@ -17,8 +19,10 @@ void Player::draw() {
 void Player::move(int direction_lr, int direction_ud, bool jump, double time_step) {
     (void)direction_ud;
     
-    if (direction_lr != 0)
-        dx = move_speed*(double)direction_lr;
+    if (direction_lr == 1 && dx < max_move_speed)
+        dx = std::min(dx + get_lr_acceleration()*time_step, max_move_speed);
+    else if (direction_lr == -1 && dx > -max_move_speed)
+        dx = std::max(dx - get_lr_acceleration()*time_step, -max_move_speed);
     
     dx += gravity_x*time_step;
     dy += gravity_y*time_step;
@@ -51,7 +55,7 @@ void Player::collide() {
             if (sum_squares.get_sum(x_in_square, y_in_square) != 0)
                 return 1000000;
             else {
-                return (double)(x*x + y*y) + vec::angle(x, y, dx, dy)*5;
+                return (double)(x*x + y*y);
             }
         };
     
@@ -75,6 +79,19 @@ void Player::collide() {
         time_since_touched_platform = 0;
     }
     
+    if (cost_function(min_x, min_y) > 999999) {
+        std::cout << "DIE" << std::endl;
+    }
+    
     this->x += min_x;
     this->y += min_y;
+}
+
+
+double Player::get_lr_acceleration() {
+    return on_ground() ? ground_lr_acceleration : air_lr_acceleration;
+}
+
+bool Player::on_ground() {
+    return time_since_touched_platform < max_jump_delay;
 }
