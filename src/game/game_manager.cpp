@@ -29,7 +29,7 @@ void GameManager::display(void) {
     
     light.cast_shadows(world, casted_shadows);
     
-    player.move(keys['d'] - keys['a'], keys['s'] - keys['w'], keys[' '], difference);
+    player.move(keys['d'] - keys['a'], keys[' '], difference);
     
     
     casted_shadows.copy_to(player.pixels,

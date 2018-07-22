@@ -2,10 +2,15 @@
 #include <iostream>
 
 namespace vec {
+    void sub(double* x1, double* y1, double x2, double y2) {
+        *x1 -= x2;
+        *y1 -= y2;
+    }
     void mult(double* x, double* y, double m) {
         *x *= m;
         *y *= m;
     }
+    
     double mag_sq(double x, double y) {
         return x*x + y*y;
     }
@@ -24,12 +29,22 @@ namespace vec {
         *proj_y = onto_y * scale;
     }
     
+    double proj_mag(double proj_x, double proj_y, double onto_x, double onto_y) {
+        project(&proj_x, &proj_y, onto_x, onto_y);
+        return mag(proj_x, proj_y);
+    }
+    
     void reject(double* rej_x, double* rej_y, double onto_x, double onto_y) {
         double proj_x = *rej_x;
         double proj_y = *rej_y;
         project(&proj_x, &proj_y, onto_x, onto_y);
         *rej_x -= proj_x;
         *rej_y -= proj_y;
+    }
+    
+    double rej_mag(double rej_x, double rej_y, double onto_x, double onto_y) {
+        project(&rej_x, &rej_y, onto_x, onto_y);
+        return mag(rej_x, rej_y);
     }
     
     double angle(double x1, double y1, double x2, double y2) {
@@ -39,7 +54,5 @@ namespace vec {
     void norm(double x1, double y1, double* x2, double* y2) {
         *x2 = x1;
         *y2 = y1;
-        
-        
     }
 }

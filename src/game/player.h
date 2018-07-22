@@ -14,7 +14,7 @@ public:
     Player(int w, int h);
     // 'direction_lr' specifies the direction the player is trying to move and
     // 'jump' specifies whether the player just tried to jump.
-    void move(int direction_lr, int direction_ud, bool jump, double time_step);
+    void move(int direction_lr, bool jump, double time_step);
     void draw();
     // TODO: make private
     double x = 0;
@@ -27,16 +27,21 @@ public:
 private:
     double max_move_speed = 250;
     double ground_lr_acceleration = 100000;
-    double air_lr_acceleration = 500;
+    double air_lr_acceleration = 1000;
     double gravity_x = 0;
     double gravity_y = 1200;
     double jump_speed = 500;
     
+    double last_push_x = 0;
+    double last_push_y = 0;
+    
     
     // Number of seconds between stopping touching a platform and being able to
     // jump.
-    double max_jump_delay = .1;
+    double max_jump_delay = .05;
     double time_since_touched_platform = 1000000;
+    
+    void process_lr(int direction_lr, double time_step);
     
     double get_lr_acceleration();
     bool on_ground();

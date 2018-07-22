@@ -16,13 +16,9 @@ void Player::draw() {
     glEnd();
 }
 
-void Player::move(int direction_lr, int direction_ud, bool jump, double time_step) {
-    (void)direction_ud;
+void Player::move(int direction_lr, bool jump, double time_step) {
     
-    if (direction_lr == 1 && dx < max_move_speed)
-        dx = std::min(dx + get_lr_acceleration()*time_step, max_move_speed);
-    else if (direction_lr == -1 && dx > -max_move_speed)
-        dx = std::max(dx - get_lr_acceleration()*time_step, -max_move_speed);
+    process_lr(direction_lr, time_step);
     
     dx += gravity_x*time_step;
     dy += gravity_y*time_step;
@@ -71,12 +67,15 @@ void Player::collide() {
     }
     
     if (vec::dot(dx, dy, min_x, min_y) < -.001) {
+        std::cout << "HI" << std::endl;
         vec::reject(&dx, &dy, min_x, min_y);
         vec::mult(&dx, &dy, .5);
     }
     
     if (vec::dot(gravity_x, gravity_y, min_x, min_y) < -.001) {
         time_since_touched_platform = 0;
+        last_push_x = min_x;
+        last_push_y = min_y;
     }
     
     if (cost_function(min_x, min_y) > 999999) {
@@ -87,6 +86,13 @@ void Player::collide() {
     this->y += min_y;
 }
 
+void Player::process_lr(int direction_lr, double time_step) {
+    if (direction_lr == 1 && dx < max_move_speed) {
+        dx = std::min(dx + get_lr_acceleration()*time_step, max_move_speed);
+    } else if (direction_lr == -1 && dx > -max_move_speed) {
+        dx = std::max(dx - get_lr_acceleration()*time_step, -max_move_speed);
+    }
+}
 
 double Player::get_lr_acceleration() {
     return on_ground() ? ground_lr_acceleration : air_lr_acceleration;
