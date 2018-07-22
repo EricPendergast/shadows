@@ -10,8 +10,8 @@ double get_current_time_secs() {
 
 GameManager::GameManager() : 
         main_shader("shaders/main.vert", "shaders/main.frag"),
-        casted_shadows(OpenGLContext::screen->get_width(),
-                       OpenGLContext::screen->get_height()),
+        collision_map(OpenGLContext::screen->get_width(),
+                      OpenGLContext::screen->get_height()),
         light(), world(), player(), drawer(),
         keys(256, false) {}
 
@@ -27,18 +27,17 @@ void GameManager::display(void) {
         difference = 0;
     }
     
-    light.cast_shadows(world, casted_shadows, &drawer);
+    light.cast_shadows(world, collision_map.get_frame_buffer(), &drawer);
     
     player.move(keys['d'] - keys['a'], keys[' '], difference);
     
     
-    casted_shadows.copy_to(player.pixels,
-            (int)(player.x-player.width), (int)(500-player.height-player.y-player.height), (int)player.width*3, (int)player.height*3,
-            0, 0, player.pixels.get_width(), player.pixels.get_height());
+    
+    collision_map.copy_surrounding_pixels_to((int)player.x, (int)player.y, player.width, player.height, &player.pixels);
     
     player.collide();
     
-    casted_shadows.copy_to(*OpenGLContext::screen);
+    collision_map.get_frame_buffer().copy_to(*OpenGLContext::screen);
     
     main_shader.use();
     OpenGLContext::screen->bind();

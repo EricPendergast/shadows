@@ -1,19 +1,19 @@
 #include <vector>
 
+#include "basic_buffer.h"
+#include "collision_map.h"
 #include "opengl_context.h"
 #include "player.h"
-#include "basic_buffer.h"
 
 #pragma once
 
 class GameManager: public OpenGLContext::GameManagerInterface {
     ShaderProgram main_shader;
-    BasicBuffer casted_shadows;
+    CollisionMap collision_map;
     
     Light light;
     World world;
     Player player;
-    
     Drawer drawer;
     
     std::vector<bool> keys;
