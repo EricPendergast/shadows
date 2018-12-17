@@ -67,7 +67,7 @@ void FrameBuffer::write_to(std::vector<float>& vec) {
     assert(glGetError() == 0);
 }
 
-// WARNING: Will break if dimensions are not powers of two
+// WARNING: BUG: Might break if dimensions are not powers of two
 void FrameBuffer::write_to_tga_file(const std::string& filename) {
     glGetError();
     bind();
@@ -87,4 +87,8 @@ void FrameBuffer::write_to_tga_file(const std::string& filename) {
 
 bool FrameBuffer::is_in_bounds(int x, int y) {
     return x >= 0 && x < get_width() && y >= 0 && y < get_height();
+}
+
+FrameBuffer::~FrameBuffer() {
+    glDeleteFramebuffers(1, &fboHandle);
 }

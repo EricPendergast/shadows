@@ -48,4 +48,6 @@ public:
     }
     
     virtual bool is_in_bounds(int x, int y);
+    
+    virtual ~FrameBuffer();
 };

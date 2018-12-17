@@ -17,8 +17,6 @@ public:
         boxSums(width, height) {}
     
     void populate(const std::function<T(int, int)>& get, int width, int height) {
-        // TODO: remove colSums
-        
         for (int x = 0; x < boxSums.width; x++) {
             for (int y = 0; y < boxSums.height; y++) {
                 rowSums.get(x, y) = 0;

@@ -6,7 +6,7 @@ namespace OpenGLContext {
         class DefaultFrameBuffer : public FrameBuffer {
         public:
             // TODO: Figure out width and height
-            DefaultFrameBuffer() : FrameBuffer(500, 500) {
+            DefaultFrameBuffer() : FrameBuffer(1000, 1000) {
                 fboHandle = 0;
                 texHandle = -1;
             }
@@ -26,6 +26,7 @@ namespace OpenGLContext {
     void key_down(unsigned char key, int x, int y);
     void mouse_move(int x, int y);
     void display(void);
+    void do_nothing(void);
     
     FrameBuffer * const screen = new DefaultFrameBuffer();
     GameManagerInterface* manager;
@@ -36,6 +37,7 @@ namespace OpenGLContext {
         glutInitWindowSize(screen->get_width(), screen->get_height());
         glutInitWindowPosition(100,100);
         glutCreateWindow("Shadows");
+        glutDisplayFunc(do_nothing);
         glutIdleFunc(display);
         glutReshapeFunc(reshape);
         glutKeyboardFunc(key_down);
@@ -54,6 +56,8 @@ namespace OpenGLContext {
         glMatrixMode(GL_MODELVIEW);
         manager->screen_width = width;
         manager->screen_height = height;
+        ((DefaultFrameBuffer*)screen)->set_width(width);
+        ((DefaultFrameBuffer*)screen)->set_height(height);
         glLoadIdentity();
         glViewport(0,0, width, height);
         gluOrtho2D(0, screen->get_width(), 0, screen->get_height());
@@ -83,6 +87,10 @@ namespace OpenGLContext {
         manager->display();
         
         glutSwapBuffers();
+    }
+    
+    void do_nothing(void) {
+        
     }
     
     void start_running(void) {

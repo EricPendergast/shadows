@@ -36,7 +36,6 @@ private:
     double last_push_x = 0;
     double last_push_y = 0;
     
-    
     // Number of seconds between stopping touching a platform and being able to
     // jump.
     double max_jump_delay = .05;

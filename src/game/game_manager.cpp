@@ -24,7 +24,7 @@ void GameManager::display(void) {
     // In the case of a large lag spike
     if (difference > .25) {
         last_update_time = get_current_time_secs();
-        difference = 0;
+        difference = .1;
     }
     
     light.cast_shadows(world, collision_map.get_frame_buffer(), &drawer);
