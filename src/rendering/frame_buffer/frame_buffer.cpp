@@ -1,10 +1,11 @@
 #include "frame_buffer.h"
 
-
 #include <iostream>
 #include <fstream>
 #include <assert.h>
+#include <array>
 
+//#include <CImg.h>
 
 FrameBuffer::FrameBuffer(int w, int h) : width(w), height(h) {}
 
@@ -69,20 +70,26 @@ void FrameBuffer::write_to(std::vector<float>& vec) {
 
 // WARNING: BUG: Might break if dimensions are not powers of two
 void FrameBuffer::write_to_tga_file(const std::string& filename) {
-    glGetError();
-    bind();
-    glReadBuffer(GL_COLOR_ATTACHMENT0);
-
-    std::ofstream out(filename);
-    char* pixel_data = new char[3*width*height];
-    short TGAhead[] = { 0, 2, 0, 0, 0, 0, (short)width, (short)height, 24 };
-
-    glReadnPixels(0, 0, get_width(), get_height(), GL_BGR, GL_UNSIGNED_BYTE, 3*width*height, pixel_data);
-
-    out.write((char const*)&TGAhead, sizeof(TGAhead[0])*sizeof(TGAhead));
-    out.write(pixel_data, 3*width*height);
-    out.close();
-    assert(glGetError() == 0);
+    (void)filename;
+    //glGetError();
+    //bind();
+    //glReadBuffer(GL_COLOR_ATTACHMENT0);
+    //
+    //std::ofstream out(filename);
+    ////char* pixel_data = new char[3*width*height];
+    //std::array<char, 18> TGAhead = {    0,
+    //                                    2, 
+    //                                    0, 
+    //                                    0, 0, 0, 0, 0
+    //                                    (short)width, (short)height, 24 };
+    //std::vector<char> pixel_data(3*get_width()*get_height());
+    //
+    //glReadnPixels(0, 0, get_width(), get_height(), GL_BGR, GL_UNSIGNED_BYTE, 3*get_width()*get_height(), &pixel_data.front());
+    //
+    //out.write((char const*)&TGAhead, sizeof(TGAhead[0])*sizeof(TGAhead));
+    //out.write(&pixel_data.front(), pixel_data.size());
+    //out.close();
+    //assert(glGetError() == 0);
 }
 
 bool FrameBuffer::is_in_bounds(int x, int y) {

@@ -8,8 +8,9 @@ OFILES= $(CPPFILES:%.cpp=%.o)
 # Dependency files
 DFILES = $(CPPFILES:%.cpp=%.d)
 	
-GLFLAGS = -lglut -lGL -lGLU -lGLEW
-DIRSFLAGS = $(addprefix -I, $(DIRECTORIES))
+#GLFLAGS = -lglut -lGL -lGLU -lGLEW
+GLFLAGS = -lglut -lOpenGL -lGLU -lGLEW
+DIRSFLAGS = $(addprefix -I, $(DIRECTORIES)) -isystem lib/CImg-2.5.2
 CXXFLAGS = -std=c++17 -Wconversion -Wall -Wextra -Woverloaded-virtual -pedantic -g3 -DRUNTESTS $(GLFLAGS) $(DIRSFLAGS)
 
 GDB = gdb -ex='set confirm on' -ex=run -ex=bt -ex=quit -quiet
@@ -26,7 +27,7 @@ all: $(OFILES) compile
 	
 compile: $(OFILES)
 	@echo "$(DIRSFLAGS)" | tr " " "\n" > .include_dirs
-	g++ $(OFILES) $(CXXFLAGS) -o run_game 
+	g++ $(OFILES) $(CXXFLAGS) -o run_game
 	
 -include $(DFILES)
 

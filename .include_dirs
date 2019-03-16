@@ -4,3 +4,5 @@
 -Isrc/game
 -Isrc/testing
 -Isrc/algorithms
+-isystem
+lib/CImg-2.5.2
