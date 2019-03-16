@@ -3,5 +3,7 @@
 tags
 *.o
 *.d
+*.gch
 Session.vim
 run_game
+debug_output/
