@@ -15,12 +15,12 @@ Light::Light(void):
     projection(resolution),
     background_shader("shaders/shadow_background_box.vert", "shaders/shadow_background_box.frag"),
     simple_box({
-        0, 0,
-        800, 0,
-        0, 800,
-        0, 800,
-        800, 800,
-        800, 0}) {
+        0, 0, 0, 1,
+        800, 0, 0, 1,
+        0, 800, 0, 1,
+        0, 800, 0, 1,
+        800, 800, 0, 1,
+        800, 0, 0, 1}) {
     }
 
 void Light::fill_projection_buffer(World& world) {
@@ -49,21 +49,20 @@ void Light::cast_shadows(World& world, FrameBuffer& draw_to) {
     background_shader.use();
     glUniform2f(background_shader.get_uniform("light_pos"), light_x, light_y);
     
-    glm::mat4 transform = World::get_world_to_screen(0, 0, (float)draw_to.get_width(), (float)draw_to.get_height());
-    
-    glUniformMatrix4fv(background_shader.get_uniform("world_to_screen"), 1, GL_FALSE, glm::value_ptr(transform));
+
+    glUniformMatrix4fv(background_shader.get_uniform("world_to_screen"),
+        1, GL_FALSE,
+        glm::value_ptr(World::get_world_to_screen(
+            0,
+            0,
+            (float)500 /*draw_to.get_width()*/,
+            (float)500)));
     
     draw_to.bind();
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     
     glViewport(0,0, draw_to.get_width(), draw_to.get_height());
     
-    //simple_box.draw();
-    //glBegin(GL_QUADS);
-    //glVertex2f(0,0);
-    //glVertex2f((GLfloat)draw_to.get_width(),0);
-    //glVertex2f((GLfloat)draw_to.get_width(),(GLfloat)draw_to.get_height());
-    //glVertex2f(0,(GLfloat)draw_to.get_height());
-    //glEnd();
+    simple_box.draw();
 }
 

@@ -31,15 +31,15 @@ void GameManager::display(void) {
         difference = .1;
     }
     
-    //light.cast_shadows(world, collision_map.get_frame_buffer(), &drawer);
-    //
+    light.cast_shadows(world, collision_map.get_frame_buffer());
+    
     //player.move(keys['d'] - keys['a'], keys[' '], difference);
     //
     //collision_map.copy_surrounding_pixels_to((int)player.x, (int)player.y, player.width, player.height, &player.pixels);
     //
     //player.collide();
-    //
-    //collision_map.get_frame_buffer().copy_to(*OpenGLContext::screen);
+    
+    collision_map.get_frame_buffer().copy_to(*OpenGLContext::screen);
     
     main_shader.use();
     glUniformMatrix4fv(main_shader.get_uniform("world_to_screen"),
@@ -56,7 +56,6 @@ void GameManager::display(void) {
     world.draw();
     
     //player.draw(&drawer);
-    
 }
 
 void GameManager::mouse_move(int x, int y) {

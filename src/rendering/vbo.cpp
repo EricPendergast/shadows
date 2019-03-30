@@ -11,14 +11,6 @@ VBO::VBO(const std::vector<GLfloat>& verticies) {
 
     glBufferData(GL_ARRAY_BUFFER, verticies.size()*sizeof(GLfloat), &verticies[0], GL_STATIC_DRAW);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
-    //glEnableVertexAttribArray(0);
-
-    // Optional color buffer
-    //glGenBuffers(1, &ColorBufferId);
-    //glBindBuffer(GL_ARRAY_BUFFER, ColorBufferId);
-    //glBufferData(GL_ARRAY_BUFFER, sizeof(Colors), Colors, GL_STATIC_DRAW);
-    //glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, 0);
-    //glEnableVertexAttribArray(1);
 
     error = glGetError();
     if (error != GL_NO_ERROR) {
@@ -37,7 +29,6 @@ VBO::~VBO() {
     glDisableVertexAttribArray(0);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    //glDeleteBuffers(1, &ColorBufferId);
     glDeleteBuffers(1, &vbo_handle);
 
     glBindVertexArray(0);
@@ -53,7 +44,7 @@ VBO::~VBO() {
 
 void VBO::draw() {
     bind();
-    glDrawArrays(GL_LINE_LOOP, 0, 8);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
     unbind();
 }
 
