@@ -1,7 +1,6 @@
 #include "game_manager.h"
 #include <ctime>
 #include <chrono>
-#include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
 
@@ -33,29 +32,27 @@ void GameManager::display(void) {
     
     light.cast_shadows(world, collision_map.get_frame_buffer());
     
-    //player.move(keys['d'] - keys['a'], keys[' '], difference);
-    //
-    //collision_map.copy_surrounding_pixels_to((int)player.x, (int)player.y, player.width, player.height, &player.pixels);
-    //
-    //player.collide();
+    player.move(keys['d'] - keys['a'], keys[' '], difference);
+    
+    collision_map.copy_surrounding_pixels_to((int)player.x, (int)player.y, player.width, player.height, &player.pixels);
+    
+    player.collide();
     
     collision_map.get_frame_buffer().copy_to(*OpenGLContext::screen);
     
     main_shader.use();
-    glUniformMatrix4fv(main_shader.get_uniform("world_to_screen"),
-        1, GL_FALSE,
-        glm::value_ptr(World::get_world_to_screen(
+    main_shader.set_uniform_Matrix4f("world_to_screen",
+        World::get_world_to_screen(
             0,
             0,
-            (float)500,
-            (float)500)));
+            (float)OpenGLContext::screen->get_width(),
+            (float)OpenGLContext::screen->get_height()));
 
-    std::cout << OpenGLContext::screen->get_width() << std::endl;
     OpenGLContext::screen->bind();
     
     world.draw();
     
-    //player.draw(&drawer);
+    player.draw();
 }
 
 void GameManager::mouse_move(int x, int y) {

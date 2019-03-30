@@ -5,7 +5,18 @@
 #include "vector_math.h"
 
 Player::Player() : Player(64,64) {}
-Player::Player(int w, int h) : pixels(w*3, h*3), sum_squares(w*3, h*3), width(w), height(h) {}
+Player::Player(int w, int h) :
+    pixels(w*3, h*3),
+    sum_squares(w*3, h*3),
+    width(w),
+    height(h),
+    model({0,0,0,1,
+           0,64,0,1,
+           64,64,0,1,
+           0,0,0,1,
+           0,0,0,1,
+           0,0,0,1}) {
+    }
 
 void Player::draw(Drawer* drawer) const {
     drawer->draw_quad(
@@ -16,7 +27,15 @@ void Player::draw(Drawer* drawer) const {
 }
 
 void Player::draw() {
-    // TODO: Not implemented
+    model.sub_data(0, std::vector<GLfloat>({
+        (float)(x + 0),       (float)(y + 0), 0, 1,
+        (float)(x + width),   (float)(y + 0), 0, 1,
+        (float)(x + width),   (float)(y + height), 0, 1,
+        (float)(x + width),   (float)(y + height), 0, 1,
+        (float)(x + 0),       (float)(y + height), 0, 1,
+        (float)(x + 0),       (float)(y + 0), 0, 1,
+    }));
+    model.draw();
 }
 
 void Player::move(int direction_lr, bool jump, double time_step) {

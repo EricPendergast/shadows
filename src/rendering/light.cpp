@@ -40,7 +40,6 @@ void Light::fill_projection_buffer(World& world) {
     glDisable(GL_DEPTH_TEST);
 }
 
-
 void Light::cast_shadows(World& world, FrameBuffer& draw_to) {
     fill_projection_buffer(world);
     
@@ -50,13 +49,12 @@ void Light::cast_shadows(World& world, FrameBuffer& draw_to) {
     glUniform2f(background_shader.get_uniform("light_pos"), light_x, light_y);
     
 
-    glUniformMatrix4fv(background_shader.get_uniform("world_to_screen"),
-        1, GL_FALSE,
-        glm::value_ptr(World::get_world_to_screen(
+    background_shader.set_uniform_Matrix4f("world_to_screen", 
+        World::get_world_to_screen(
             0,
             0,
-            (float)500 /*draw_to.get_width()*/,
-            (float)500)));
+            (float)draw_to.get_width(),
+            (float)draw_to.get_height()));
     
     draw_to.bind();
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -65,4 +63,3 @@ void Light::cast_shadows(World& world, FrameBuffer& draw_to) {
     
     simple_box.draw();
 }
-

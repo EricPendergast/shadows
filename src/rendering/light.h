@@ -22,7 +22,7 @@ class Light {
     VBO simple_box;
 
 public:
-    float light_x = 500, light_y = 500;
+    float light_x = 50, light_y = 50;
     Light(void);
     void cast_shadows(World& world, FrameBuffer& drawto);
     

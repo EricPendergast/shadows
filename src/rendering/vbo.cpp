@@ -59,3 +59,9 @@ void VBO::unbind() {
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
+
+void VBO::sub_data(size_t offset_bytes, size_t num_bytes, const char* bytes) {
+    bind();
+    glBufferSubData(GL_ARRAY_BUFFER, offset_bytes, num_bytes, bytes);
+    unbind();
+}

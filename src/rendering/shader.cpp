@@ -1,4 +1,5 @@
 #include "shader.h"
+#include <glm/gtc/type_ptr.hpp>
 
 void print_program_info_log(GLuint obj);
 void load_compile_shader(GLuint handle, std::string filename);
@@ -110,6 +111,11 @@ void print_program_info_log(GLuint obj) {
     }
 }
 
+void ShaderProgram::set_uniform_Matrix4f(std::string name, const glm::mat4& matrix) {
+    glUniformMatrix4fv(this->get_uniform(name),
+        1, GL_FALSE,
+        glm::value_ptr(matrix));
+}
 
 void print_shader_info_log(GLuint obj) {
     int infologLength = 0;

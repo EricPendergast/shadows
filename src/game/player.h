@@ -11,6 +11,13 @@ class Player : Drawable {
 public:
     BasicBuffer pixels;
     SumSquares<double> sum_squares;
+    double x = 0;
+    double y = 0;
+    double dx = 0;
+    double dy = 0;
+    int width = 64;
+    int height = 64;
+    VBO model;
     Player();
     Player(int w, int h);
     // 'direction_lr' specifies the direction the player is trying to move and
@@ -19,12 +26,6 @@ public:
     void draw(Drawer* drawer) const;
     void draw();
     // TODO: make private
-    double x = 0;
-    double y = 0;
-    double dx = 0;
-    double dy = 0;
-    int width = 64;
-    int height = 64;
     void collide();
 private:
     double max_move_speed = 250;
