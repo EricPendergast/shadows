@@ -1,8 +1,8 @@
-uniform sampler2D texture;
+//uniform sampler2D texture;
 // pos is the interpolated world coordinates
-varying vec2 pos;
+//in vec2 pos;
 
-bool in_shadow();
+//bool in_shadow();
 
 void main(void) {     
     gl_FragColor = vec4(0,0,1,1);

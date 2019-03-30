@@ -15,6 +15,10 @@ void Player::draw(Drawer* drawer) const {
             (int)(x + 0),       (int)(y + height));
 }
 
+void Player::draw() {
+    // TODO: Not implemented
+}
+
 void Player::move(int direction_lr, bool jump, double time_step) {
     
     process_lr(direction_lr, time_step);

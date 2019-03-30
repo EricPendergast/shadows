@@ -17,6 +17,7 @@ public:
     // 'jump' specifies whether the player just tried to jump.
     void move(int direction_lr, bool jump, double time_step);
     void draw(Drawer* drawer) const;
+    void draw();
     // TODO: make private
     double x = 0;
     double y = 0;

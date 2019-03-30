@@ -15,4 +15,5 @@ public:
 
 class Drawable {
     virtual void draw(Drawer* drawer) const = 0;
+    virtual void draw() = 0;
 };

@@ -1,6 +1,10 @@
 #include "game_manager.h"
 #include <ctime>
 #include <chrono>
+#include <glm/gtc/type_ptr.hpp>
+#include <iostream>
+
+
 
 double get_current_time_secs() {
     std::chrono::duration<double, std::milli>  ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
@@ -27,24 +31,31 @@ void GameManager::display(void) {
         difference = .1;
     }
     
-    light.cast_shadows(world, collision_map.get_frame_buffer(), &drawer);
-    
-    player.move(keys['d'] - keys['a'], keys[' '], difference);
-    
-    
-    
-    collision_map.copy_surrounding_pixels_to((int)player.x, (int)player.y, player.width, player.height, &player.pixels);
-    
-    player.collide();
-    
-    collision_map.get_frame_buffer().copy_to(*OpenGLContext::screen);
+    //light.cast_shadows(world, collision_map.get_frame_buffer(), &drawer);
+    //
+    //player.move(keys['d'] - keys['a'], keys[' '], difference);
+    //
+    //collision_map.copy_surrounding_pixels_to((int)player.x, (int)player.y, player.width, player.height, &player.pixels);
+    //
+    //player.collide();
+    //
+    //collision_map.get_frame_buffer().copy_to(*OpenGLContext::screen);
     
     main_shader.use();
+    glUniformMatrix4fv(main_shader.get_uniform("world_to_screen"),
+        1, GL_FALSE,
+        glm::value_ptr(World::get_world_to_screen(
+            0,
+            0,
+            (float)500,
+            (float)500)));
+
+    std::cout << OpenGLContext::screen->get_width() << std::endl;
     OpenGLContext::screen->bind();
     
-    world.draw(&drawer);
+    world.draw();
     
-    player.draw(&drawer);
+    //player.draw(&drawer);
     
 }
 

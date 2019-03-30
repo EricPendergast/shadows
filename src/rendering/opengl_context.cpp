@@ -33,8 +33,11 @@ namespace OpenGLContext {
     
     void init_context(int argc,  char** argv) {
         glutInit(&argc, argv);
+        glutInitContextVersion(4, 0);
+        glutInitContextFlags(GLUT_FORWARD_COMPATIBLE);
+        glutInitContextProfile(GLUT_CORE_PROFILE);
         glutInitDisplayMode (GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA); 
-        glutInitWindowSize(500, 500);
+        glutInitWindowSize(800, 800);
         glutInitWindowPosition(100,100);
         glutCreateWindow("Shadows");
         glutDisplayFunc(do_nothing);
@@ -43,9 +46,12 @@ namespace OpenGLContext {
         glutKeyboardFunc(key_down);
         glutKeyboardUpFunc(key_up);
         glutMotionFunc(mouse_move);
+
+        //std::cout << "HELLO " << glGetString(GL_VERSION) << std::endl;
         
+        auto glew_init_result = glewInit();
         if(glewInit() != GLEW_OK) {
-            std::cout << "GLEW bad" << std::endl;
+            std::cout << "ERROR: " << glewGetErrorString(glew_init_result) << std::endl;
             exit(1);
         }
         

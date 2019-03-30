@@ -4,6 +4,7 @@ uniform sampler2D tex;
 uniform vec2 light_pos;
 
 in vec2 rel_pos;
+layout(location = 0) out vec4 color_out;
 
 
 float get_light_reach(vec2 r_pos);
@@ -16,9 +17,9 @@ void main(void) {
     float reach = get_light_reach(rel_pos);
     float dist = sqrt(rel_pos.x*rel_pos.x + rel_pos.y*rel_pos.y);
     if (dist < reach) {
-        gl_FragColor = vec4(1,1,1,1);
+        color_out = vec4(1,1,1,1);
     } else
-        gl_FragColor = vec4(0,0,0,1);
+        color_out = vec4(0,0,0,1);
     
 }
 

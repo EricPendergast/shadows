@@ -9,6 +9,7 @@
 #include "printer.h"
 #include "world.h"
 #include "drawer.h"
+#include "vbo.h"
 
 #pragma once
 
@@ -18,12 +19,13 @@ class Light {
     int resolution = 8192;
     DepthBoxBuffer projection;
     ShaderProgram background_shader;
+    VBO simple_box;
 
 public:
     float light_x = 500, light_y = 500;
     Light(void);
-    void cast_shadows(World& world, FrameBuffer& drawto, Drawer* drawer);
+    void cast_shadows(World& world, FrameBuffer& drawto);
     
 private:
-    void fill_projection_buffer(World& world, Drawer* drawer);
+    void fill_projection_buffer(World& world);
 };
