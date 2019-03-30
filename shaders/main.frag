@@ -1,11 +1,13 @@
+#version 450
 //uniform sampler2D texture;
 // pos is the interpolated world coordinates
 //in vec2 pos;
 
+layout(location = 0) out vec4 color_out;
 //bool in_shadow();
 
 void main(void) {     
-    gl_FragColor = vec4(0,0,1,1);
+    color_out = vec4(0,0,1,1);
     
     /*float angle = atan(pos.y, pos.x);*/
     /*float tex_lookup = (angle + 3.141)/6.28;*/
