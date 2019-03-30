@@ -10,7 +10,7 @@ DFILES = $(CPPFILES:%.cpp=%.d)
 	
 #GLFLAGS = -lglut -lGL -lGLU -lGLEW
 GLFLAGS = -lglut -lOpenGL -lGLU -lGLEW
-DIRSFLAGS = $(addprefix -I, $(DIRECTORIES)) -isystem lib/CImg-2.5.2
+DIRSFLAGS = $(addprefix -I, $(DIRECTORIES))
 CXXFLAGS = -std=c++17 -Wconversion -Wall -Wextra -Woverloaded-virtual -pedantic -g3 -DRUNTESTS $(GLFLAGS) $(DIRSFLAGS)
 
 GDB = gdb -ex='set confirm on' -ex=run -ex=bt -ex=quit -quiet
