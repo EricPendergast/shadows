@@ -14,7 +14,6 @@ class GameManager: public OpenGLContext::GameManagerInterface {
     Light light;
     World world;
     Player player;
-    Drawer drawer;
     
     std::vector<bool> keys;
 public:

@@ -15,7 +15,7 @@ GameManager::GameManager() :
         main_shader("shaders/main.vert", "shaders/main.frag"),
         collision_map(OpenGLContext::screen->get_width(),
                       OpenGLContext::screen->get_height()),
-        light(), world(), player(), drawer(),
+        light(), world(), player(),
         keys(256, false) {}
 
         

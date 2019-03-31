@@ -18,14 +18,6 @@ Player::Player(int w, int h) :
            0,0,0,1}) {
     }
 
-void Player::draw(Drawer* drawer) const {
-    drawer->draw_quad(
-            (int)(x + 0),       (int)(y + 0),
-            (int)(x + width),   (int)(y + 0),
-            (int)(x + width),   (int)(y + height),
-            (int)(x + 0),       (int)(y + height));
-}
-
 void Player::draw() {
     model.sub_data(0, std::vector<GLfloat>({
         (float)(x + 0),       (float)(y + 0), 0, 1,

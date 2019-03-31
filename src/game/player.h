@@ -23,7 +23,6 @@ public:
     // 'direction_lr' specifies the direction the player is trying to move and
     // 'jump' specifies whether the player just tried to jump.
     void move(int direction_lr, bool jump, double time_step);
-    void draw(Drawer* drawer) const;
     void draw();
     // TODO: make private
     void collide();
