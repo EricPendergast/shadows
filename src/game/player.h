@@ -13,8 +13,8 @@ class Player : Drawable {
 public:
     BasicBuffer pixels;
     SumSquares<double> sum_squares;
-    double x = 0;
-    double y = 0;
+    double x = 5;
+    double y = 5;
     double dx = 0;
     double dy = 0;
     int width = 64;
