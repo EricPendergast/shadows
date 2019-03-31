@@ -1,5 +1,6 @@
 
 #include "basic_buffer.h"
+#include <iostream>
 
 bool is_power_of_two(int a) {
     return a && ((a & (a-1)) == 0);

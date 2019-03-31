@@ -1,4 +1,8 @@
 #include "shader.h"
+#include <vector>
+#include <iostream>
+#include <fstream>
+#include <assert.h>
 #include <glm/gtc/type_ptr.hpp>
 
 void print_program_info_log(GLuint obj);

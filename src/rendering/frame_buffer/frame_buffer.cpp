@@ -20,7 +20,7 @@ GLuint FrameBuffer::get_tex_handle() {
 std::vector<float> FrameBuffer::read_pixel(int x, int y) {
     bind();
     GLfloat pixel[4];
-    glReadPixels(x,y, 1,1, GL_RGBA, GL_FLOAT, pixel);
+    glReadnPixels(x,y, 1,1, GL_RGBA, GL_FLOAT, 4*sizeof(pixel[0]), pixel);
     
     return std::vector<float>(pixel, pixel+4);
 }
@@ -42,10 +42,10 @@ void FrameBuffer::copy_to(FrameBuffer& other) {
 }
 
 void FrameBuffer::copy_to(FrameBuffer& other, int this_x, int this_y, int this_w, int this_h, int other_x, int other_y, int other_w, int other_h) {
-    //assert(this->is_in_bounds(this_x, this_y));
-    //assert(this->is_in_bounds(this_x+this_w-1, this_y+this_h-1));
-    //assert(other.is_in_bounds(other_x, other_y));
-    //assert(other.is_in_bounds(other_x+other_w-1, other_y+other_h-1));
+    assert(this->is_in_bounds(this_x, this_y));
+    assert(this->is_in_bounds(this_x+this_w-1, this_y+this_h-1));
+    assert(other.is_in_bounds(other_x, other_y));
+    assert(other.is_in_bounds(other_x+other_w-1, other_y+other_h-1));
     
     glBlitNamedFramebuffer(
             get_fbo_handle(), other.get_fbo_handle(), 

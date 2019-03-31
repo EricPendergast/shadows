@@ -1,15 +1,6 @@
 #include <GL/glew.h>
-#include <GL/glut.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glext.h>
-#include <vector>
-#include <iostream>
 #include <string>
-#include <fstream>
-#include <streambuf>
-#include <assert.h>
-#include <glm/glm.hpp>
+#include <glm/mat4x4.hpp>
 
 #ifndef SHADER_H
 #define SHADER_H

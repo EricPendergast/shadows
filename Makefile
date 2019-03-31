@@ -13,10 +13,11 @@ GLFLAGS = -lglut -lOpenGL -lGLU -lGLEW
 DIRSFLAGS = $(addprefix -I, $(DIRECTORIES))
 CXXFLAGS = -std=c++17 -Wconversion -Wall -Wextra -Woverloaded-virtual -pedantic -g3 -DRUNTESTS $(GLFLAGS) $(DIRSFLAGS)
 
-GDB = gdb -ex='set confirm on' -ex=run -ex=bt -ex=quit -quiet
+GDB = gdb -ex='set confirm on' -ex='run' -ex=bt -ex=quit -quiet
+GDB_TESTS = gdb -ex='set confirm on' -ex='run run_tests' -ex=bt -ex=quit -quiet
 
 test: compile
-	optirun ./run_game run_tests
+	optirun $(GDB_TESTS) ./run_game
 
 renderdoc: compile
 	/opt/renderdoc_1.0/bin/renderdoccmd capture run_game

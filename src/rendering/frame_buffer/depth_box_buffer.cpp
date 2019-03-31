@@ -1,4 +1,5 @@
 #include "depth_box_buffer.h"
+#include <iostream>
 
 const std::vector<float> DepthBoxBuffer::DEFAULT_DEPTH({1000000, 0, 0, 1});
 
