@@ -1,3 +1,6 @@
+#ifndef SRC_GAME_GAME_MANAGER_H
+#define SRC_GAME_GAME_MANAGER_H
+
 #include <vector>
 
 #include "basic_buffer.h"
@@ -5,7 +8,6 @@
 #include "opengl_context.h"
 #include "player.h"
 
-#pragma once
 
 class GameManager: public OpenGLContext::GameManagerInterface {
     ShaderProgram main_shader;
@@ -26,3 +28,5 @@ public:
     virtual void key_up(unsigned char key, int x, int y);
     virtual void key_down(unsigned char key, int x, int y);
 };
+
+#endif

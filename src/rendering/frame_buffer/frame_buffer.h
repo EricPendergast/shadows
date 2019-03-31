@@ -1,3 +1,6 @@
+#ifndef SRC_RENDERING_FRAME_BUFFER_FRAME_BUFFER_H
+#define SRC_RENDERING_FRAME_BUFFER_FRAME_BUFFER_H
+
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <GL/gl.h>
@@ -7,8 +10,6 @@
 #include <vector>
 
 #include "shader.h"
-
-#pragma once
 
 // Provides some helper methods for dealing with frame buffers. Child classes
 // should initialize frame buffers.
@@ -51,3 +52,5 @@ public:
     
     virtual ~FrameBuffer();
 };
+
+#endif

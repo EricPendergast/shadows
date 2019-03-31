@@ -1,4 +1,6 @@
-#pragma once
+#ifndef SRC_GAME_PLAYER_H
+#define SRC_GAME_PLAYER_H
+
 
 #include "depth_box_buffer.h"
 #include "opengl_context.h"
@@ -47,3 +49,5 @@ private:
     double get_lr_acceleration();
     bool on_ground();
 };
+
+#endif

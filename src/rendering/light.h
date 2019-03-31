@@ -1,3 +1,6 @@
+#ifndef SRC_RENDERING_LIGHT_H
+#define SRC_RENDERING_LIGHT_H
+
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <GL/gl.h>
@@ -11,7 +14,6 @@
 #include "drawer.h"
 #include "vbo.h"
 
-#pragma once
 
 class Light {
     // TODO: Platform independence. Is this the max framebuffer width for every
@@ -29,3 +31,5 @@ public:
 private:
     void fill_projection_buffer(World& world);
 };
+
+#endif

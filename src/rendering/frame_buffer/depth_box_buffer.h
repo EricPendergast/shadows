@@ -1,6 +1,8 @@
+#ifndef SRC_RENDERING_FRAME_BUFFER_DEPTH_BOX_BUFFER_H
+#define SRC_RENDERING_FRAME_BUFFER_DEPTH_BOX_BUFFER_H
+
 #include "frame_buffer.h"
 
-#pragma once
 
 // Intended to be used as a shadow buffer which is a square around a
 // point. Contains a frame buffer with given width and height 4. Uses a
@@ -29,3 +31,5 @@ private:
     // Sets the viewport to only render to the specified row.
     void set_render_row(int row);
 };
+
+#endif

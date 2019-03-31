@@ -1,9 +1,11 @@
+#ifndef SRC_ALGORITHMS_SUM_SQUARES_H
+#define SRC_ALGORITHMS_SUM_SQUARES_H
+
 #include <vector>
 #include <functional>
 
 #include "unbounded_matrix.h"
 #include "matrix.h"
-
 template <typename T>
 class SumSquares {
 private:
@@ -64,3 +66,5 @@ public:
         return boxSums.height;
     }
 };
+
+#endif

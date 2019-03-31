@@ -1,6 +1,8 @@
+#ifndef SRC_GAME_COLLISION_MAP_H
+#define SRC_GAME_COLLISION_MAP_H
+
 #include "basic_buffer.h"
 
-#pragma once
 
 class CollisionMap {
 public:
@@ -11,3 +13,5 @@ public:
 private:
     BasicBuffer collision_map;
 };
+
+#endif
