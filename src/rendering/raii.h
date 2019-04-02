@@ -8,22 +8,10 @@
 #include <GL/glew.h>
 #include <assert.h>
 
-template<typename T>
-class TD;
+//template<typename T>
+//class TD;
 
 namespace {
-    static_assert(sizeof(void*) == sizeof(void (*)(void)));
-    template <typename... Args>
-    class Outer {
-    public:
-        template <void(*F)(Args...)>
-        //template <fptr F>
-        //template <int i>
-        //template <typename I>
-        class RAII;
-    };
-
-
     template <typename F, typename Tuple, size_t... Is>
     void call_fcn_with_tuple(F f, Tuple t, std::index_sequence<Is...>) {
         f(std::get<Is>(t)...);
@@ -31,7 +19,6 @@ namespace {
 
     template <typename F, typename... Args>
     void call_fcn_with_tuple(F f, std::tuple<Args...> tup) {
-        //TD<decltype(std::make_index_sequence<2>())> asdf;
         call_fcn_with_tuple(f, tup, std::make_index_sequence<sizeof...(Args)>());
     }
 
@@ -62,22 +49,17 @@ namespace {
 
     static decltype(make_deques(functions)) stacks;
 
-    void test() {
-
+    //void test() {
         //TD<decltype(stacks)> td;
         //get_asdf(std::make_tuple(glViewport));
         //tuple_to_function<int>(std::make_tuple(4,4,4));
         //call_fcn_with_tuple(glViewport, std::make_tuple(4,4,4,4));
-    }
+    //}
 
-    //std::unordered_map<void(*)(int), std::deque<std::tuple<int>>> stacks;
-    //template <typename ArgsTuple, decltype(tuple_to_function<void>(ArgsTuple{})) Func>
     template <typename FuncType, int func_id, typename... Args>
     class RAII {
         static_assert(std::is_same<FuncType, void(*)(Args...)>::value);
         using TupleType = std::tuple<Args...>;
-        //using FuncType = void(*)(Args...);
-        //std::deque<ArgsTuple> call_stack;
         public:
         RAII(Args... names) {
             auto call = std::make_tuple(names...);
@@ -103,9 +85,6 @@ namespace {
 
     template<int func_id, typename... Args>
     auto create_RAII(void(*func)(Args...)) {
-        
-        //TD<RAII<Args...>> asdfgh;
-        //Outer<Args...>::RAII<nullptr> asdf;
         return RAII<decltype(func), func_id, Args...>(func);
     }
 
@@ -115,19 +94,6 @@ namespace {
     }
 }
 
-
-
-//std::array<int, 10> aaasdf;
-//std::array<int, (std::glViewport)%10> asdf;
 using WithViewport = decltype(create_RAII<0>());
 
-//class WithViewport : RAII{
-//    static GLint x;
-//    static GLint y;
-//    static GLsizei width;
-//    static GLsizei height;
-//public:
-//    WithViewport(GLint x, GLint y, GLsizei width, GLsizei height); 
-//};
-//
 #endif
