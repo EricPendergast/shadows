@@ -1,6 +1,5 @@
 #include <GL/glew.h>
 #include <string>
-#include <glm/mat4x4.hpp>
 
 #ifndef SHADER_H
 #define SHADER_H
@@ -15,7 +14,7 @@ public:
     GLuint get_handle();
     GLint get_uniform(std::string name);
     GLint get_uniform(const char* name);
-    void set_uniform_Matrix4f(std::string name, const glm::mat4& matrix);
+    void set_uniform_Matrix4f(std::string name, const float* matrix);
     void use();
 };
 #endif

@@ -6,7 +6,6 @@
 #include <vector>
 #include <string>
 
-#include "shader.h"
 
 // Provides some helper methods for dealing with frame buffers. Child classes
 // should initialize frame buffers.

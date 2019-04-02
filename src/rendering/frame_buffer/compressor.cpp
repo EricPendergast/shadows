@@ -1,4 +1,5 @@
 #include "compressor.h"
+#include <assert.h>
 
 Compressor::Compressor(int w_i, int h_i, int w_o, int h_o, ShaderProgram compression_shader_in):
         in_width(w_i), in_height(h_i),

@@ -17,7 +17,6 @@ void World::draw() {
     vbo.draw();
 }
 
-
 glm::mat4 World::get_world_to_screen(float screen_x, float screen_y, float screen_width, float screen_height) {
     assert(screen_x == 0 && screen_y == 0);
     auto transform = glm::scale(glm::vec3(2.0f/screen_width, -2.0f/(float)screen_height, 1.0f));

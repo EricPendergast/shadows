@@ -48,13 +48,12 @@ void Light::cast_shadows(World& world, FrameBuffer& draw_to) {
     background_shader.use();
     glUniform2f(background_shader.get_uniform("light_pos"), light_x, light_y);
     
-
-    background_shader.set_uniform_Matrix4f("world_to_screen", 
-        World::get_world_to_screen(
+    auto world_to_screen = World::get_world_to_screen(
             0,
             0,
             (float)draw_to.get_width(),
-            (float)draw_to.get_height()));
+            (float)draw_to.get_height());
+    background_shader.set_uniform_Matrix4f("world_to_screen", glm::value_ptr(world_to_screen));
     
     draw_to.bind();
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

@@ -1,4 +1,5 @@
 #include "basic_buffer.h"
+#include "shader.h"
 
 class Compressor {
     int in_width, in_height;

@@ -16,7 +16,6 @@
 #include "frame_buffer.h"
 #include "printer.h"
 #include "light.h"
-#include "world.h"
 
 namespace OpenGLContext {
     // A class which encapsulates GLUT. Should contain most of game logic.

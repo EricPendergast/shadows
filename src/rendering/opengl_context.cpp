@@ -1,4 +1,5 @@
 #include "opengl_context.h"
+#include "world.h"
 
 namespace OpenGLContext {
     namespace {

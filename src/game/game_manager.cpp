@@ -2,7 +2,8 @@
 #include <ctime>
 #include <chrono>
 #include <iostream>
-
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 
 double get_current_time_secs() {
@@ -41,12 +42,12 @@ void GameManager::display(void) {
     collision_map.get_frame_buffer().copy_to(*OpenGLContext::screen);
     
     main_shader.use();
-    main_shader.set_uniform_Matrix4f("world_to_screen",
-        World::get_world_to_screen(
+    glm::mat4 world_to_screen = World::get_world_to_screen(
             0,
             0,
             (float)OpenGLContext::screen->get_width(),
-            (float)OpenGLContext::screen->get_height()));
+            (float)OpenGLContext::screen->get_height());
+    main_shader.set_uniform_Matrix4f("world_to_screen", glm::value_ptr(world_to_screen));
 
     OpenGLContext::screen->bind();
     
