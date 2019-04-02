@@ -8,6 +8,7 @@
 
 #include "light.h"
 #include "opengl_context.h"
+#include "raii.h"
 
 using namespace std;
 
@@ -58,7 +59,7 @@ void Light::cast_shadows(World& world, FrameBuffer& draw_to) {
     draw_to.bind();
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     
-    glViewport(0,0, draw_to.get_width(), draw_to.get_height());
-    
+
+    WithViewport(0,0, draw_to.get_width(), draw_to.get_height());
     simple_box.draw();
 }

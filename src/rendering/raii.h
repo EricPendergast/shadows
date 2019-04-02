@@ -6,6 +6,7 @@
 #include <deque>
 #include <memory>
 #include <GL/glew.h>
+#include <assert.h>
 
 template<typename T>
 class TD;
@@ -78,7 +79,8 @@ namespace {
         //using FuncType = void(*)(Args...);
         //std::deque<ArgsTuple> call_stack;
         public:
-        RAII(TupleType call) {
+        RAII(Args... names) {
+            auto call = std::make_tuple(names...);
             auto stack = std::get<func_id>(stacks);
             stack.push_back(call);
             call_fcn_with_tuple(std::get<func_id>(functions), call);
@@ -90,6 +92,7 @@ namespace {
         
         ~RAII() {
             auto stack = std::get<func_id>(stacks);
+            assert(!stack.empty());
             call_fcn_with_tuple(std::get<func_id>(functions), stack.back());
             stack.pop_back();
         }
