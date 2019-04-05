@@ -29,6 +29,7 @@ namespace OpenGLContext {
     void mouse_move(int x, int y);
     void display(void);
     void do_nothing(void);
+    void set_raii_defaults(void);
     
     FrameBuffer * const screen = new DefaultFrameBuffer();
     GameManagerInterface* manager = nullptr;
@@ -58,18 +59,13 @@ namespace OpenGLContext {
         }
         
         glEnable(GL_TEXTURE_2D);
-        WithViewport::set_default(0,0,0,0);
+        set_raii_defaults();
     }
 
     void reshape(int width, int height) {
-        glMatrixMode(GL_MODELVIEW);
         manager->screen_width = width;
         manager->screen_height = height;
-        glLoadIdentity();
         WithViewport::set_default(0, 0, width, height);
-        gluOrtho2D(0, width, 0, width);
-        glScalef(1, -1, 1);
-        //glTranslatef(0, -(GLfloat)width, 0);
     } 
 
 
@@ -102,5 +98,9 @@ namespace OpenGLContext {
     
     void start_running(void) {
         glutMainLoop();
+    }
+
+    void set_raii_defaults() {
+        WithViewport::set_default(0,0,0,0);
     }
 }
