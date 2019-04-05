@@ -58,7 +58,7 @@ namespace OpenGLContext {
         }
         
         glEnable(GL_TEXTURE_2D);
-        new WithViewport(0,0,0,0);
+        WithViewport::set_default(0,0,0,0);
     }
 
     void reshape(int width, int height) {
@@ -66,7 +66,7 @@ namespace OpenGLContext {
         manager->screen_width = width;
         manager->screen_height = height;
         glLoadIdentity();
-        glViewport(0,0, width, height);
+        WithViewport::set_default(0, 0, width, height);
         gluOrtho2D(0, width, 0, width);
         glScalef(1, -1, 1);
         //glTranslatef(0, -(GLfloat)width, 0);

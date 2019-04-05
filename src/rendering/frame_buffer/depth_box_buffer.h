@@ -3,6 +3,7 @@
 
 #include "frame_buffer.h"
 #include "shader.h"
+#include "raii.h"
 
 
 // Intended to be used as a shadow buffer which is a square around a
@@ -24,13 +25,10 @@ public:
     
     DepthBoxBuffer(int width);
     // To be called before drawing. Enables the projection shader.
-    void begin_draw(int row);
+    void draw(int row, std::function<void()> draw);
     // Prepares depth and color buffers for rendering
     void clear();
     ShaderProgram* shader();
-private:
-    // Sets the viewport to only render to the specified row.
-    void set_render_row(int row);
 };
 
 #endif

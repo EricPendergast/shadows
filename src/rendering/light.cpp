@@ -6,9 +6,9 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "glm/ext.hpp"
 
+#include "raii.h"
 #include "light.h"
 #include "opengl_context.h"
-#include "raii.h"
 
 using namespace std;
 
@@ -32,10 +32,8 @@ void Light::fill_projection_buffer(World& world) {
     glUniform2f(projection.shader()->get_uniform("light_pos"), light_x, light_y);
     
     // Projecting onto each side of the box
-    for (int i = 0; i < 4; i++) {
-        projection.begin_draw(i);
-        world.draw();
-    }
+    for (int i = 0; i < 4; i++)
+        projection.draw(i, [&] {world.draw();});
     
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glDisable(GL_DEPTH_TEST);
@@ -59,7 +57,6 @@ void Light::cast_shadows(World& world, FrameBuffer& draw_to) {
     draw_to.bind();
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     
-
-    WithViewport(0,0, draw_to.get_width(), draw_to.get_height());
+    WithViewport w(0, 0, draw_to.get_width(), draw_to.get_height());
     simple_box.draw();
 }

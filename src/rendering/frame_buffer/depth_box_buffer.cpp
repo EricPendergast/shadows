@@ -47,12 +47,14 @@ DepthBoxBuffer::DepthBoxBuffer(int w) : FrameBuffer(w, 4), projection_shader("sh
     glUniform1i(shader()->get_uniform("LEFT"), LEFT);
 }
 
-void DepthBoxBuffer::begin_draw(int row) {
+void DepthBoxBuffer::draw(int row, std::function<void()> draw) {
+    assert(row >= 0 && row < 4);
     glEnable(GL_DEPTH_TEST);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     projection_shader.use();
-    set_render_row(row);
+    WithViewport w(0, row, width, 1);
     glUniform1i(shader()->get_uniform("side"), row);
+    draw();
 }
 
 void DepthBoxBuffer::clear() {
@@ -63,10 +65,4 @@ void DepthBoxBuffer::clear() {
 
 ShaderProgram* DepthBoxBuffer::shader() {
     return &projection_shader;
-}
-
-void DepthBoxBuffer::set_render_row(int row) {
-    assert(row >= 0 && row < 4);
-    
-    glViewport(0, row, width, 1);
 }

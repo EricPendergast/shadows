@@ -84,10 +84,12 @@ namespace  {
         static void set_default(Args... names) {
             auto call = std::make_tuple(names...);
             auto& stack = get_stack();
-            if (stack.size() == 0)
+            if (stack.size() == 0) {
                 stack.push_back(call);
-            else
+                call_fcn_with_tuple(std::get<func_id>(functions), call);
+            } else {
                 stack[0] = call;
+            }
         }
 
         ~RAII() {

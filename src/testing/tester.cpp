@@ -35,7 +35,7 @@ void print(std::vector<float> v) {
 void basic_frame_buffer_test() {
     BasicBuffer buf(100,100);
     buf.bind();
-    glViewport(0,0,100,100);
+    WithViewport w(0,0,100,100);
     glClearColor(1.0f, 0.5f, 0.25f, .5f);
     glClear(GL_COLOR_BUFFER_BIT);
     
@@ -63,52 +63,56 @@ void light_shader_test_1() {
     
     projection.bind();
     
-    
     projection.clear();
     // Rendering to the top of the box
-    projection.begin_draw(DepthBoxBuffer::UP);
-    glUniform2f(projection.shader()->get_uniform("light_pos"), 0, 0);
-    // Tests default depth
-    assert(equal(projection.read_pixel(0, DepthBoxBuffer::UP),
-                 DepthBoxBuffer::DEFAULT_DEPTH));
-    draw_square(-1,10,1.25);
-    // Tests depth interpolation
-    assert(equal(projection.read_pixel(50, DepthBoxBuffer::UP),
-                 {10,0,0,1}));
+    projection.draw(DepthBoxBuffer::UP, [&] {
+        glUniform2f(projection.shader()->get_uniform("light_pos"), 0, 0);
+        // Tests default depth
+        assert(equal(projection.read_pixel(0, DepthBoxBuffer::UP),
+                     DepthBoxBuffer::DEFAULT_DEPTH));
+        draw_square(-1,10,1.25);
+        // Tests depth interpolation
+        assert(equal(projection.read_pixel(50, DepthBoxBuffer::UP),
+                     {10,0,0,1}));
+    });
     
 
     projection.clear();
-    projection.begin_draw(DepthBoxBuffer::UP);
-    glUniform2f(projection.shader()->get_uniform("light_pos"), -.9f, 0);
-    draw_square(-1,3,.5);
-    assert(equal(projection.read_pixel(50, DepthBoxBuffer::UP),
-                 {3,0,0,1}));
+    projection.draw(DepthBoxBuffer::UP, [&] {
+        glUniform2f(projection.shader()->get_uniform("light_pos"), -.9f, 0);
+        draw_square(-1,3,.5);
+        assert(equal(projection.read_pixel(50, DepthBoxBuffer::UP),
+                     {3,0,0,1}));
+    });
 
     projection.clear();
-    projection.begin_draw(DepthBoxBuffer::UP);
-    glUniform2f(projection.shader()->get_uniform("light_pos"), -1.1f, 0);
-    draw_square(-1,3,.5);
-    assert(equal(projection.read_pixel(50, DepthBoxBuffer::UP),
-                 DepthBoxBuffer::DEFAULT_DEPTH));
+    projection.draw(DepthBoxBuffer::UP, [&] {
+        glUniform2f(projection.shader()->get_uniform("light_pos"), -1.1f, 0);
+        draw_square(-1,3,.5);
+        assert(equal(projection.read_pixel(50, DepthBoxBuffer::UP),
+                     DepthBoxBuffer::DEFAULT_DEPTH));
+    });
 
     projection.clear();
     // Drawing behind the camera
-    projection.begin_draw(DepthBoxBuffer::UP);
-    glUniform2f(projection.shader()->get_uniform("light_pos"), 0, 0);
-    draw_square(-1,-3,.5);
-    for (int i = 0; i < 100; i++)
-        assert(equal(projection.read_pixel(i, DepthBoxBuffer::UP),
-                     DepthBoxBuffer::DEFAULT_DEPTH));
+    projection.draw(DepthBoxBuffer::UP, [&] {
+        glUniform2f(projection.shader()->get_uniform("light_pos"), 0, 0);
+        draw_square(-1,-3,.5);
+        for (int i = 0; i < 100; i++)
+            assert(equal(projection.read_pixel(i, DepthBoxBuffer::UP),
+                         DepthBoxBuffer::DEFAULT_DEPTH));
+    });
 
 
     projection.clear();
-    projection.begin_draw(DepthBoxBuffer::DOWN);
-    glUniform2f(projection.shader()->get_uniform("light_pos"), 0, 0);
-    draw_square(0,-3,2);
-    assert(!equal(projection.read_pixel(75, DepthBoxBuffer::DOWN),
-                 DepthBoxBuffer::DEFAULT_DEPTH));
-    assert(equal(projection.read_pixel(25, DepthBoxBuffer::DOWN),
-                 DepthBoxBuffer::DEFAULT_DEPTH));
+    projection.draw(DepthBoxBuffer::DOWN, [&] {
+        glUniform2f(projection.shader()->get_uniform("light_pos"), 0, 0);
+        draw_square(0,-3,2);
+        assert(!equal(projection.read_pixel(75, DepthBoxBuffer::DOWN),
+                     DepthBoxBuffer::DEFAULT_DEPTH));
+        assert(equal(projection.read_pixel(25, DepthBoxBuffer::DOWN),
+                     DepthBoxBuffer::DEFAULT_DEPTH));
+    });
     
     
     // This commented code is nice for debugging.
@@ -129,15 +133,16 @@ void light_shader_test_2() {
     DepthBoxBuffer projection(100);
     projection.bind();
     
-    projection.begin_draw(DepthBoxBuffer::UP);
-    glUniform2f(projection.shader()->get_uniform("light_pos"), 0, 0);
-    draw_square(1,-20,40);
-    assert(!equal(projection.read_pixel(99, DepthBoxBuffer::UP), DepthBoxBuffer::DEFAULT_DEPTH));
-    assert(equal(projection.read_pixel(50, DepthBoxBuffer::UP), DepthBoxBuffer::DEFAULT_DEPTH));
-    assert(equal(projection.read_pixel(0, DepthBoxBuffer::UP), DepthBoxBuffer::DEFAULT_DEPTH));
-    draw_square(-41,-20,40);
-    assert(equal(projection.read_pixel(50, DepthBoxBuffer::UP), DepthBoxBuffer::DEFAULT_DEPTH));
-    assert(!equal(projection.read_pixel(0, DepthBoxBuffer::UP), DepthBoxBuffer::DEFAULT_DEPTH));
+    projection.draw(DepthBoxBuffer::UP, [&] {
+        glUniform2f(projection.shader()->get_uniform("light_pos"), 0, 0);
+        draw_square(1,-20,40);
+        assert(!equal(projection.read_pixel(99, DepthBoxBuffer::UP), DepthBoxBuffer::DEFAULT_DEPTH));
+        assert(equal(projection.read_pixel(50, DepthBoxBuffer::UP), DepthBoxBuffer::DEFAULT_DEPTH));
+        assert(equal(projection.read_pixel(0, DepthBoxBuffer::UP), DepthBoxBuffer::DEFAULT_DEPTH));
+        draw_square(-41,-20,40);
+        assert(equal(projection.read_pixel(50, DepthBoxBuffer::UP), DepthBoxBuffer::DEFAULT_DEPTH));
+        assert(!equal(projection.read_pixel(0, DepthBoxBuffer::UP), DepthBoxBuffer::DEFAULT_DEPTH));
+    });
     
     projection.write_to_tga_file("debug_output/basic.tga");
 }
