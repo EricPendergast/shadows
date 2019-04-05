@@ -67,17 +67,32 @@ namespace  {
                 FuncType,
                 std::remove_reference_t<decltype(std::get<func_id>(functions))>>, "Wrong function signature");
         using TupleType = std::tuple<Args...>;
+
+        static auto& get_stack() {
+            return std::get<func_id>(global::gl_call_stacks);
+        }
+
         public:
         RAII(Args... names) {
             auto call = std::make_tuple(names...);
-            auto& stack = std::get<func_id>(global::gl_call_stacks);
+            auto& stack = get_stack();
+            assert(stack.size() != 0); // No default specified
             stack.push_back(call);
             call_fcn_with_tuple(std::get<func_id>(functions), call);
         }
 
+        static void set_default(Args... names) {
+            auto call = std::make_tuple(names...);
+            auto& stack = get_stack();
+            if (stack.size() == 0)
+                stack.push_back(call);
+            else
+                stack[0] = call;
+        }
+
         ~RAII() {
-            auto& stack = std::get<func_id>(global::gl_call_stacks);
-            assert(stack.size() >= 2 ); // No default value given
+            auto& stack = get_stack();
+            assert(stack.size() >= 2); // No default value given
             stack.pop_back();
             if (!stack.empty())
                 call_fcn_with_tuple(std::get<func_id>(functions), stack.back());
