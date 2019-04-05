@@ -84,7 +84,6 @@ namespace OpenGLContext {
     }
 
     void display(void) {
-        glClearColor(1.f, 0.f, 0.f, 1.f);
         glClear(GL_COLOR_BUFFER_BIT);
         
         manager->display();
@@ -102,5 +101,7 @@ namespace OpenGLContext {
 
     void set_raii_defaults() {
         WithViewport::set_default(0,0,0,0);
+        WithDepthTestEnabled::set_default(false);
+        WithClearColor::set_default(1.f, 0.f, 0.f, 1.f);
     }
 }

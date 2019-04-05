@@ -36,7 +36,6 @@ void Light::fill_projection_buffer(World& world) {
         projection.draw(i, [&] {world.draw();});
     
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glDisable(GL_DEPTH_TEST);
 }
 
 void Light::cast_shadows(World& world, FrameBuffer& draw_to) {

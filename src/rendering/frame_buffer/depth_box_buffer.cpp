@@ -49,17 +49,17 @@ DepthBoxBuffer::DepthBoxBuffer(int w) : FrameBuffer(w, 4), projection_shader("sh
 
 void DepthBoxBuffer::draw(int row, std::function<void()> draw) {
     assert(row >= 0 && row < 4);
-    glEnable(GL_DEPTH_TEST);
+    WithDepthTestEnabled w1(true);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     projection_shader.use();
-    WithViewport w(0, row, width, 1);
+    WithViewport w2(0, row, width, 1);
     glUniform1i(shader()->get_uniform("side"), row);
     draw();
 }
 
 void DepthBoxBuffer::clear() {
     // Setting the default depth to far away
-    glClearColor(DEFAULT_DEPTH[0], DEFAULT_DEPTH[1], DEFAULT_DEPTH[2], DEFAULT_DEPTH[3]);
+    WithClearColor w(DEFAULT_DEPTH[0], DEFAULT_DEPTH[1], DEFAULT_DEPTH[2], DEFAULT_DEPTH[3]);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 }
 

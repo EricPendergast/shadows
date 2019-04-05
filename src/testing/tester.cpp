@@ -36,7 +36,7 @@ void basic_frame_buffer_test() {
     BasicBuffer buf(100,100);
     buf.bind();
     WithViewport w(0,0,100,100);
-    glClearColor(1.0f, 0.5f, 0.25f, .5f);
+    WithClearColor w2(1.0f, 0.5f, 0.25f, .5f);
     glClear(GL_COLOR_BUFFER_BIT);
     
     assert(equal(buf.read_pixel(0,0), {1.0f, 0.5f, 0.25f, .5f}));

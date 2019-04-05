@@ -6,11 +6,22 @@
 #include <memory>
 #include <GL/glew.h>
 #include <assert.h>
+#include "raii_functions.h"
 
 //template<typename T>
 //class TD;
 
 namespace {
+    // Warning: only append to this list.
+    // Indexes are hard-coded elsewhere.
+    static std::tuple functions = std::make_tuple(
+        glViewport,
+        glBindFramebuffer,
+        gl_set_depth_test_enabled,
+        glPolygonMode,
+        glClearColor
+    );
+
     template <typename F, typename Tuple, size_t... Is>
     void call_fcn_with_tuple(F f, Tuple t, std::index_sequence<Is...>) {
         f(std::get<Is>(t)...);
@@ -35,11 +46,6 @@ namespace {
     auto function_to_tuple(Wrapper<Ret(*)(Args...)>) {
         return Wrapper<std::tuple<Args...>>();
     }
-
-    static std::tuple functions = std::make_tuple(
-        glViewport,
-        glBindFramebuffer
-    );
 
     template<typename...Functions>
     auto make_deques(std::tuple<Functions...>) {
@@ -117,5 +123,8 @@ namespace  {
 
 using WithViewport = typename decltype(create_RAII<0>())::value;
 //using WithBoundFramebuffer = typename decltype(create_RAII<1>())::value;
+using WithDepthTestEnabled = typename decltype(create_RAII<2>())::value;
+using WithPolygonMode = typename decltype(create_RAII<3>())::value;
+using WithClearColor = typename decltype(create_RAII<4>())::value;
 
 #endif
