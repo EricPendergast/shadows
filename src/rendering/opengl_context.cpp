@@ -1,5 +1,6 @@
 #include "opengl_context.h"
 #include "world.h"
+#include "raii.h"
 
 namespace OpenGLContext {
     namespace {
@@ -57,6 +58,7 @@ namespace OpenGLContext {
         }
         
         glEnable(GL_TEXTURE_2D);
+        new WithViewport(0,0,0,0);
     }
 
     void reshape(int width, int height) {

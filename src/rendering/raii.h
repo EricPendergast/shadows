@@ -70,20 +70,17 @@ namespace  {
         public:
         RAII(Args... names) {
             auto call = std::make_tuple(names...);
-            auto stack = std::get<func_id>(global::gl_call_stacks);
+            auto& stack = std::get<func_id>(global::gl_call_stacks);
             stack.push_back(call);
             call_fcn_with_tuple(std::get<func_id>(functions), call);
         }
 
-        RAII() {
-            
-        }
-        
         ~RAII() {
-            auto stack = std::get<func_id>(global::gl_call_stacks);
+            auto& stack = std::get<func_id>(global::gl_call_stacks);
+            assert(stack.size() >= 2 ); // No default value given
             stack.pop_back();
-            assert(!stack.empty());
-            call_fcn_with_tuple(std::get<func_id>(functions), stack.back());
+            if (!stack.empty())
+                call_fcn_with_tuple(std::get<func_id>(functions), stack.back());
         }
 
         RAII(RAII const&) = delete;
@@ -91,17 +88,17 @@ namespace  {
     };
 
     template<int func_id, typename... Args>
-    auto create_RAII(void(*func)(Args...)) {
-        return RAII<decltype(func), func_id, Args...>();
+    constexpr auto create_RAII(void(*func)(Args...)) {
+        return Wrapper<RAII<decltype(func), func_id, Args...>>();
     }
 
     template<int func_id>
-    auto create_RAII() {
+    constexpr auto create_RAII() {
         return create_RAII<func_id>(std::get<func_id>(functions));
     }
 }
 
-using WithViewport = decltype(create_RAII<0>());
-using WithBoundFramebuffer = decltype(create_RAII<1>());
+using WithViewport = typename decltype(create_RAII<0>())::value;
+//using WithBoundFramebuffer = typename decltype(create_RAII<1>())::value;
 
 #endif
