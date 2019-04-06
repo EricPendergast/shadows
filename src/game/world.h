@@ -4,8 +4,7 @@
 #include "drawer.h"
 #include "vbo.h"
 
-#include <glm/glm.hpp>
-
+#include <glm/detail/type_mat.hpp>
 
 // This class is in charge of managing the position of blocks or various
 // objects in the background of the world.
