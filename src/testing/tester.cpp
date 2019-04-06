@@ -34,7 +34,7 @@ void print(std::vector<float> v) {
 
 void basic_frame_buffer_test() {
     BasicBuffer buf(100,100);
-    buf.bind();
+    WithBindFramebuffer b(&buf);
     WithViewport w(0,0,100,100);
     WithClearColor w2(1.0f, 0.5f, 0.25f, .5f);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -61,7 +61,7 @@ void draw_square(float x, float y, float width) {
 void light_shader_test_1() {
     DepthBoxBuffer projection(100);
     
-    projection.bind();
+    WithBindFramebuffer b(&projection);
     
     projection.clear();
     // Rendering to the top of the box
@@ -131,7 +131,7 @@ void light_shader_test_1() {
 // Tests proper clipping
 void light_shader_test_2() {
     DepthBoxBuffer projection(100);
-    projection.bind();
+    WithBindFramebuffer b(&projection);
     
     projection.draw(DepthBoxBuffer::UP, [&] {
         glUniform2f(projection.shader()->get_uniform("light_pos"), 0, 0);

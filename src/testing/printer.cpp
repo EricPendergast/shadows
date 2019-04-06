@@ -1,8 +1,11 @@
 #include "printer.h"
+#include "raii.h"
+#include "opengl_context.h"
 
 // Not written by me
 
 void printFramebufferInfo(GLuint fbo) {
+    WithBindFramebuffer b(OpenGLContext::screen);
     // bind fbo
     glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 

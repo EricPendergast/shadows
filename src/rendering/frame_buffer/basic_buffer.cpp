@@ -1,4 +1,4 @@
-
+#include "raii.h"
 #include "basic_buffer.h"
 #include <iostream>
 
@@ -20,17 +20,15 @@ BasicBuffer::BasicBuffer(int w, int h): FrameBuffer(w,h) {
     glBindTexture(GL_TEXTURE_2D, 0);
     
     glGenFramebuffers(1, &fboHandle);
-    glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);
+
+    WithBindFramebuffer b(this);
     
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texHandle, 0);
     GLenum DrawBuffers[1] = {GL_COLOR_ATTACHMENT0};
     glDrawBuffers(1, DrawBuffers);
     
-    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         std::cout << "Framebuffer error" << std::endl;
         exit(1);
     }
-        
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    
 }

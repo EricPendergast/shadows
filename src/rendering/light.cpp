@@ -25,7 +25,7 @@ Light::Light(void):
     }
 
 void Light::fill_projection_buffer(World& world) {
-    projection.bind();
+    WithBindFramebuffer w(&projection);
     projection.clear();
     projection.shader()->use();
     
@@ -34,8 +34,6 @@ void Light::fill_projection_buffer(World& world) {
     // Projecting onto each side of the box
     for (int i = 0; i < 4; i++)
         projection.draw(i, [&] {world.draw();});
-    
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void Light::cast_shadows(World& world, FrameBuffer& draw_to) {
@@ -53,8 +51,7 @@ void Light::cast_shadows(World& world, FrameBuffer& draw_to) {
             (float)draw_to.get_height());
     background_shader.set_uniform_Matrix4f("world_to_screen", glm::value_ptr(world_to_screen));
     
-    draw_to.bind();
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    WithBindFramebuffer b(&draw_to);
     
     WithViewport w(0, 0, draw_to.get_width(), draw_to.get_height());
     simple_box.draw();

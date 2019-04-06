@@ -16,7 +16,7 @@ namespace {
     // Indexes are hard-coded elsewhere.
     static std::tuple functions = std::make_tuple(
         glViewport,
-        glBindFramebuffer,
+        gl_bind_framebuffer,
         gl_set_depth_test_enabled,
         glPolygonMode,
         glClearColor
@@ -122,7 +122,7 @@ namespace  {
 }
 
 using WithViewport = typename decltype(create_RAII<0>())::value;
-//using WithBoundFramebuffer = typename decltype(create_RAII<1>())::value;
+using WithBindFramebuffer = typename decltype(create_RAII<1>())::value;
 using WithDepthTestEnabled = typename decltype(create_RAII<2>())::value;
 using WithPolygonMode = typename decltype(create_RAII<3>())::value;
 using WithClearColor = typename decltype(create_RAII<4>())::value;

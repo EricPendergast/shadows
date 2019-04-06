@@ -49,8 +49,6 @@ void GameManager::display(void) {
             (float)OpenGLContext::screen->get_height());
     main_shader.set_uniform_Matrix4f("world_to_screen", glm::value_ptr(world_to_screen));
 
-    OpenGLContext::screen->bind();
-    
     world.draw();
     
     player.draw();

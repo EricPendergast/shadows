@@ -1,5 +1,6 @@
 #include "frame_buffer.h"
 #include "shader.h"
+#include "raii.h"
 
 #include <iostream>
 #include <fstream>
@@ -19,7 +20,7 @@ GLuint FrameBuffer::get_tex_handle() {
 }
 
 std::vector<float> FrameBuffer::read_pixel(int x, int y) {
-    bind();
+    WithBindFramebuffer w(this);
     GLfloat pixel[4];
     glReadnPixels(x,y, 1,1, GL_RGBA, GL_FLOAT, 4*sizeof(pixel[0]), pixel);
     
@@ -27,7 +28,7 @@ std::vector<float> FrameBuffer::read_pixel(int x, int y) {
 }
 
 void FrameBuffer::write_pixel(int x, int y, unsigned int pixel) {
-    bind();
+    WithBindFramebuffer w(this);
     GLubyte byte_arr[4];
     for (int i = 3; i >= 0; i--) {
         byte_arr[i] = (char)(pixel & 0xff);
@@ -56,12 +57,8 @@ void FrameBuffer::copy_to(FrameBuffer& other, int this_x, int this_y, int this_w
             GL_NEAREST);
 }
 
-void FrameBuffer::bind() {
-    glBindFramebuffer(GL_FRAMEBUFFER, get_fbo_handle());
-}
-
 void FrameBuffer::write_to(std::vector<float>& vec) {
-    bind();
+    WithBindFramebuffer w(this);
     vec.resize(4*get_width()*get_height(), 0);
     
     glGetError();
