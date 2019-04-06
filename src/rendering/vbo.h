@@ -1,7 +1,6 @@
 #ifndef SRC_RENDERING_VBO_H
 #define SRC_RENDERING_VBO_H
 
-
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <vector>

@@ -1,5 +1,8 @@
+#include <GL/glew.h>
+#include <GL/freeglut.h>
+#include <iostream>
+
 #include "opengl_context.h"
-#include "world.h"
 #include "raii.h"
 
 namespace OpenGLContext {

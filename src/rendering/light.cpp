@@ -1,5 +1,6 @@
 #define GLM_ENABLE_EXPERIMENTAL
 
+#include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
@@ -9,8 +10,6 @@
 #include "raii.h"
 #include "light.h"
 #include "opengl_context.h"
-
-using namespace std;
 
 Light::Light(void): 
     projection(resolution),

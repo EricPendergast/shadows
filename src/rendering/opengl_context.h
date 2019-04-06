@@ -1,25 +1,12 @@
 #ifndef OPENGL_CONTEXT_H
 #define OPENGL_CONTEXT_H
 
-#include <GL/glew.h>
-#include <GL/freeglut.h>
-#include <GL/glu.h>
-#include <GL/glext.h>
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <streambuf>
-#include <vector>
-#include <algorithm>
-
-#include "shader.h"
 #include "frame_buffer.h"
-#include "printer.h"
-#include "light.h"
 
 namespace OpenGLContext {
     // A class which encapsulates GLUT. Should contain most of game logic.
     class GameManagerInterface {
+
     public:
         // These functions are all implemented and do nothing because it is
         // convenient for the inheriting classes.

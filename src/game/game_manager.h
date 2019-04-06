@@ -7,6 +7,9 @@
 #include "collision_map.h"
 #include "opengl_context.h"
 #include "player.h"
+#include "light.h"
+#include "world.h"
+#include "vbo.h"
 
 
 class GameManager: public OpenGLContext::GameManagerInterface {

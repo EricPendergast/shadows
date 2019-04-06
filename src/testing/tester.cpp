@@ -1,4 +1,7 @@
+#include <iostream>
+
 #include "tester.h"
+#include "raii.h"
 
 void Tester::display() {
     if (ran_once) {

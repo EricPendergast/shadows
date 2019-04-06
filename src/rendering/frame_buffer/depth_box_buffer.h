@@ -1,9 +1,10 @@
 #ifndef SRC_RENDERING_FRAME_BUFFER_DEPTH_BOX_BUFFER_H
 #define SRC_RENDERING_FRAME_BUFFER_DEPTH_BOX_BUFFER_H
 
+#include <functional>
+
 #include "frame_buffer.h"
 #include "shader.h"
-#include "raii.h"
 
 
 // Intended to be used as a shadow buffer which is a square around a

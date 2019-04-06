@@ -1,6 +1,7 @@
 #include "depth_box_buffer.h"
 #include <iostream>
 #include <assert.h>
+#include "raii.h"
 
 const std::vector<float> DepthBoxBuffer::DEFAULT_DEPTH({1000000, 0, 0, 1});
 

@@ -1,12 +1,12 @@
 #ifndef SRC_GAME_PLAYER_H
 #define SRC_GAME_PLAYER_H
 
-
 #include "depth_box_buffer.h"
 #include "opengl_context.h"
 #include "basic_buffer.h"
 #include "sum_squares.h"
 #include "drawer.h"
+#include "vbo.h"
 
 // Speeds are in units of world coordinates per second.
 class Player : Drawable {

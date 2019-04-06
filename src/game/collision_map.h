@@ -3,7 +3,6 @@
 
 #include "basic_buffer.h"
 
-
 class CollisionMap {
 public:
     CollisionMap(int width, int height);

@@ -1,19 +1,10 @@
 #ifndef SRC_RENDERING_LIGHT_H
 #define SRC_RENDERING_LIGHT_H
 
-#include <GL/glew.h>
-#include <GL/glut.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glext.h>
-
 #include "depth_box_buffer.h"
 #include "shader.h"
-#include "printer.h"
 #include "world.h"
-#include "drawer.h"
 #include "vbo.h"
-
 
 class Light {
     // TODO: Platform independence. Is this the max framebuffer width for every
