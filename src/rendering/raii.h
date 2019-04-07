@@ -19,7 +19,8 @@ namespace {
         gl_bind_framebuffer,
         gl_set_depth_test_enabled,
         glPolygonMode,
-        glClearColor
+        glClearColor,
+        gl_set_scissor_enabled
     );
 
     template <typename F, typename Tuple, size_t... Is>
@@ -126,5 +127,8 @@ using WithBindFramebuffer = typename decltype(create_RAII<1>())::value;
 using WithDepthTestEnabled = typename decltype(create_RAII<2>())::value;
 using WithPolygonMode = typename decltype(create_RAII<3>())::value;
 using WithClearColor = typename decltype(create_RAII<4>())::value;
+using WithScissorTestEnabled = typename decltype(create_RAII<5>())::value;
+
+void set_raii_defaults();
 
 #endif

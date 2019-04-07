@@ -48,6 +48,14 @@ void FrameBuffer::copy_to(FrameBuffer& other, int this_x, int this_y, int this_w
     //assert(this->is_in_bounds(this_x+this_w-1, this_y+this_h-1));
     //assert(other.is_in_bounds(other_x, other_y));
     //assert(other.is_in_bounds(other_x+other_w-1, other_y+other_h-1));
+
+    {
+        WithScissorTestEnabled s(true);
+        WithBindFramebuffer b(&other);
+        glScissor(other_x, other_y, other_w, other_h);
+        WithClearColor c(0,0,0,1);
+        glClear(GL_COLOR_BUFFER_BIT);
+    }
     
     glBlitNamedFramebuffer(
             get_fbo_handle(), other.get_fbo_handle(), 

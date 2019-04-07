@@ -32,7 +32,6 @@ namespace OpenGLContext {
     void mouse_move(int x, int y);
     void display(void);
     void do_nothing(void);
-    void set_raii_defaults(void);
     
     FrameBuffer * const screen = new DefaultFrameBuffer();
     GameManagerInterface* manager = nullptr;
@@ -100,13 +99,5 @@ namespace OpenGLContext {
     
     void start_running(void) {
         glutMainLoop();
-    }
-
-    void set_raii_defaults() {
-        WithViewport::set_default(0,0,0,0);
-        WithDepthTestEnabled::set_default(false);
-        WithClearColor::set_default(1.f, 0.f, 0.f, 1.f);
-        WithPolygonMode::set_default(GL_FRONT_AND_BACK, GL_FILL);
-        WithBindFramebuffer::set_default(screen);
     }
 }
