@@ -10,15 +10,11 @@
 #include "light.h"
 #include "world.h"
 #include "vbo.h"
+#include "level.h"
 
 
 class GameManager: public OpenGLContext::GameManagerInterface {
-    ShaderProgram main_shader;
-    CollisionMap collision_map;
-    
-    Light light;
-    World world;
-    Player player;
+    Level level;
     
     std::vector<bool> keys;
 public:
@@ -26,10 +22,10 @@ public:
     
     GameManager();
     // This function is used for updating as well.
-    virtual void display(void);
-    virtual void mouse_move(int x, int y);
-    virtual void key_up(unsigned char key, int x, int y);
-    virtual void key_down(unsigned char key, int x, int y);
+    void display(void) override;
+    void mouse_move(int x, int y) override;
+    void key_up(unsigned char key, int x, int y) override;
+    void key_down(unsigned char key, int x, int y) override;
 };
 
 #endif
