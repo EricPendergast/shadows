@@ -19,7 +19,7 @@ DepthBoxBuffer::DepthBoxBuffer(int w) : FrameBuffer(w, 4), projection_shader("sh
     glBindTexture(GL_TEXTURE_2D, 0);
     
     glGenFramebuffers(1, &fboHandle);
-    glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);
+    WithBindFramebuffer b(this);
     
     // Uses a depth render buffer so that closest fragment gets rendered for
     // each pixel. The depth value ultimately gets stored in the color buffer
@@ -39,9 +39,6 @@ DepthBoxBuffer::DepthBoxBuffer(int w) : FrameBuffer(w, 4), projection_shader("sh
         exit(1);
     }
         
-    
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    
     glUniform1i(shader()->get_uniform("UP"), UP);
     glUniform1i(shader()->get_uniform("DOWN"), DOWN);
     glUniform1i(shader()->get_uniform("RIGHT"), RIGHT);
