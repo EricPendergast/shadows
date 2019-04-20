@@ -7,7 +7,7 @@
 
 // Represents a framebuffer which is tied to a position and size in world
 // coordinates
-class WorldFramebuffer {
+class WorldFrameBuffer {
 public:
     FrameBuffer* frame_buffer;
     // Returns a matrix mapping world coordinates to screen coordinates
@@ -16,14 +16,14 @@ public:
     // Map world coordinates to coordinates which refer to a pixel in
     // frame_buffer
     glm::mat4 world_to_pixel();
-    WorldFramebuffer(FrameBuffer* frame_buffer, float x, float y, float w, float h);
-    WorldFramebuffer(FrameBuffer* frame_buffer, float x, float y);
+    WorldFrameBuffer(FrameBuffer* frame_buffer, float x, float y, float w, float h);
+    WorldFrameBuffer(FrameBuffer* frame_buffer, float x, float y);
     // Position of the upper left corner of the buffer in world coordinates
     float x, y;
     float width, height;
 
     // Takes world coordinates
-    void copy_to(WorldFramebuffer* output);
+    void copy_to(WorldFrameBuffer* output);
     FrameBuffer& get_frame_buffer();
 };
 

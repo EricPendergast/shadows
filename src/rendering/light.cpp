@@ -30,7 +30,7 @@ void Light::fill_projection_buffer(World& world) {
         projection.draw(i, [&] {world.draw();});
 }
 
-void Light::cast_shadows(World& world, WorldFramebuffer& draw_to) {
+void Light::cast_shadows(World& world, WorldFrameBuffer& draw_to) {
     fill_projection_buffer(world);
     
     glBindTexture(GL_TEXTURE_2D, projection.get_tex_handle());

@@ -5,19 +5,19 @@
 #include <glm/ext.hpp>
 #include <algorithm>
 
-WorldFramebuffer::WorldFramebuffer(FrameBuffer* frame_buffer, float x, float y, float w, float h) :
+WorldFrameBuffer::WorldFrameBuffer(FrameBuffer* frame_buffer, float x, float y, float w, float h) :
     frame_buffer(frame_buffer),
     x(x), y(y),
     width(w), height(h) {}
 
-WorldFramebuffer::WorldFramebuffer(FrameBuffer* frame_buffer, float x, float y) :
-    WorldFramebuffer(frame_buffer, x, y, (float)frame_buffer->get_width(), (float)frame_buffer->get_height()) {}
+WorldFrameBuffer::WorldFrameBuffer(FrameBuffer* frame_buffer, float x, float y) :
+    WorldFrameBuffer(frame_buffer, x, y, (float)frame_buffer->get_width(), (float)frame_buffer->get_height()) {}
 
-FrameBuffer& WorldFramebuffer::get_frame_buffer() {
+FrameBuffer& WorldFrameBuffer::get_frame_buffer() {
     return *frame_buffer;
 }
 
-void WorldFramebuffer::copy_to(WorldFramebuffer* out) {
+void WorldFrameBuffer::copy_to(WorldFrameBuffer* out) {
     // TODO: What if the width of this frame buffer in pixels differs from its
     // width in world coordinates?
     auto transform = world_to_pixel();
@@ -39,7 +39,7 @@ void WorldFramebuffer::copy_to(WorldFramebuffer* out) {
             0, 0, out->frame_buffer->get_width(), out->frame_buffer->get_height());
 }
 
-glm::mat4 WorldFramebuffer::world_to_screen() {
+glm::mat4 WorldFrameBuffer::world_to_screen() {
     assert(abs(width - (float)frame_buffer->get_width()) < .0001);
     assert(abs(height - (float)frame_buffer->get_height()) < .0001);
     auto transform = glm::translate(glm::vec3(-x, -y, 0));
@@ -47,7 +47,7 @@ glm::mat4 WorldFramebuffer::world_to_screen() {
     return glm::translate(glm::vec3(-1,1,0)) * transform;
 }
 
-glm::mat4 WorldFramebuffer::world_to_pixel() {
+glm::mat4 WorldFrameBuffer::world_to_pixel() {
     assert(abs(width - (float)frame_buffer->get_width()) < .0001);
     assert(abs(height - (float)frame_buffer->get_height()) < .0001);
     auto transform = glm::translate(glm::vec3(0, height, 0)) * glm::scale(glm::vec3(1, -1, 1)) * glm::translate(glm::vec3(-x, -y, 0));

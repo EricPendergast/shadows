@@ -12,7 +12,7 @@
 // Speeds are in units of world coordinates per second.
 class Player : Drawable {
 public:
-    WorldFramebuffer pixels;
+    WorldFrameBuffer pixels;
     SumSquares<double> sum_squares;
     double x = 5;
     double y = 5;

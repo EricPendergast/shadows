@@ -31,11 +31,7 @@ float Level::a = 0;
 void Level::render(FrameBuffer* render_to) {
     a += .1f;
 
-    WorldFramebuffer screen(render_to, 
-            a,
-            -a,
-            (float)render_to->get_width(),
-            (float)render_to->get_height());
+    WorldFrameBuffer screen(render_to, a, -a);
 
     collision_map.copy_to(&screen);
 
