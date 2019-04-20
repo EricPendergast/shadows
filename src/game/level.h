@@ -13,6 +13,7 @@ public:
 private:
     World world;
     Player player;
+    static float a;
 
 public:
     Level();

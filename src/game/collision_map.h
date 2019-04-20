@@ -3,19 +3,7 @@
 
 #include "frame_buffer.h"
 #include "basic_buffer.h"
-
-#include <memory>
 #include <glm/detail/type_mat.hpp>
-
-class CollisionMap {
-public:
-    CollisionMap(int width, int height);
-    FrameBuffer& get_frame_buffer();
-    // Takes inputs in physical coordinates
-    void copy_surrounding_pixels_to(int x, int y, int w, int h, FrameBuffer* output);
-private:
-    BasicBuffer collision_map;
-};
 
 // Represents a framebuffer which is tied to a position and size in world
 // coordinates

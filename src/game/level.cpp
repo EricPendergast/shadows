@@ -25,19 +25,22 @@ void Level::update(double timestep, int player_lr, bool player_jump) {
     player.collide();
 }
 
+float Level::a = 0;
+
 void Level::render(FrameBuffer* render_to) {
-    static float a = 0;
+    a += .1f;
 
-    collision_map.get_frame_buffer().copy_to(*render_to);
-
-    WorldFramebuffer wfb(render_to, 
+    WorldFramebuffer screen(render_to, 
             a,
-            0,
+            -a,
             (float)render_to->get_width(),
             (float)render_to->get_height());
 
+    collision_map.copy_to(&screen);
+
     main_shader.use();
-    main_shader.set_uniform_Matrix4f("world_to_screen", glm::value_ptr(wfb.world_to_screen()));
+    auto world_to_screen = screen.world_to_screen();
+    main_shader.set_uniform_Matrix4f("world_to_screen", glm::value_ptr(world_to_screen));
 
     world.draw();
     
