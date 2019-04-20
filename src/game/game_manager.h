@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "basic_buffer.h"
-#include "collision_map.h"
+#include "world_frame_buffer.h"
 #include "opengl_context.h"
 #include "player.h"
 #include "light.h"

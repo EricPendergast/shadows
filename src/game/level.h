@@ -2,7 +2,7 @@
 #include "light.h"
 #include "world.h"
 #include "frame_buffer.h"
-#include "collision_map.h"
+#include "world_frame_buffer.h"
 
 class Level {
     ShaderProgram main_shader;

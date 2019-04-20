@@ -5,7 +5,7 @@
 #include "shader.h"
 #include "world.h"
 #include "vbo.h"
-#include "collision_map.h"
+#include "world_frame_buffer.h"
 
 class Light {
     // TODO: Platform independence. Is this the max framebuffer width for every

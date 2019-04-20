@@ -1,4 +1,4 @@
-#include "collision_map.h"
+#include "world_frame_buffer.h"
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/transform.hpp>
 #include <iostream>

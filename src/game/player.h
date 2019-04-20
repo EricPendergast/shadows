@@ -7,7 +7,7 @@
 #include "sum_squares.h"
 #include "drawer.h"
 #include "vbo.h"
-#include "collision_map.h"
+#include "world_frame_buffer.h"
 
 // Speeds are in units of world coordinates per second.
 class Player : Drawable {
@@ -30,12 +30,12 @@ public:
     // TODO: make private
     void collide();
 private:
-    double max_move_speed = 250;
+    double max_move_speed = 500;
     double ground_lr_acceleration = 100000;
     double air_lr_acceleration = 1000;
     double gravity_x = 0;
-    double gravity_y = 1200;
-    double jump_speed = 500;
+    double gravity_y = 1500;
+    double jump_speed = 700;
     
     double last_push_x = 0;
     double last_push_y = 0;
