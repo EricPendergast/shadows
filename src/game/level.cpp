@@ -16,9 +16,10 @@ Level::Level() :
         light(), world(), player() {}
 
 void Level::update(double timestep, int player_lr, bool player_jump) {
-    light.cast_shadows(world, collision_map);
-    
     player.move(player_lr, player_jump, timestep);
+    collision_map.x = a;
+    collision_map.y = -a;
+    light.cast_shadows(world, collision_map);
     
     collision_map.copy_to(&player.pixels);
 

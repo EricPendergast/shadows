@@ -11,18 +11,12 @@
 #include "raii.h"
 #include "light.h"
 #include "opengl_context.h"
+#include "poly.h"
 
 Light::Light(void): 
     projection(resolution),
     background_shader("shaders/shadow_background_box.vert", "shaders/shadow_background_box.frag"),
-    simple_box({
-        0, 0, 0, 1,
-        800, 0, 0, 1,
-        0, 800, 0, 1,
-        0, 800, 0, 1,
-        800, 800, 0, 1,
-        800, 0, 0, 1}) {
-    }
+    simple_box(make_rect(0,0, 800, 800)) {}
 
 void Light::fill_projection_buffer(World& world) {
     WithBindFramebuffer w(&projection);
@@ -50,5 +44,6 @@ void Light::cast_shadows(World& world, WorldFramebuffer& draw_to) {
     WithBindFramebuffer b(draw_to.frame_buffer);
     
     WithViewport w(0, 0, draw_to.frame_buffer->get_width(), draw_to.frame_buffer->get_height());
+    simple_box.sub_data(0, make_rect(draw_to.x, draw_to.y, draw_to.width, draw_to.height));
     simple_box.draw();
 }
