@@ -7,11 +7,12 @@
 #include "sum_squares.h"
 #include "drawer.h"
 #include "vbo.h"
+#include "collision_map.h"
 
 // Speeds are in units of world coordinates per second.
 class Player : Drawable {
 public:
-    BasicBuffer pixels;
+    WorldFramebuffer pixels;
     SumSquares<double> sum_squares;
     double x = 5;
     double y = 5;

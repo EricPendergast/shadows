@@ -5,7 +5,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "glm/ext.hpp"
+#include <glm/ext.hpp>
+#include <iostream>
 
 #include "raii.h"
 #include "light.h"
@@ -35,7 +36,7 @@ void Light::fill_projection_buffer(World& world) {
         projection.draw(i, [&] {world.draw();});
 }
 
-void Light::cast_shadows(World& world, FrameBuffer& draw_to) {
+void Light::cast_shadows(World& world, WorldFramebuffer& draw_to) {
     fill_projection_buffer(world);
     
     glBindTexture(GL_TEXTURE_2D, projection.get_tex_handle());
@@ -43,15 +44,11 @@ void Light::cast_shadows(World& world, FrameBuffer& draw_to) {
     background_shader.use();
     glUniform2f(background_shader.get_uniform("light_pos"), light_x, light_y);
     
-    auto world_to_screen = World::get_world_to_screen(
-            0,
-            0,
-            (float)draw_to.get_width(),
-            (float)draw_to.get_height());
+    auto world_to_screen = draw_to.world_to_screen();
     background_shader.set_uniform_Matrix4f("world_to_screen", glm::value_ptr(world_to_screen));
     
-    WithBindFramebuffer b(&draw_to);
+    WithBindFramebuffer b(draw_to.frame_buffer);
     
-    WithViewport w(0, 0, draw_to.get_width(), draw_to.get_height());
+    WithViewport w(0, 0, draw_to.frame_buffer->get_width(), draw_to.frame_buffer->get_height());
     simple_box.draw();
 }

@@ -6,7 +6,7 @@
 
 Player::Player() : Player(64,64) {}
 Player::Player(int w, int h) :
-    pixels(w*3, h*3),
+    pixels(new BasicBuffer(w*3, h*3), (float)(x-w), (float)(y-w)),
     sum_squares(w*3, h*3),
     width(w),
     height(h),
@@ -39,14 +39,18 @@ void Player::move(int direction_lr, bool jump, double time_step) {
     
     if (jump && time_since_touched_platform < max_jump_delay)
         dy = -jump_speed;
-    
+
     x += time_step*dx;
     y += time_step*dy;
+
+    pixels.x = (float)(x-width);
+    pixels.y = (float)(y-height);
     
     time_since_touched_platform += time_step;
 }
 
 void Player::collide() {
+    FrameBuffer& pixels = *this->pixels.frame_buffer;
     static std::vector<float> pixels_array;
     pixels.write_to(pixels_array);
     
