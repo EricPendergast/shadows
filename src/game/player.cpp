@@ -43,7 +43,7 @@ void Player::move(int direction_lr, bool jump, double time_step) {
     time_since_touched_platform += time_step;
 }
 
-void Player::collide() {
+Manifold Player::get_manifold() {
     FrameBuffer& pixels = *this->pixels.frame_buffer;
     static std::vector<float> pixels_array;
     pixels.write_to(pixels_array);
@@ -77,27 +77,34 @@ void Player::collide() {
             }
         }
     }
-    
+
+    Manifold m;
+    m.norm_x = min_x;
+    m.norm_y = min_y;
+    m.cost = cost_function(min_x, min_y);
+    return m;
+}
+
+void Player::collide() {
+    Manifold m = get_manifold();
     // If pressing up against the surface
-    if (vec::dot(dx, dy, min_x, min_y) < -.001) {
-        vec::reject(&dx, &dy, min_x, min_y);
+    if (vec::dot(dx, dy, m.norm_x, m.norm_y) < -.001) {
+        vec::reject(&dx, &dy, m.norm_x, m.norm_y);
         vec::mult(&dx, &dy, .5);
     }
     
     // If surface normal and gravity are pointing in opposite directions
-    if (vec::dot(gravity_x, gravity_y, min_x, min_y) < -.001) {
+    if (vec::dot(gravity_x, gravity_y, m.norm_x, m.norm_y) < -.001) {
         time_since_touched_platform = 0;
-        last_push_x = min_x;
-        last_push_y = min_y;
     }
     
-    if (cost_function(min_x, min_y) > 999999) {
+    if (m.cost > 999999) {
         std::cout << "DIE" << std::endl;
         exit(1);
     }
     
-    this->x += min_x;
-    this->y += min_y;
+    this->x += m.norm_x;
+    this->y += m.norm_y;
 }
 
 void Player::process_lr(int direction_lr, double time_step) {

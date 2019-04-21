@@ -8,6 +8,7 @@
 #include "drawer.h"
 #include "vbo.h"
 #include "world_frame_buffer.h"
+#include "manifold.h"
 
 // Speeds are in units of world coordinates per second.
 class Player : Drawable {
@@ -46,6 +47,7 @@ private:
     double time_since_touched_platform = 1000000;
     
     void process_lr(int direction_lr, double time_step);
+    Manifold get_manifold();
     
     double get_lr_acceleration();
     bool on_ground();

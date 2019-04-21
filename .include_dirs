@@ -2,5 +2,6 @@
 -Isrc/rendering
 -Isrc/rendering/frame_buffer
 -Isrc/game
+-Isrc/game/physics
 -Isrc/testing
 -Isrc/algorithms
