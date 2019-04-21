@@ -42,7 +42,7 @@ private:
     
     // Number of seconds between stopping touching a platform and being able to
     // jump.
-    double max_jump_delay = .05;
+    double max_jump_delay = .1;
     double time_since_touched_platform = 1000000;
     
     void process_lr(int direction_lr, double time_step);

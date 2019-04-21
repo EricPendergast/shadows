@@ -8,20 +8,14 @@
 
 Level::Level() :
         main_shader("shaders/main.vert", "shaders/main.frag"),
-        collision_map(
-                new BasicBuffer(
-                    OpenGLContext::screen->get_width(),
-                    OpenGLContext::screen->get_height()),
-                    0, 0),
         light(), world(), player() {}
 
 void Level::update(double timestep, int player_lr, bool player_jump) {
     player.move(player_lr, player_jump, timestep);
-    collision_map.x = a;
-    collision_map.y = -a;
-    light.cast_shadows(world, collision_map);
-    
-    collision_map.copy_to(&player.pixels);
+
+    light.generate_shadows(world);
+
+    light.render(player.pixels);
 
     player.collide();
 }
@@ -31,9 +25,9 @@ float Level::a = 0;
 void Level::render(FrameBuffer* render_to) {
     a += .1f;
 
-    WorldFrameBuffer screen(render_to, a, -a);
+    WorldFrameBuffer screen(render_to, (float)player.x-400, (float)player.y-400);
 
-    collision_map.copy_to(&screen);
+    light.render(screen);
 
     main_shader.use();
     auto world_to_screen = screen.world_to_screen();

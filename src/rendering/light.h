@@ -18,10 +18,8 @@ class Light {
 public:
     float light_x = 50, light_y = 50;
     Light(void);
-    void cast_shadows(World& world, WorldFrameBuffer& draw_to);
-    
-private:
-    void fill_projection_buffer(World& world);
+    void render(WorldFrameBuffer& draw_to);
+    void generate_shadows(World& world);
 };
 
 #endif

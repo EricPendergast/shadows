@@ -6,8 +6,6 @@
 
 class Level {
     ShaderProgram main_shader;
-
-    WorldFrameBuffer collision_map;
 public:
     Light light;
 private:

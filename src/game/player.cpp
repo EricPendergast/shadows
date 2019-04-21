@@ -93,6 +93,7 @@ void Player::collide() {
     
     if (cost_function(min_x, min_y) > 999999) {
         std::cout << "DIE" << std::endl;
+        exit(1);
     }
     
     this->x += min_x;

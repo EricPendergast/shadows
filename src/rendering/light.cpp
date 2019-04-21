@@ -18,7 +18,7 @@ Light::Light(void):
     background_shader("shaders/shadow_background_box.vert", "shaders/shadow_background_box.frag"),
     simple_box(make_rect(0,0, 800, 800)) {}
 
-void Light::fill_projection_buffer(World& world) {
+void Light::generate_shadows(World& world) {
     WithBindFramebuffer w(&projection);
     projection.clear();
     projection.shader()->use();
@@ -30,9 +30,7 @@ void Light::fill_projection_buffer(World& world) {
         projection.draw(i, [&] {world.draw();});
 }
 
-void Light::cast_shadows(World& world, WorldFrameBuffer& draw_to) {
-    fill_projection_buffer(world);
-    
+void Light::render(WorldFrameBuffer& draw_to) {
     glBindTexture(GL_TEXTURE_2D, projection.get_tex_handle());
     
     background_shader.use();
