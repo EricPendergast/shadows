@@ -17,5 +17,6 @@ public:
     Level();
     void update(double timestep, int player_lr, bool player_jump);
 
+    Manifold get_player_manifold();
     void render(FrameBuffer* render_to);
 };

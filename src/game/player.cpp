@@ -85,8 +85,7 @@ Manifold Player::get_manifold() {
     return m;
 }
 
-void Player::collide() {
-    Manifold m = get_manifold();
+void Player::collide(Manifold m) {
     // If pressing up against the surface
     if (vec::dot(dx, dy, m.norm_x, m.norm_y) < -.001) {
         vec::reject(&dx, &dy, m.norm_x, m.norm_y);

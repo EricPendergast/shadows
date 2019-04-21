@@ -29,7 +29,8 @@ public:
     void move(int direction_lr, bool jump, double time_step);
     void draw();
     // TODO: make private
-    void collide();
+    void collide(Manifold m);
+    Manifold get_manifold();
 private:
     double max_move_speed = 500;
     double ground_lr_acceleration = 100000;
@@ -47,7 +48,6 @@ private:
     double time_since_touched_platform = 1000000;
     
     void process_lr(int direction_lr, double time_step);
-    Manifold get_manifold();
     
     double get_lr_acceleration();
     bool on_ground();

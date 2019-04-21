@@ -17,7 +17,7 @@ void Level::update(double timestep, int player_lr, bool player_jump) {
 
     light.render(player.pixels);
 
-    player.collide();
+    player.collide(get_player_manifold());
 }
 
 float Level::a = 0;
@@ -36,4 +36,8 @@ void Level::render(FrameBuffer* render_to) {
     world.draw();
     
     player.draw();
+}
+
+Manifold Level::get_player_manifold() {
+    return player.get_manifold();
 }
