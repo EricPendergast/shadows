@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <math.h>
 
+#include "poly.h"
 #include "player.h"
 #include "vector_math.h"
 
@@ -11,22 +12,15 @@ Player::Player(int w, int h) :
     width(w),
     height(h),
     model({0,0,0,1,
-           0,64,0,1,
-           64,64,0,1,
+           0,(float)h,0,1,
+           (float)w,(float)h,0,1,
            0,0,0,1,
            0,0,0,1,
            0,0,0,1}) {
     }
 
 void Player::draw() {
-    model.sub_data(0, std::vector<GLfloat>({
-        (float)(x + 0),       (float)(y + 0), 0, 1,
-        (float)(x + width),   (float)(y + 0), 0, 1,
-        (float)(x + width),   (float)(y + height), 0, 1,
-        (float)(x + width),   (float)(y + height), 0, 1,
-        (float)(x + 0),       (float)(y + height), 0, 1,
-        (float)(x + 0),       (float)(y + 0), 0, 1,
-    }));
+    model.sub_data(0, make_rect((float)x, (float)y, (float)width, (float)height));
     model.draw();
 }
 
