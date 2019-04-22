@@ -5,6 +5,7 @@
 #include "world_frame_buffer.h"
 
 class Level {
+    WorldFrameBuffer render_to;
     ShaderProgram main_shader;
 public:
     Light light;
@@ -18,5 +19,8 @@ public:
     void update(double timestep, int player_lr, bool player_jump);
 
     Manifold get_player_manifold();
-    void render(FrameBuffer* render_to);
+    void render();
+    void set_render_target(FrameBuffer* render_to);
+    // Takes normalized device coordinates
+    void on_mouse_press(float ndc_x, float ndc_y);
 };

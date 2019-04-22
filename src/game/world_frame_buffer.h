@@ -16,6 +16,7 @@ public:
     // Map world coordinates to coordinates which refer to a pixel in
     // frame_buffer
     glm::mat4 world_to_pixel();
+    WorldFrameBuffer();
     WorldFrameBuffer(FrameBuffer* frame_buffer, float x, float y, float w, float h);
     WorldFrameBuffer(FrameBuffer* frame_buffer, float x, float y);
     // Position of the upper left corner of the buffer in world coordinates

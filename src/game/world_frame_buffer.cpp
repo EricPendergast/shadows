@@ -5,13 +5,21 @@
 #include <glm/ext.hpp>
 #include <algorithm>
 
+WorldFrameBuffer::WorldFrameBuffer() : frame_buffer(nullptr), x(0), y(0), width(0), height(0) {}
+
 WorldFrameBuffer::WorldFrameBuffer(FrameBuffer* frame_buffer, float x, float y, float w, float h) :
     frame_buffer(frame_buffer),
     x(x), y(y),
-    width(w), height(h) {}
+    width(w), height(h) {
+
+    assert(frame_buffer != nullptr);
+}
 
 WorldFrameBuffer::WorldFrameBuffer(FrameBuffer* frame_buffer, float x, float y) :
-    WorldFrameBuffer(frame_buffer, x, y, (float)frame_buffer->get_width(), (float)frame_buffer->get_height()) {}
+    WorldFrameBuffer(frame_buffer, x, y, (float)frame_buffer->get_width(), (float)frame_buffer->get_height()) {
+    
+    assert(frame_buffer != nullptr);
+}
 
 FrameBuffer& WorldFrameBuffer::get_frame_buffer() {
     return *frame_buffer;

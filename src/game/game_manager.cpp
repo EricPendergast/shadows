@@ -11,7 +11,9 @@ double get_current_time_secs() {
 }
 
 GameManager::GameManager() : 
-        keys(256, false) {}
+        keys(256, false) {
+    level.set_render_target(OpenGLContext::screen);
+}
 
         
 void GameManager::display(void) {
@@ -27,12 +29,13 @@ void GameManager::display(void) {
     
     level.update(difference, keys['d'] - keys['a'], keys[' ']);
 
-    level.render(OpenGLContext::screen);
+    level.render();
 }
 
 void GameManager::mouse_move(int x, int y) {
-    level.light.light_x = (float)x;
-    level.light.light_y = (float)y;
+    float ndc_x = ((float)x / (float)OpenGLContext::screen->get_width())*2-1;
+    float ndc_y = -((float)y / (float)OpenGLContext::screen->get_height())*2+1;
+    level.on_mouse_press(ndc_x, ndc_y);
 }
 
 void GameManager::key_up(unsigned char key, int x, int y) {
