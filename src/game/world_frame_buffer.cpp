@@ -50,14 +50,13 @@ void WorldFrameBuffer::copy_to(WorldFrameBuffer* out) {
 glm::mat4 WorldFrameBuffer::world_to_screen() {
     assert(abs(width - (float)frame_buffer->get_width()) < .0001);
     assert(abs(height - (float)frame_buffer->get_height()) < .0001);
-    auto transform = glm::translate(glm::vec3(-x, -y, 0));
-    transform = glm::scale(glm::vec3(2.0f/width, -2.0f/height, 1.0f)) * transform;
-    return glm::translate(glm::vec3(-1,1,0)) * transform;
+
+    return glm::translate(glm::vec3(-1,1,0)) * glm::scale(glm::vec3(2.0f/width, -2.0f/height, 1.0f)) * glm::translate(glm::vec3(-x, -y, 0));
 }
 
 glm::mat4 WorldFrameBuffer::world_to_pixel() {
     assert(abs(width - (float)frame_buffer->get_width()) < .0001);
     assert(abs(height - (float)frame_buffer->get_height()) < .0001);
-    auto transform = glm::translate(glm::vec3(0, height, 0)) * glm::scale(glm::vec3(1, -1, 1)) * glm::translate(glm::vec3(-x, -y, 0));
-    return transform;
+
+    return glm::translate(glm::vec3(0, height, 0)) * glm::scale(glm::vec3(1, -1, 1)) * glm::translate(glm::vec3(-x, -y, 0));
 }
