@@ -1,7 +1,7 @@
 #include "vbo.h"
 #include <iostream>
 
-VBO::VBO(const std::vector<GLfloat>& verticies) {
+VBO::VBO(const std::vector<GLfloat>& verticies) : num_verts(verticies.size()/4){
     GLenum error = glGetError();
 
     glGenVertexArrays(1, &vao_handle);
@@ -44,7 +44,7 @@ VBO::~VBO() {
 
 void VBO::draw() {
     bind();
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glDrawArrays(GL_TRIANGLES, 0, (int)num_verts);
     unbind();
 }
 

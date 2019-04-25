@@ -15,7 +15,6 @@ GameManager::GameManager() :
     level.set_render_target(OpenGLContext::screen);
 }
 
-        
 void GameManager::display(void) {
     double current_time = get_current_time_secs();
     double difference = current_time - last_update_time;

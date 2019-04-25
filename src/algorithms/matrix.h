@@ -11,11 +11,17 @@ public:
     Matrix(int w, int h) : internal(w * h), width(w), height(h) {}
     
     T& set(int x, int y) {
-        assert(x >= 0 && x < width);
-        assert(y >= 0 && y < height);
+        assert_in_range(x, y);
+
         return internal[x + y*width];
     }
+
     const T& get(int x, int y) {
         return set(x, y);
+    }
+
+    void assert_in_range(int x, int y) {
+        assert(x >= 0 && x < width);
+        assert(y >= 0 && y < height);
     }
 };

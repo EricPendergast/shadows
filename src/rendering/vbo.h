@@ -10,6 +10,7 @@ class VBO {
     GLuint vbo_handle;
     void bind();
     void unbind();
+    size_t num_verts;
 public:
     VBO(const std::vector<GLfloat>& verticies);
     ~VBO();

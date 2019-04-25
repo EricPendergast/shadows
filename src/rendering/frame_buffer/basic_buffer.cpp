@@ -7,6 +7,7 @@ bool is_power_of_two(int a) {
 }
 
 BasicBuffer::BasicBuffer(int w, int h): FrameBuffer(w,h) {
+    assert(w != 0 && h != 0);
     if (!is_power_of_two(w) && !is_power_of_two(h)) {
         std::cout << "Warning: texture with dimensions not a power of two: " << w << "x" << h << std::endl;
     }
