@@ -57,3 +57,11 @@ glm::mat4 WorldFrameBuffer::world_to_pixel() {
            glm::scale(glm::vec3(1, -1, 1)) *
            glm::translate(glm::vec3(-x, -y, 0));
 }
+
+float WorldFrameBuffer::get_pixel_width() {
+    return width / (float)frame_buffer->get_width();
+}
+
+float WorldFrameBuffer::get_pixel_height() {
+    return height / (float)frame_buffer->get_height();
+}

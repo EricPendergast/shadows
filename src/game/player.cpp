@@ -1,15 +1,25 @@
 #include <algorithm>
 #include <math.h>
 #include <glm/glm.hpp>
+#include <algorithm>
 
 #include "poly.h"
 #include "player.h"
 #include "vector_math.h"
+#include "everything.h"
+
+float round(float a, float inc) {
+    return std::round(a/inc)*inc;
+}
+
+float floor(float a, float inc) {
+    return std::floor(a/inc)*inc;
+}
 
 Player::Player() : Player(64,64) {}
 Player::Player(int w, int h) :
-    pixels(new BasicBuffer((int)(w*3*collide_res_scale), (int)(h*3*collide_res_scale)), (float)(x-w), (float)(y-w), (float)w*3, (float)h*3),
-    sum_squares((int)(w*3*collide_res_scale), (int)(h*3*collide_res_scale)),
+    pixels(new BasicBuffer((int)(w*collide_res_scale)*3, (int)(h*collide_res_scale)*3), (float)(x-w), (float)(y-w), (float)w*3, (float)h*3),
+    sum_squares((int)(w*collide_res_scale)*3, (int)(h*collide_res_scale)*3),
     width(w),
     height(h),
     model({0,0,0,1,
@@ -38,49 +48,58 @@ void Player::move(int direction_lr, bool jump, double time_step) {
     x += time_step*dx;
     y += time_step*dy;
 
-    pixels.x = (float)(x-width);
-    pixels.y = (float)(y-height);
+    pixels.x = round((float)(x-width), pixels.get_pixel_width());
+    pixels.y = round((float)(y-height), pixels.get_pixel_height());
     
     time_since_touched_platform += time_step;
 }
 
 Manifold Player::get_manifold() {
-    FrameBuffer& pixels = *this->pixels.frame_buffer;
+    FrameBuffer& pixels_fb = *this->pixels.frame_buffer;
     static std::vector<float> pixels_array;
-    pixels.write_to(pixels_array);
+    pixels_fb.write_to(pixels_array);
     
-    assert(sum_squares.get_height() == pixels.get_height() && sum_squares.get_width() == pixels.get_width());
+    assert(sum_squares.get_height() == pixels_fb.get_height() && sum_squares.get_width() == pixels_fb.get_width());
 
     sum_squares.populate([&](int x, int y) -> double {
-            if (x < 0 || x >= pixels.get_width() || y < 0 || y >= pixels.get_height())
+            if (x < 0 || x >= pixels_fb.get_width() || y < 0 || y >= pixels_fb.get_height())
                 return 0;
             else
-                return 1 - pixels_array[(x + y*pixels.get_width())*4];
-        }, pixels.get_width()/3, pixels.get_height()/3);
+                return 1 - pixels_array[(x + y*pixels_fb.get_width())*4];
+        }, pixels_fb.get_width()/3, pixels_fb.get_height()/3);
     
-    glm::mat4 world_to_pixel = this->pixels.world_to_pixel();
+    glm::mat4 world_to_pixel = pixels.world_to_pixel();
 
-    // Lower left corner of the player.
-    double ll_x = this->x;
-    double ll_y = this->y + height;
 
     auto cost_function = [&] (double x, double y) -> double {
         auto pos_in_square = world_to_pixel * glm::vec4(x, y, 0, 1);
-        if (sum_squares.get_sum((int)pos_in_square.x, (int)pos_in_square.y) != 0)
+        if (sum_squares.get_sum((int)std::floor(pos_in_square.x), (int)std::floor(pos_in_square.y)) != 0)
             return 1000000;
         else {
-            return (double)((ll_x-x)*(ll_x-x) + (ll_y-y)*(ll_y-y));
+            return 0;
         }
     };
     
-    double min_x = ll_x;
-    double min_y = ll_y;
+    // Lower left corner of the player.
+    double ll_x = this->x;
+    double ll_y = this->y + height;
+    // Floor of lower left corner
+    double llf_x = floor(ll_x, pixels.get_pixel_width()) + .00001;
+    double llf_y = floor(ll_y, pixels.get_pixel_height()) + .00001;
 
+    double min_x = llf_x;
+    double min_y = llf_y;
+
+    // Thw width and height of a pixel in sum_squares
+    double inc_x = pixels.get_pixel_width();
+    double inc_y = pixels.get_pixel_height();
+    //double inc_x = 1;
+    //double inc_y = 1;
     // Iterating through every point in the box around the lower left corner of
     // the player.
     // TODO: Set increment properly
-    for (double x = ll_x - width; x < ll_x + width; x++) {
-        for (double y = ll_y - height; y < ll_y + height; y++) {
+    for (double x = llf_x - width; x < llf_x + width; x += inc_x) {
+        for (double y = llf_y - height; y < llf_y + height; y += inc_y) {
             if (cost_function(x, y) < cost_function(min_x, min_y)) {
                 min_x = x;
                 min_y = y;
@@ -88,10 +107,33 @@ Manifold Player::get_manifold() {
         }
     }
 
+    //if (min_x != ll_x)
+    //    min_x = round(min_x, pixels.get_pixel_width());
+    //
+    //if (min_y != ll_y)
+    //    min_y = round(min_y, pixels.get_pixel_height());
     Manifold m;
-    m.norm_x = min_x - ll_x;
-    m.norm_y = min_y - ll_y;
+
+    if (min_x == llf_x)
+        m.norm_x = 0;
+    else
+        m.norm_x = min_x - ll_x;
+    
+    if (min_x == llf_x)
+        m.norm_y = 0;
+    else
+        m.norm_y = min_y - ll_y;
+
     m.cost = cost_function(min_x, min_y);
+    if (m.norm_x != 0 || m.norm_y != 0) {
+        m.cost = 10000000;
+    //    //m.norm_x += std::fmod(this->x, inc_x);
+    //    //m.norm_x += pixels.get_pixel_width() - std::fmod(this->x, pixels.get_pixel_width());
+    //    m.norm_y += pixels.get_pixel_height() - std::fmod(this->y, pixels.get_pixel_height());
+    }
+    cout << "A " << m.norm_x << " " << m.norm_y << endl;
+    cout << "B " << this->x << " " << this->y << endl;
+    cout << "C " << inc_x << " " << inc_y << endl;
     return m;
 }
 

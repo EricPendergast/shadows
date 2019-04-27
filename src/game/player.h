@@ -21,7 +21,7 @@ public:
     double dy = 0;
     int width = 64;
     int height = 64;
-    static constexpr double collide_res_scale = .333;
+    static constexpr double collide_res_scale = 1.0f/64;
     VBO model;
     Player();
     Player(int w, int h);

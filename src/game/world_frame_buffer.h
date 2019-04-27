@@ -26,6 +26,10 @@ public:
     // Takes world coordinates
     void copy_to(WorldFrameBuffer* output);
     FrameBuffer& get_frame_buffer();
+
+    // Get the width, in world coordinates, of a single pixel
+    float get_pixel_width();
+    float get_pixel_height();
 };
 
 #endif
