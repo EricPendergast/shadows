@@ -18,8 +18,8 @@ float floor(float a, float inc) {
 
 Player::Player() : Player(64,64) {}
 Player::Player(int w, int h) :
-    pixels(new BasicBuffer((int)(w*collide_res_scale)*3, (int)(h*collide_res_scale)*3), (float)(x-w), (float)(y-w), (float)w*3, (float)h*3),
-    sum_squares((int)(w*collide_res_scale)*3, (int)(h*collide_res_scale)*3),
+    pixels(new BasicBuffer((int)(w*collide_res_scale)*4, (int)(h*collide_res_scale)*4), (float)(x-w), (float)(y-w), (float)w*4, (float)h*4),
+    sum_squares((int)(w*collide_res_scale)*4, (int)(h*collide_res_scale)*4),
     width(w),
     height(h),
     model({0,0,0,1,
@@ -48,8 +48,8 @@ void Player::move(int direction_lr, bool jump, double time_step) {
     x += time_step*dx;
     y += time_step*dy;
 
-    pixels.x = round((float)(x-width), pixels.get_pixel_width());
-    pixels.y = round((float)(y-height), pixels.get_pixel_height());
+    pixels.x = floor((float)x, pixels.get_pixel_width()) - (float)width;
+    pixels.y = floor((float)y, pixels.get_pixel_height()) - (float)height;
     
     time_since_touched_platform += time_step;
 }
@@ -66,11 +66,11 @@ Manifold Player::get_manifold() {
                 return 0;
             else
                 return 1 - pixels_array[(x + y*pixels_fb.get_width())*4];
-        }, pixels_fb.get_width()/3, pixels_fb.get_height()/3);
+        }, pixels_fb.get_width()/4, pixels_fb.get_height()/4);
     
     // The coordinates of the lower left pixel of the player in 'pixels'
-    int origin_x = pixels_fb.get_width()/3;
-    int origin_y = pixels_fb.get_height()/3;
+    int origin_x = pixels_fb.get_width()/4;
+    int origin_y = pixels_fb.get_height()/4;
 
     auto cost_function = [&] (int x, int y) -> double {
         if (sum_squares.get_sum(x, y) != 0)
@@ -85,18 +85,17 @@ Manifold Player::get_manifold() {
 
     // Iterating through every point in the box around the lower left corner of
     // the player.
-    // TODO: Set increment properly
-    for (int px_x = 0; px_x < (pixels_fb.get_width()/3)*2; px_x++) {
-        for (int px_y = 0; px_y < (pixels_fb.get_height()/3)*2; px_y++) {
+    for (int px_x = 0; px_x < (pixels_fb.get_width()/4)*2; px_x++) {
+        for (int px_y = 0; px_y < (pixels_fb.get_height()/4)*2; px_y++) {
             if (cost_function(px_x, px_y) < cost_function(min_px_x, min_px_y)) {
                 min_px_x = px_x;
                 min_px_y = px_y;
             }
-            //cout << px_x << " " << px_y << endl;
         }
     }
 
     glm::vec4 coll = glm::inverse(pixels.world_to_pixel()) * glm::vec4(min_px_x, min_px_y, 0, 1);
+
     
     Manifold m;
 
@@ -110,17 +109,13 @@ Manifold Player::get_manifold() {
         m.norm_y = 0;
 
     m.cost = cost_function(min_px_x, min_px_y);
-    if (m.norm_x != 0 || m.norm_y != 0) {
-        m.cost = 10000000;
-    //    //m.norm_x += std::fmod(this->x, inc_x);
-    //    //m.norm_x += pixels.get_pixel_width() - std::fmod(this->x, pixels.get_pixel_width());
-    //    m.norm_y += pixels.get_pixel_height() - std::fmod(this->y, pixels.get_pixel_height());
-    }
-    cout << "A " << m.norm_x << " " << m.norm_y << endl;
-    cout << "A'' " << x << " " << y << endl;
-    cout << "B " << min_px_x << " " << min_px_y << endl;
-    cout << "B' " << glm::to_string(coll) << endl;
-    cout << "C " << origin_x << " " << origin_y << endl;
+
+    if (m.norm_x < 0)
+        m.norm_x += 1/collide_res_scale;
+
+    if (m.norm_y < 0)
+        m.norm_y += 1/collide_res_scale;
+
     return m;
 }
 
@@ -138,6 +133,9 @@ void Player::collide(Manifold m) {
     
     if (m.cost > 999999) {
         std::cout << "DIE" << std::endl;
+        dx = -dx;
+        dy = -dy;
+        return;
         //exit(1);
     }
     

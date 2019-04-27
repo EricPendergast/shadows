@@ -19,9 +19,9 @@ public:
     double y = 5;
     double dx = 0;
     double dy = 0;
-    int width = 64;
-    int height = 64;
-    static constexpr double collide_res_scale = 1.0f/16;
+    double width = 64;
+    double height = 64;
+    static constexpr double collide_res_scale = 1.0f/8;
     VBO model;
     Player();
     Player(int w, int h);
