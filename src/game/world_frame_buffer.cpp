@@ -33,6 +33,7 @@ void WorldFrameBuffer::copy_to(WorldFrameBuffer* out) {
     // diagonally opposite from each other
     auto corner1 = transform * glm::vec4(out->x, out->y, 0, 1);
     auto corner2 = transform * glm::vec4(out->x+out->width, out->y+out->height, 0, 1);
+    // TODO: Should this be floor?
     int new_x = (int)lroundf(corner1.x);
     int new_y = (int)lroundf(corner1.y);
     int new_w = (int)lroundf(corner2.x - corner1.x);
@@ -48,13 +49,12 @@ void WorldFrameBuffer::copy_to(WorldFrameBuffer* out) {
 }
 
 glm::mat4 WorldFrameBuffer::world_to_screen() {
-    return glm::translate(glm::vec3(-1,1,0)) * glm::scale(glm::vec3(2.0f/width, -2.0f/height, 1.0f)) * glm::translate(glm::vec3(-x, -y, 0));
+    return glm::translate(glm::vec3(-1,-1,0)) * glm::scale(glm::vec3(2.0f/width, 2.0f/height, 1.0f)) * glm::translate(glm::vec3(-x, -y, 0));
 }
 
 glm::mat4 WorldFrameBuffer::world_to_pixel() {
     return glm::scale(glm::vec3((float)frame_buffer->get_width()/width, (float)frame_buffer->get_height()/height, 1)) *
-           glm::translate(glm::vec3(0, height, 0)) *
-           glm::scale(glm::vec3(1, -1, 1)) *
+           glm::scale(glm::vec3(1, 1, 1)) *
            glm::translate(glm::vec3(-x, -y, 0));
 }
 

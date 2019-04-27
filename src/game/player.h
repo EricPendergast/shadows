@@ -21,7 +21,7 @@ public:
     double dy = 0;
     int width = 64;
     int height = 64;
-    static constexpr double collide_res_scale = 1.0f/64;
+    static constexpr double collide_res_scale = 1.0f/16;
     VBO model;
     Player();
     Player(int w, int h);
@@ -37,7 +37,7 @@ private:
     double ground_lr_acceleration = 100000;
     double air_lr_acceleration = 1000;
     double gravity_x = 0;
-    double gravity_y = 1500;
+    double gravity_y = -1500;
     double jump_speed = 700;
     
     double last_push_x = 0;
