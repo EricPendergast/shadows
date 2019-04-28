@@ -13,13 +13,11 @@ Level::Level() :
         light(), world(), player() {}
 
 void Level::update(double timestep, int player_lr, bool player_jump) {
-
-
     player.move(player_lr, player_jump, timestep);
 
     light.generate_shadows(world);
 
-    light.render(player.pixels);
+    light.render(player.collider.pixels);
 
     player.collide(get_player_manifold());
 

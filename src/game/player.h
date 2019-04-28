@@ -9,19 +9,18 @@
 #include "vbo.h"
 #include "world_frame_buffer.h"
 #include "manifold.h"
+#include "gpu_collider.h"
 
 // Speeds are in units of world coordinates per second.
 class Player : Drawable {
 public:
-    WorldFrameBuffer pixels;
-    SumSquares<double> sum_squares;
+    GPUCollider collider;
     double x = 5;
     double y = 5;
     double dx = 0;
     double dy = 0;
     double width = 64;
     double height = 64;
-    static constexpr double collide_res_scale = 1.0f/8;
     VBO model;
     Player();
     Player(int w, int h);
@@ -33,7 +32,7 @@ public:
     void collide(Manifold m);
     Manifold get_manifold();
 private:
-    double max_move_speed = 500;
+    double max_move_speed = 350;
     double ground_lr_acceleration = 100000;
     double air_lr_acceleration = 1000;
     double gravity_x = 0;
