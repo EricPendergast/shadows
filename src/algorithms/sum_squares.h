@@ -33,7 +33,7 @@ public:
         }
         
         for (int x = 1; x < boxSums.width; x++) {
-            for (int y = 1; y < boxSums.height; y++) {
+            for (int y = 0; y < boxSums.height; y++) {
                 // Invariant: colSums[x][y-1] is correct
                 // Invariant: rowSums[x-1][y] is correct
                 rowSums.set(x, y) = rowSums.get(x-1, y) - get(x-1, y) + get(x-1+width, y);
