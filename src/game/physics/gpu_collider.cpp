@@ -60,8 +60,8 @@ Manifold GPUCollider::get_manifold() {
 
     // Iterating through every point in the box around the lower left corner of
     // the player.
-    for (int px_x = 0; px_x < (pixels_fb.get_width()/4)*2; px_x++) {
-        for (int px_y = 0; px_y < (pixels_fb.get_height()/4)*2; px_y++) {
+    for (int px_x = 0; px_x <= (pixels_fb.get_width()/4)*2; px_x++) {
+        for (int px_y = 0; px_y <= (pixels_fb.get_height()/4)*2; px_y++) {
             if (cost_function(px_x, px_y) < cost_function(min_px_x, min_px_y)) {
                 min_px_x = px_x;
                 min_px_y = px_y;
