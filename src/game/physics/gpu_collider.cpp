@@ -82,7 +82,9 @@ Manifold GPUCollider::get_manifold() {
     int min_px_y = origin_y;
 
     // Iterating through every pixel in the box around the lower left corner of
-    // the player.
+    // the player. The when px_x = -1 (or px_y = -1), it no longer refers to a
+    // pixel, but the current x (or y) position of the player's lower left
+    // corner.
     for (int px_x = -1; px_x <= (pixels_fb.get_width()/4)*2; px_x++) {
         for (int px_y = -1; px_y <= (pixels_fb.get_height()/4)*2; px_y++) {
             if (cost_function(px_x, px_y) < cost_function(min_px_x, min_px_y)) {
