@@ -3,25 +3,11 @@
 
 #include "gpu_collider.h"
 #include "basic_buffer.h"
-
-#include "everything.h"
-
-float round(float a, float inc) {
-    return std::round(a/inc)*inc;
-}
+#include "vector_math.h"
 
 float floor(float a, float inc) {
     return std::floor(a/inc)*inc;
 }
-
-int floor_approx(double a) {
-    return (int)std::floor(a+.00001);
-}
-
-int ceil_approx(double a) {
-    return (int)std::ceil(a-.00001);
-}
-
 
 GPUCollider::GPUCollider(double collide_res_scale, double w, double h) :
     x(0), y(0),
@@ -62,20 +48,6 @@ Manifold GPUCollider::get_manifold() {
     int origin_x = pixels_fb.get_width()/4;
     int origin_y = pixels_fb.get_height()/4;
 
-    assert(origin_x == (int)std::floor(origin_x_d));
-    assert(origin_y == (int)std::floor(origin_y_d));
-
-    //bool collide_ll = sum_squares.get_sum(
-    //            floor_approx(origin_x_d), floor_approx(origin_y_d)) != 0;
-    //bool collide_lr = sum_squares.get_sum(
-    //            ceil_approx(origin_x_d), floor_approx(origin_y_d)) != 0;
-    //bool collide_ul = sum_squares.get_sum(
-    //            floor_approx(origin_x_d), ceil_approx(origin_y_d)) != 0;
-    //bool collide_ur = sum_squares.get_sum(
-    //            ceil_approx(origin_x_d), ceil_approx(origin_y_d)) != 0;
-    //
-    //bool is_colliding = collide_ll || collide_lr || collide_ul || collide_ur;
-    
     double max_cost = 1000000;
     auto cost_function = [&] (int x, int y) -> double {
         if (x == -1 && y == -1) {
@@ -84,28 +56,25 @@ Manifold GPUCollider::get_manifold() {
                 sum_squares.get_sum(origin_x+1, origin_y+1) != 0 ||
                 sum_squares.get_sum(origin_x, origin_y+1) != 0)
                 return max_cost;
-            else {
+            else
                 return 0;
-            }
-
         } else if (x == -1) {
             if (sum_squares.get_sum(origin_x, y) != 0 || 
                 sum_squares.get_sum(origin_x+1, y) != 0)
                 return max_cost;
             else
-                return (origin_y_d - y)*(origin_y_d - y);
+                return vec::mag_sq(0, origin_y_d - y);
         } else if (y == -1) {
             if (sum_squares.get_sum(x, origin_y) != 0 || 
                 sum_squares.get_sum(x, origin_y+1) != 0)
                 return max_cost;
             else
-                return (origin_x_d - x)*(origin_x_d - x);
+                return vec::mag_sq(origin_x_d - x, 0);
         } else {
             if (sum_squares.get_sum(x, y) != 0)
                 return max_cost;
-            else {
-                return (origin_x_d - x)*(origin_x_d - x) + (origin_y_d - y)*(origin_y_d - y);
-            }
+            else
+                return vec::mag_sq(origin_x_d - x, origin_y_d - y);
         }
     };
 
@@ -124,99 +93,12 @@ Manifold GPUCollider::get_manifold() {
     }
     glm::vec4 coll = glm::inverse(world_to_pixel) * glm::vec4(min_px_x, min_px_y, 0, 1);
 
-    static int count = 0;
-    count++;
-    //if (cost_function(min_px_x+1, min_px_y) == max_cost) {
-    //    cout << "x right collide " << count << endl;
-    //    cout << "(" << min_px_x << ", " << min_px_y << ")" << count << endl;
-    //}
-
-    //cout << cost_function(origin_x, origin_y) == max_cost && cost_function(origin_x+1, origin_y+1) << endl;
-    //if (cost_function(min_px_x, min_px_y+1) == max_cost) {
-    //    cout << "top collide " << count << endl;
-    //    cout << "(" << min_px_x << ", " << min_px_y << ")" << count << endl;
-    //}
-
-    //bool is_colliding = false;
-    //if (cost_function(origin_x, origin_y) == max_cost)
-    //    is_colliding = true;
-
-
     Manifold m;
 
     m.norm_x = min_px_x == -1 ? 0 : coll.x - x;
     m.norm_y = min_px_y == -1 ? 0 : coll.y - y;
-    //if (min_px_x == origin_x && min_px_y == origin_y) {
-    //    cout << "BOTH " << count << endl;
-    //} else if (min_px_x == origin_x) {
-    //    cout << "x equal " << count << endl;
-    //} else if (min_px_y == origin_y) {
-    //    cout << "y equal " << count << endl;
-    //}
 
-    //if (collide_ll) {
-    //    m.norm_y = std::max(m.norm_y, 0.0);
-    //    m.norm_x = std::max(m.norm_x, 0.0);
-    //}
-    //if (collide_lr) {
-    //    m.norm_y = std::max(m.norm_y, 0.0);
-    //    m.norm_x = std::min(m.norm_x, 0.0);
-    //}
-    //if (collide_ur) {
-    //    m.norm_y = std::min(m.norm_y, 0.0);
-    //    m.norm_x = std::min(m.norm_x, 0.0);
-    //}
-    //if (collide_ul) {
-    //    m.norm_y = std::min(m.norm_y, 0.0);
-    //    m.norm_x = std::max(m.norm_x, 0.0);
-    //}
-    //if (!is_colliding) {
-    //    m.norm_x = 0;
-    //    m.norm_y = 0;
-    //}
-    //else {
-        //assert(false);
-        //cout << "COLLIDING" << count << endl;
-        //cout << pixels.frame_buffer->get_width() << " " << pixels.frame_buffer->get_height() << endl;
-        //cout << origin_x << ", " << origin_y << " " << cost_function(origin_x, origin_y) << endl;
-        //cout << min_px_x << ", " << min_px_y << " " << cost_function(min_px_x, min_px_y) << endl;
-        //assert(false);
-    //}
-
-
-
-    // TODO: This is an issue
-    //if (min_px_x == origin_x)
-        //m.norm_x = 0;
-
-    //if (m.norm_x < -0.0001) {
-    //    //cout << "HELLO " << count << endl;
-    //    if (min_px_x == origin_x && cost_function(min_px_x+1, min_px_y) != max_cost)
-    //        m.norm_x = 0;
-    //} else if (m.norm_x > 0.0001) {
-    //    if (min_px_x == origin_x)
-    //        m.norm_x = 0;
-    //}
-    //
-    //if (m.norm_y < -0.0001) {
-    //    cout << "HELLO " << count << endl;
-    //    if (min_px_y == origin_y && cost_function(min_px_x, min_px_y+1) != max_cost)
-    //        m.norm_y = 0;
-    //} else if (m.norm_x > 0.0001) {
-    //    if (min_px_y == origin_y)
-    //        m.norm_y = 0;
-    //}
-
-    //if (min_px_y == origin_y)
-    //    m.norm_y = 0;
 
     m.cost = cost_function(min_px_x, min_px_y);
-
-    //if (m.norm_x < 0)
-    //    m.norm_x += 1/collide_res_scale;
-    //
-    //if (m.norm_y < 0)
-    //    m.norm_y += 1/collide_res_scale;
-    
     return m;
 }
