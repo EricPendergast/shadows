@@ -8,6 +8,6 @@ void set_raii_defaults() {
     WithDepthTestEnabled::set_default(false);
     WithClearColor::set_default(1.f, 0.f, 0.f, 1.f);
     WithPolygonMode::set_default(GL_FRONT_AND_BACK, GL_FILL);
-    WithBindFramebuffer::set_default(OpenGLContext::screen);
+    WithBindFramebuffer::set_default(OpenGLContext::screen.get());
     WithScissorTestEnabled::set_default(false);
 }

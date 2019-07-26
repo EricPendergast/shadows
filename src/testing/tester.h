@@ -13,11 +13,13 @@
 // This class "pretends" to be a game engine, but just runs all the tests
 // during the first loop, and then exits.
 class Tester: public OpenGLContext::GameManagerInterface { 
+public:
+    ~Tester();
+private:
     bool ran_once = false;
     
     virtual void display();
     void run_tests();
-    ~Tester();
 };
 
 #endif

@@ -12,7 +12,7 @@ double get_current_time_secs() {
 
 GameManager::GameManager() : 
         keys(256, false) {
-    level.set_render_target(OpenGLContext::screen);
+    level.set_render_target(OpenGLContext::screen.get());
 }
 
 void GameManager::display(void) {

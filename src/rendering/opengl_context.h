@@ -2,6 +2,7 @@
 #define OPENGL_CONTEXT_H
 
 #include "frame_buffer.h"
+#include <memory>
 
 namespace OpenGLContext {
     // A class which encapsulates GLUT. Should contain most of game logic.
@@ -21,9 +22,8 @@ namespace OpenGLContext {
         virtual ~GameManagerInterface(){};
     };
     
-    extern GameManagerInterface* manager;
-    
-    extern FrameBuffer * const screen;
+    extern const std::unique_ptr<FrameBuffer> screen;
+    extern std::unique_ptr<GameManagerInterface> manager;
     
     void init_context(int argc,  char** argv);
     void start_running(void);

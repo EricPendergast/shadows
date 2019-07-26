@@ -33,8 +33,8 @@ namespace OpenGLContext {
     void display(void);
     void do_nothing(void);
     
-    FrameBuffer * const screen = new DefaultFrameBuffer();
-    GameManagerInterface* manager = nullptr;
+    const std::unique_ptr<FrameBuffer> screen = std::make_unique<DefaultFrameBuffer>();
+    std::unique_ptr<GameManagerInterface> manager(nullptr);
     
     void init_context(int argc,  char** argv) {
         glutInit(&argc, argv);
