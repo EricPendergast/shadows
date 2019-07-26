@@ -21,7 +21,7 @@ void Level::update(double timestep, int player_lr, bool player_jump) {
 
     player.collide(get_player_manifold());
 
-    render_to = WorldFrameBuffer(render_to.frame_buffer, (float)player.x-400, (float)player.y-400);
+    update_viewport();
 }
 
 float Level::a = 0;
@@ -43,6 +43,10 @@ void Level::render() {
 
 void Level::set_render_target(FrameBuffer* fb) {
     render_to = WorldFrameBuffer(fb, 0, 0);
+}
+
+void Level::update_viewport() {
+    render_to = WorldFrameBuffer(render_to.frame_buffer, (float)player.x-400, (float)player.y-400);
 }
 
 Manifold Level::get_player_manifold() {
