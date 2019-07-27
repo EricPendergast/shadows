@@ -20,7 +20,9 @@ namespace {
         gl_set_depth_test_enabled,
         glPolygonMode,
         glClearColor,
-        gl_set_scissor_enabled
+        gl_set_scissor_enabled,
+        gl_set_enabled<GL_COLOR_LOGIC_OP>,
+        glLogicOp
     );
 
     template <typename F, typename Tuple, size_t... Is>
@@ -117,17 +119,17 @@ namespace  {
     }
 
     template<int func_id>
-    constexpr auto create_RAII() {
-        return create_RAII<func_id>(std::get<func_id>(functions));
-    }
+    using raii_type = typename decltype(create_RAII<func_id>(std::get<func_id>(functions)))::value;
 }
 
-using WithViewport = typename decltype(create_RAII<0>())::value;
-using WithBindFramebuffer = typename decltype(create_RAII<1>())::value;
-using WithDepthTestEnabled = typename decltype(create_RAII<2>())::value;
-using WithPolygonMode = typename decltype(create_RAII<3>())::value;
-using WithClearColor = typename decltype(create_RAII<4>())::value;
-using WithScissorTestEnabled = typename decltype(create_RAII<5>())::value;
+using WithViewport = raii_type<0>;
+using WithBindFramebuffer = raii_type<1>;
+using WithDepthTestEnabled = raii_type<2>;
+using WithPolygonMode = raii_type<3>;
+using WithClearColor = raii_type<4>;
+using WithScissorTestEnabled = raii_type<5>;
+using WithColorLogicOpEnabled = raii_type<6>;
+using WithLogicOp = raii_type<7>;
 
 void set_raii_defaults();
 

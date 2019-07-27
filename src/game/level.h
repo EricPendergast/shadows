@@ -15,7 +15,8 @@ public:
     void set_render_target(FrameBuffer* render_to);
     // Takes normalized device coordinates
     void on_mouse_press(float ndc_x, float ndc_y);
-    Light light;
+    Light light1;
+    Light light2;
 
 private:
     WorldFrameBuffer render_to;

@@ -9,15 +9,24 @@
 #include <iostream>
 
 Level::Level() :
-        main_shader("shaders/main.vert", "shaders/main.frag"),
-        light(), world(), player() {}
+        light1(), light2(), main_shader("shaders/main.vert", "shaders/main.frag"),
+        world(), player() {
+    light2.light_x = 500;
+}
 
 void Level::update(double timestep, int player_lr, bool player_jump) {
     player.move(player_lr, player_jump, timestep);
 
-    light.generate_shadows(world);
+    light1.generate_shadows(world);
+    light2.generate_shadows(world);
 
-    light.render(player.collider.pixels);
+    // TODO: duplicated code
+    light1.render(player.collider.pixels);
+    {
+        WithColorLogicOpEnabled w{true};
+        WithLogicOp w2{GL_OR};
+        light2.render(player.collider.pixels);
+    }
 
     player.collide(get_player_manifold());
 
@@ -29,7 +38,12 @@ float Level::a = 0;
 void Level::render() {
     a += .1f;
 
-    light.render(render_to);
+    light1.render(render_to);
+    {
+        WithColorLogicOpEnabled w{true};
+        WithLogicOp w2{GL_OR};
+        light2.render(render_to);
+    }
 
     main_shader.use();
 
@@ -56,6 +70,6 @@ Manifold Level::get_player_manifold() {
 void Level::on_mouse_press(float ndc_x, float ndc_y) {
     auto world_pos = glm::inverse(render_to.world_to_screen()) *
         glm::vec4(ndc_x, ndc_y, 0, 1);
-    light.light_x = world_pos.x;
-    light.light_y = world_pos.y;
+    light1.light_x = world_pos.x;
+    light1.light_y = world_pos.y;
 }
