@@ -17,10 +17,10 @@ namespace {
     static std::tuple functions = std::make_tuple(
         glViewport,
         gl_bind_framebuffer,
-        gl_set_depth_test_enabled,
+        gl_set_enabled<GL_DEPTH_TEST>,
         glPolygonMode,
         glClearColor,
-        gl_set_scissor_enabled,
+        gl_set_enabled<GL_SCISSOR_TEST>,
         gl_set_enabled<GL_COLOR_LOGIC_OP>,
         glLogicOp
     );
