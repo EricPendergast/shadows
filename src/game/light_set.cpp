@@ -3,9 +3,7 @@
 #include <iostream>
 
 LightSet::LightSet() :
-    //lights(2, Light())
-    light1(),
-    light2()
+    lights(2)
 {
 }
 

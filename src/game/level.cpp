@@ -10,21 +10,18 @@
 #include <iostream>
 
 Level::Level() :
-        //light1(), light2(),
         main_shader("shaders/main.vert", "shaders/main.frag"),
         world(), player(),
         objs() {
 
-    //objs.registerObj(std::make_shared<LightSet>());
+    objs.registerObj(std::make_shared<LightSet>());
 }
 
 void Level::update(double timestep, int player_lr, bool player_jump) {
     player.move(player_lr, player_jump, timestep);
 
-    //light1.generate_shadows([this] {world.draw();});
-    //light2.generate_shadows([this] {world.draw();});
-    light_set.light1.generate_shadows([this] {world.draw();});
-    light_set.light2.generate_shadows([this] {world.draw();});
+    light_set.lights[0].generate_shadows([this] {world.draw();});
+    light_set.lights[1].generate_shadows([this] {world.draw();});
 
     //objs.shadowCastableObjs[0]->generate_shadows([this] {world.draw();});
     //objs.pixelCollidableObjs[0]->render_pixel_collider(player.collider.pixels);
@@ -47,13 +44,11 @@ float Level::a = 0;
 void Level::render() {
     a += .1f;
 
-    light_set.light1.render(render_to);
-    //light1.render(render_to);
+    light_set.lights[0].render(render_to);
     {
         WithColorLogicOpEnabled w{true};
         WithLogicOp w2{GL_OR};
-        //light2.render(render_to);
-        light_set.light2.render(render_to);
+        light_set.lights[1].render(render_to);
     }
 
     //objs.renderableObjs[0]->render(render_to);

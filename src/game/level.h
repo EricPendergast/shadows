@@ -18,8 +18,6 @@ public:
     // Takes normalized device coordinates
     void on_mouse_press(float ndc_x, float ndc_y);
 private:
-    Light light1;
-    Light light2;
     // TODO: Remove most of these
     WorldFrameBuffer render_to;
     ShaderProgram main_shader;
