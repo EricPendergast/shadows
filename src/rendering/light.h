@@ -19,7 +19,7 @@ public:
     float light_x = 50, light_y = 50;
     Light(void);
     void render(WorldFrameBuffer& draw_to);
-    void generate_shadows(World& world);
+    void generate_shadows(std::function<void()> drawOpaqueShapes);
 };
 
 #endif

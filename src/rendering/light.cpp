@@ -18,7 +18,7 @@ Light::Light(void):
     background_shader("shaders/shadow_background_box.vert", "shaders/shadow_background_box.frag"),
     simple_box(make_rect(0,0, 800, 800)) {}
 
-void Light::generate_shadows(World& world) {
+void Light::generate_shadows(std::function<void()> drawOpaqueShapes) {
     WithBindFramebuffer w(&projection);
     projection.clear();
     projection.shader()->use();
@@ -27,7 +27,7 @@ void Light::generate_shadows(World& world) {
     
     // Projecting onto each side of the box
     for (int i = 0; i < 4; i++)
-        projection.draw(i, [&] {world.draw();});
+        projection.draw(i, drawOpaqueShapes);
 }
 
 void Light::render(WorldFrameBuffer& draw_to) {
