@@ -20,19 +20,8 @@ Level::Level() :
 void Level::update(double timestep, int player_lr, bool player_jump) {
     player.move(player_lr, player_jump, timestep);
 
-    light_set.lights[0].generate_shadows([this] {world.draw();});
-    light_set.lights[1].generate_shadows([this] {world.draw();});
-
-    //objs.shadowCastableObjs[0]->generate_shadows([this] {world.draw();});
-    //objs.pixelCollidableObjs[0]->render_pixel_collider(player.collider.pixels);
-
-    // TODO: duplicated code
-    //light1.render(player.collider.pixels);
-    //{
-    //    WithColorLogicOpEnabled w{true};
-    //    WithLogicOp w2{GL_OR};
-    //    light2.render(player.collider.pixels);
-    //}
+    objs.shadowCastableObjs[0]->generate_shadows([this] {world.draw();});
+    objs.pixelCollidableObjs[0]->render_pixel_collider(player.collider.pixels);
 
     player.collide(get_player_manifold());
 
@@ -44,14 +33,7 @@ float Level::a = 0;
 void Level::render() {
     a += .1f;
 
-    light_set.lights[0].render(render_to);
-    {
-        WithColorLogicOpEnabled w{true};
-        WithLogicOp w2{GL_OR};
-        light_set.lights[1].render(render_to);
-    }
-
-    //objs.renderableObjs[0]->render(render_to);
+    objs.renderableObjs[0]->render(render_to);
 
     main_shader.use();
 
