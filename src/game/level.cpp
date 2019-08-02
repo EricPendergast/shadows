@@ -22,13 +22,20 @@ void Level::update(double timestep, int player_lr, bool player_jump) {
         .direction_lr = player_lr,
         .jump = player_jump
     };
+
     player.control(controls);
 
-    objs.shadowCastableObjs[0]->generate_shadows([this] {world.draw();});
+    for (auto& shadowCastable : objs.shadowCastableObjs) {
+        shadowCastable->generate_shadows([this] {world.draw();});
+    }
 
-    player.update(timestep, [&] (WorldFrameBuffer& wfb) {
-        objs.pixelCollidableObjs[0]->render_pixel_collider(wfb);
-    });
+    auto drawColliders = [&] (WorldFrameBuffer& wfb) {
+        for (auto& pixelCollidable : objs.pixelCollidableObjs) {
+            pixelCollidable->render_pixel_collider(wfb);
+        }
+    };
+
+    player.update(timestep, drawColliders);
 
     update_viewport();
 }
@@ -38,7 +45,9 @@ float Level::a = 0;
 void Level::render() {
     a += .1f;
 
-    objs.renderableObjs[0]->render(render_to);
+    for (auto& renderable : objs.renderableObjs) {
+        renderable->render(render_to);
+    }
 
     main_shader.use();
 
