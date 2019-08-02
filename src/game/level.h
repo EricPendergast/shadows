@@ -11,7 +11,6 @@ public:
     Level();
     void update(double timestep, int player_lr, bool player_jump);
 
-    Manifold get_player_manifold();
     void render();
     void update_viewport();
     void set_render_target(FrameBuffer* render_to);

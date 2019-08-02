@@ -21,11 +21,6 @@ Player::Player(int w, int h) :
            0,0,0,1}) {
     }
 
-void Player::draw() {
-    model.sub_data(0, make_rect((float)x, (float)y, (float)width, (float)height));
-    model.draw();
-}
-
 void Player::control(const ControlInputs& controls) {
     this->controls = controls;
 }
@@ -52,7 +47,8 @@ void Player::update(double time_step, std::function<void(WorldFrameBuffer&)> dra
 
 // TODO: This should bind the buffer, set world_to_screen, bind a shader.
 void Player::render(WorldFrameBuffer& render_to) {
-    draw();
+    model.sub_data(0, make_rect((float)x, (float)y, (float)width, (float)height));
+    model.draw();
 }
 
 Manifold Player::get_manifold() {

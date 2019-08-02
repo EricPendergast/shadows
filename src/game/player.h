@@ -14,26 +14,22 @@
 // Speeds are in units of world coordinates per second.
 class Player : public Physical, public Renderable, public UserControllable {
 public:
-    // TODO: Make this all not public
-    GPUCollider collider;
-    double x = 5;
-    double y = 5;
-    double dx = 0;
-    double dy = 0;
-    double width = 64;
-    double height = 64;
-    VBO model;
     Player();
     Player(int w, int h);
     void control(const ControlInputs& controls) override;
     void update(double timestep, std::function<void(WorldFrameBuffer&)> drawCollider) override;
-    void draw();
     void render(WorldFrameBuffer& render_to) override;
-    // TODO: make private
-    void collide(Manifold m);
-    Manifold get_manifold();
+    double x = 5;
+    double y = 5;
 private:
+    GPUCollider collider;
+    VBO model;
     ControlInputs controls;
+
+    double dx = 0;
+    double dy = 0;
+    double width = 64;
+    double height = 64;
     double max_move_speed = 350;
     double ground_lr_acceleration = 100000;
     double air_lr_acceleration = 1000;
@@ -48,11 +44,12 @@ private:
     // jump.
     double max_jump_delay = .1;
     double time_since_touched_platform = 1000000;
-    
+
     void process_lr(int direction_lr, double time_step);
-    
     double get_lr_acceleration();
     bool on_ground();
+    void collide(Manifold m);
+    Manifold get_manifold();
 };
 
 #endif
