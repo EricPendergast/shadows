@@ -5,14 +5,14 @@
 #include "opengl_context.h"
 #include "basic_buffer.h"
 #include "sum_squares.h"
-#include "drawer.h"
 #include "vbo.h"
 #include "world_frame_buffer.h"
 #include "manifold.h"
 #include "gpu_collider.h"
+#include "game_object_interfaces.h" 
 
 // Speeds are in units of world coordinates per second.
-class Player : Drawable {
+class Player : public Physical, public Renderable, public UserControllable {
 public:
     GPUCollider collider;
     double x = 5;
@@ -24,14 +24,15 @@ public:
     VBO model;
     Player();
     Player(int w, int h);
-    // 'direction_lr' specifies the direction the player is trying to move and
-    // 'jump' specifies whether the player just tried to jump.
-    void move(int direction_lr, bool jump, double time_step);
+    void control(const ControlInputs& controls) override;
+    void update(double timestep, std::function<void(WorldFrameBuffer&)> drawCollider) override;
     void draw();
+    void render(WorldFrameBuffer& render_to) override;
     // TODO: make private
     void collide(Manifold m);
     Manifold get_manifold();
 private:
+    ControlInputs controls;
     double max_move_speed = 350;
     double ground_lr_acceleration = 100000;
     double air_lr_acceleration = 1000;

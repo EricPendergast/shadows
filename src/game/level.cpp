@@ -18,12 +18,17 @@ Level::Level() :
 }
 
 void Level::update(double timestep, int player_lr, bool player_jump) {
-    player.move(player_lr, player_jump, timestep);
+    ControlInputs controls {
+        .direction_lr = player_lr,
+        .jump = player_jump
+    };
+    player.control(controls);
 
     objs.shadowCastableObjs[0]->generate_shadows([this] {world.draw();});
-    objs.pixelCollidableObjs[0]->render_pixel_collider(player.collider.pixels);
 
-    player.collide(get_player_manifold());
+    player.update(timestep, [&] (WorldFrameBuffer& wfb) {
+        objs.pixelCollidableObjs[0]->render_pixel_collider(wfb);
+    });
 
     update_viewport();
 }

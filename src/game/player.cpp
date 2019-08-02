@@ -26,14 +26,20 @@ void Player::draw() {
     model.draw();
 }
 
-void Player::move(int direction_lr, bool jump, double time_step) {
-    
-    process_lr(direction_lr, time_step);
+void Player::control(const ControlInputs& controls) {
+    this->controls = controls;
+}
+
+void Player::update(double time_step, std::function<void(WorldFrameBuffer&)> drawCollider) {
+    drawCollider(collider.pixels);
+
+    collide(get_manifold());
+    process_lr(controls.direction_lr, time_step);
     
     dx += gravity_x*time_step;
     dy += gravity_y*time_step;
     
-    if (jump && time_since_touched_platform < max_jump_delay)
+    if (controls.jump && time_since_touched_platform < max_jump_delay)
         dy = jump_speed;
 
     x += time_step*dx;
@@ -42,6 +48,10 @@ void Player::move(int direction_lr, bool jump, double time_step) {
     collider.set_pos(x, y);
     
     time_since_touched_platform += time_step;
+}
+
+void Player::render(WorldFrameBuffer& render_to) {
+
 }
 
 Manifold Player::get_manifold() {

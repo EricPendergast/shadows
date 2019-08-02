@@ -12,6 +12,8 @@ public:
     virtual ~GameObject() {}
 };
 
+// TODO: This doesn't account for objects that move but don't collide with
+// stuff.
 class Physical : virtual public GameObject {
 public:
     virtual void update(double timestep, std::function<void(WorldFrameBuffer&)> drawCollider) = 0;
@@ -38,6 +40,20 @@ public:
 class ShadowCastable : virtual public GameObject {
 public:
     virtual void generate_shadows(std::function<void()> drawOpaqueShapes) = 0;
+};
+
+// 'direction_lr' specifies the direction the player is trying to move and
+// 'jump' specifies whether the player just tried to jump.
+struct ControlInputs {
+    int direction_lr;
+    bool jump;
+    int mouse_x = -1;
+    int mouse_y = -1;
+};
+
+class UserControllable : virtual public GameObject {
+public:
+    virtual void control(const ControlInputs& controls) = 0;
 };
 
 struct GameObjects {
