@@ -50,8 +50,9 @@ void Player::update(double time_step, std::function<void(WorldFrameBuffer&)> dra
     time_since_touched_platform += time_step;
 }
 
+// TODO: This should bind the buffer, set world_to_screen, bind a shader.
 void Player::render(WorldFrameBuffer& render_to) {
-
+    draw();
 }
 
 Manifold Player::get_manifold() {

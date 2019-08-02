@@ -47,7 +47,7 @@ void Level::render() {
 
     world.draw();
     
-    player.draw();
+    player.render(render_to);
 }
 
 void Level::set_render_target(FrameBuffer* fb) {

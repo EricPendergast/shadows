@@ -14,6 +14,7 @@
 // Speeds are in units of world coordinates per second.
 class Player : public Physical, public Renderable, public UserControllable {
 public:
+    // TODO: Make this all not public
     GPUCollider collider;
     double x = 5;
     double y = 5;
