@@ -1,7 +1,0 @@
- - Movable character
- - Multiple lights
- - Collisions
- - Implement direct state access for all applicable opengl operations
- 
- DONE:
- - Player class
