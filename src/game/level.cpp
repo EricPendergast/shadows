@@ -14,7 +14,7 @@ Level::Level() :
         world(),
         objs() {
     objs.registerObj(std::make_shared<LightSet>());
-    objs.registerObj(std::make_shared<Player>());
+    objs.registerObj(player = std::make_shared<Player>());
 }
 
 void Level::update(double timestep, int player_lr, bool player_jump) {
@@ -70,8 +70,7 @@ void Level::set_render_target(FrameBuffer* fb) {
 
 // TODO: Add viewport following to the interface
 void Level::update_viewport() {
-    //render_to = WorldFrameBuffer(render_to.frame_buffer, (float)player.x-400, (float)player.y-400);
-    render_to = WorldFrameBuffer(render_to.frame_buffer, (float)-400, (float)-700);
+    render_to = WorldFrameBuffer(render_to.frame_buffer, (float)player->x-400, (float)player->y-400);
 }
 
 void Level::on_mouse_press(float ndc_x, float ndc_y) {

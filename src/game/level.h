@@ -25,4 +25,7 @@ private:
 
     GameObjects objs;
     LightSet light_set;
+
+    // This exists as a bandaid solution for controling the camera
+    std::shared_ptr<Player> player;
 };

@@ -42,6 +42,10 @@ public:
     virtual void generate_shadows(std::function<void()> drawOpaqueShapes) = 0;
 };
 
+// TODO: Make an interface which controls camera stuff.
+//class  : virtual public GameObject {
+//
+//};
 // 'direction_lr' specifies the direction the player is trying to move and
 // 'jump' specifies whether the player just tried to jump.
 struct ControlInputs {

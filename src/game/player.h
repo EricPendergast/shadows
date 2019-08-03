@@ -19,14 +19,14 @@ public:
     void control(const ControlInputs& controls) override;
     void update(double timestep, std::function<void(WorldFrameBuffer&)> drawCollider) override;
     void render(WorldFrameBuffer& render_to) override;
+    double x = 5;
+    double y = 5;
 private:
     GPUCollider collider;
     VBO model;
     ControlInputs controls;
     ShaderProgram shader;
 
-    double x = 5;
-    double y = 5;
     double dx = 0;
     double dy = 0;
     double width = 64;
