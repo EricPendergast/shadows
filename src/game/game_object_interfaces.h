@@ -62,6 +62,7 @@ struct GameObjects {
     std::vector<std::shared_ptr<PixelCollidable>> pixelCollidableObjs;
     std::vector<std::shared_ptr<Opaque>> opaqueObjs;
     std::vector<std::shared_ptr<ShadowCastable>> shadowCastableObjs;
+    std::vector<std::shared_ptr<UserControllable>> userControllableObjs;
 
     // Adds the passed in object to all the lists it can.
     void registerObj(std::shared_ptr<GameObject> gameObject);

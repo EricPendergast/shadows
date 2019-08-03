@@ -6,12 +6,10 @@
 #include <vector>
 
 class VBO {
-    GLuint vao_handle;
-    GLuint vbo_handle;
-    void bind();
-    void unbind();
-    size_t num_verts;
 public:
+    VBO(const VBO&) = delete;
+    VBO& operator=(const VBO&) = delete;
+
     VBO(const std::vector<GLfloat>& verticies);
     ~VBO();
     void draw();
@@ -22,6 +20,14 @@ public:
     }
 
     void sub_data(size_t offset_bytes, size_t num_bytes, const char* bytes);
+
+    
+private:
+    GLuint vao_handle;
+    GLuint vbo_handle;
+    void bind();
+    void unbind();
+    size_t num_verts;
 };
 
 #endif

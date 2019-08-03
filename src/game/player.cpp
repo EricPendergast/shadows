@@ -11,6 +11,7 @@
 Player::Player() : Player(64,64) {}
 Player::Player(int w, int h) :
     collider(1/4.0f, w, h),
+    shader("shaders/main.vert", "shaders/main.frag"),
     width(w),
     height(h),
     model({0,0,0,1,
@@ -45,8 +46,11 @@ void Player::update(double time_step, std::function<void(WorldFrameBuffer&)> dra
     time_since_touched_platform += time_step;
 }
 
-// TODO: This should bind the buffer, set world_to_screen, bind a shader.
 void Player::render(WorldFrameBuffer& render_to) {
+    shader.use();
+
+    auto world_to_screen = render_to.world_to_screen();
+    shader.set_uniform_Matrix4f("world_to_screen", glm::value_ptr(world_to_screen));
     model.sub_data(0, make_rect((float)x, (float)y, (float)width, (float)height));
     model.draw();
 }

@@ -21,7 +21,6 @@ private:
     WorldFrameBuffer render_to;
     ShaderProgram main_shader;
     World world;
-    Player player;
     static float a;
 
     GameObjects objs;

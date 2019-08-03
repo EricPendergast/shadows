@@ -11,10 +11,10 @@
 
 Level::Level() :
         main_shader("shaders/main.vert", "shaders/main.frag"),
-        world(), player(),
+        world(),
         objs() {
-
     objs.registerObj(std::make_shared<LightSet>());
+    objs.registerObj(std::make_shared<Player>());
 }
 
 void Level::update(double timestep, int player_lr, bool player_jump) {
@@ -23,7 +23,9 @@ void Level::update(double timestep, int player_lr, bool player_jump) {
         .jump = player_jump
     };
 
-    player.control(controls);
+    for (auto& userControllable : objs.userControllableObjs) {
+        userControllable->control(controls);
+    }
 
     for (auto& shadowCastable : objs.shadowCastableObjs) {
         shadowCastable->generate_shadows([this] {world.draw();});
@@ -35,7 +37,10 @@ void Level::update(double timestep, int player_lr, bool player_jump) {
         }
     };
 
-    player.update(timestep, drawColliders);
+
+    for (auto& physical : objs.physicalObjs) {
+        physical->update(timestep, drawColliders);
+    }
 
     update_viewport();
 }
@@ -56,7 +61,7 @@ void Level::render() {
 
     world.draw();
     
-    player.render(render_to);
+    //objs.renderableObjs[1]->render(render_to);
 }
 
 void Level::set_render_target(FrameBuffer* fb) {
@@ -65,7 +70,8 @@ void Level::set_render_target(FrameBuffer* fb) {
 
 // TODO: Add viewport following to the interface
 void Level::update_viewport() {
-    render_to = WorldFrameBuffer(render_to.frame_buffer, (float)player.x-400, (float)player.y-400);
+    //render_to = WorldFrameBuffer(render_to.frame_buffer, (float)player.x-400, (float)player.y-400);
+    render_to = WorldFrameBuffer(render_to.frame_buffer, (float)-400, (float)-700);
 }
 
 void Level::on_mouse_press(float ndc_x, float ndc_y) {
