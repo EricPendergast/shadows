@@ -1,6 +1,5 @@
 #include "player.h"
 #include "light.h"
-#include "world.h"
 #include "frame_buffer.h"
 #include "world_frame_buffer.h"
 #include "game_object_interfaces.h"
@@ -20,7 +19,6 @@ private:
     // TODO: Remove most of these
     WorldFrameBuffer render_to;
     ShaderProgram main_shader;
-    World world;
     static float a;
 
     GameObjects objs;

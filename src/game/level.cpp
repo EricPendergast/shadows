@@ -1,6 +1,7 @@
 #include "level.h"
 #include "raii.h"
 #include "light_set.h"
+#include "world.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
@@ -11,10 +12,11 @@
 
 Level::Level() :
         main_shader("shaders/main.vert", "shaders/main.frag"),
-        world(),
         objs() {
+
     objs.registerObj(std::make_shared<LightSet>());
     objs.registerObj(player = std::make_shared<Player>());
+    objs.registerObj(std::make_shared<World>());
 }
 
 void Level::update(double timestep, int player_lr, bool player_jump) {
@@ -27,8 +29,14 @@ void Level::update(double timestep, int player_lr, bool player_jump) {
         userControllable->control(controls);
     }
 
+    auto draw_opaque = [this] {
+        for (auto& opaque : objs.opaqueObjs) {
+            opaque->draw_opaque_shape();
+        }
+    };
+
     for (auto& shadowCastable : objs.shadowCastableObjs) {
-        shadowCastable->generate_shadows([this] {world.draw();});
+        shadowCastable->generate_shadows(draw_opaque);
     }
 
     auto drawColliders = [&] (WorldFrameBuffer& wfb) {
@@ -45,23 +53,10 @@ void Level::update(double timestep, int player_lr, bool player_jump) {
     update_viewport();
 }
 
-float Level::a = 0;
-
 void Level::render() {
-    a += .1f;
-
     for (auto& renderable : objs.renderableObjs) {
         renderable->render(render_to);
     }
-
-    main_shader.use();
-
-    auto world_to_screen = render_to.world_to_screen();
-    main_shader.set_uniform_Matrix4f("world_to_screen", glm::value_ptr(world_to_screen));
-
-    world.draw();
-    
-    //objs.renderableObjs[1]->render(render_to);
 }
 
 void Level::set_render_target(FrameBuffer* fb) {
@@ -73,6 +68,7 @@ void Level::update_viewport() {
     render_to = WorldFrameBuffer(render_to.frame_buffer, (float)player->x-400, (float)player->y-400);
 }
 
+// TODO: Modify the ControlInputs struct somehow
 void Level::on_mouse_press(float ndc_x, float ndc_y) {
     auto world_pos = glm::inverse(render_to.world_to_screen()) *
         glm::vec4(ndc_x, ndc_y, 0, 1);
