@@ -24,6 +24,7 @@ void World::draw_opaque_shape() {
 }
 
 void World::render(WorldFrameBuffer& render_to) {
+    shader.use();
     auto world_to_screen = render_to.world_to_screen();
     shader.set_uniform_Matrix4f("world_to_screen", glm::value_ptr(world_to_screen));
     vbo.draw();
