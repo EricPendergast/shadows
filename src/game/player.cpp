@@ -11,7 +11,7 @@
 Player::Player() : Player(64,64) {}
 Player::Player(int w, int h) :
     collider(1/4.0f, w, h),
-    shader("shaders/main.vert", "shaders/main.frag"),
+    shader("shaders/player.vert", "shaders/player.frag"),
     width(w),
     height(h),
     model({0,0,0,1,
