@@ -12,12 +12,24 @@ public:
     virtual ~GameObject() {}
 };
 
+// Some of these interfaces are in pairs that closely interact.
+//  Physical & PixelCollidable
+//  Opaque & ShadowCastable
+//  Interactable & Interactor
+//  TODO: Do all these names reflect this pair relationship clearly? (no)
+
 // TODO: This doesn't account for objects that move but don't collide with
 // stuff.
 class Physical : virtual public GameObject {
 public:
     virtual void update(double timestep, std::function<void(WorldFrameBuffer&)> drawCollider) = 0;
 };
+
+class PixelCollidable : virtual public GameObject {
+public:
+    virtual void render_pixel_collider(WorldFrameBuffer& render_to) = 0;
+};
+
 
 class Renderable : virtual public GameObject {
 public:
@@ -26,11 +38,6 @@ public:
 
 // TODO:
 //class PickUpable;
-
-class PixelCollidable : virtual public GameObject {
-public:
-    virtual void render_pixel_collider(WorldFrameBuffer& render_to) = 0;
-};
 
 class Opaque : virtual public GameObject {
 public:
@@ -43,9 +50,7 @@ public:
 };
 
 // TODO: Make an interface which controls camera stuff.
-//class  : virtual public GameObject {
-//
-//};
+
 // 'direction_lr' specifies the direction the player is trying to move and
 // 'jump' specifies whether the player just tried to jump.
 struct ControlInputs {
