@@ -45,6 +45,13 @@ void Level::update(double timestep, int player_lr, bool player_jump) {
         }
     };
 
+    for (auto& interactable : objs.interactableObjs) {
+        for (auto& interactor : objs.interactorObjs) {
+            if (interactor->canInteract(*interactable)) {
+                interactable->doAction(*interactor);
+            }
+        }
+    }
 
     for (auto& physical : objs.physicalObjs) {
         physical->update(timestep, drawColliders);

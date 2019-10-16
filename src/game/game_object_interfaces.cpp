@@ -15,4 +15,6 @@ void GameObjects::registerObj(std::shared_ptr<GameObject> gameObject) {
     tryAdd(gameObject, opaqueObjs);
     tryAdd(gameObject, shadowCastableObjs);
     tryAdd(gameObject, userControllableObjs);
+    tryAdd(gameObject, interactableObjs);
+    tryAdd(gameObject, interactorObjs);
 }

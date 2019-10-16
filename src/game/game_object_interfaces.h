@@ -65,6 +65,24 @@ public:
     virtual void control(const ControlInputs& controls) = 0;
 };
 
+class Interactor;
+
+class Interactable : virtual public GameObject {
+public:
+    // doAction is here rather than in the Interactor because usually, the
+    // thing being interacted with will know more about what should happen than
+    // the interactor. For example, a button usually won't act differently
+    // depending on who presses it.
+    virtual void doAction(Interactor& interactor) = 0;
+    // For now, interactable objects are identified by a single point.
+    virtual std::pair<double, double> getPosition() = 0;
+};
+
+class Interactor : virtual public GameObject {
+public:
+    virtual bool canInteract(const Interactable& interactable) = 0;
+};
+
 struct GameObjects {
     std::vector<std::shared_ptr<Physical>> physicalObjs;
     std::vector<std::shared_ptr<Renderable>> renderableObjs;
@@ -72,6 +90,8 @@ struct GameObjects {
     std::vector<std::shared_ptr<Opaque>> opaqueObjs;
     std::vector<std::shared_ptr<ShadowCastable>> shadowCastableObjs;
     std::vector<std::shared_ptr<UserControllable>> userControllableObjs;
+    std::vector<std::shared_ptr<Interactable>> interactableObjs;
+    std::vector<std::shared_ptr<Interactor>> interactorObjs;
 
     // Adds the passed in object to all the lists it can.
     void registerObj(std::shared_ptr<GameObject> gameObject);
