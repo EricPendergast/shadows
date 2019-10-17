@@ -12,13 +12,14 @@
 #include "game_object_interfaces.h" 
 
 // Speeds are in units of world coordinates per second.
-class Player : public Physical, public Renderable, public UserControllable {
+class Player : public Physical, public Renderable, public UserControllable, public Interactor {
 public:
     Player();
     Player(int w, int h);
     void control(const ControlInputs& controls) override;
     void update(double timestep, std::function<void(WorldFrameBuffer&)> drawCollider) override;
     void render(WorldFrameBuffer& render_to) override;
+    bool can_interact(const Interactable& interactable) override;
     double x = 5;
     double y = 5;
 private:

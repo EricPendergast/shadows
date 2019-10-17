@@ -73,14 +73,14 @@ public:
     // thing being interacted with will know more about what should happen than
     // the interactor. For example, a button usually won't act differently
     // depending on who presses it.
-    virtual void doAction(Interactor& interactor) = 0;
+    virtual void do_action(Interactor& interactor) = 0;
     // For now, interactable objects are identified by a single point.
-    virtual std::pair<double, double> getPosition() = 0;
+    virtual std::pair<double, double> get_position() const = 0;
 };
 
 class Interactor : virtual public GameObject {
 public:
-    virtual bool canInteract(const Interactable& interactable) = 0;
+    virtual bool can_interact(const Interactable& interactable) = 0;
 };
 
 struct GameObjects {

@@ -21,7 +21,8 @@ public:
 
     void sub_data(size_t offset_bytes, size_t num_bytes, const char* bytes);
 
-    
+    static VBO from_quads(const std::vector<GLfloat>& quads);
+
 private:
     GLuint vao_handle;
     GLuint vbo_handle;

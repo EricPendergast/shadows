@@ -2,6 +2,7 @@
 #include "raii.h"
 #include "light_set.h"
 #include "world.h"
+#include "button.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
@@ -17,6 +18,7 @@ Level::Level() :
     objs.registerObj(std::make_shared<LightSet>());
     objs.registerObj(player = std::make_shared<Player>());
     objs.registerObj(std::make_shared<World>());
+    objs.registerObj(std::make_shared<Button>(0, -250));
 }
 
 void Level::update(double timestep, int player_lr, bool player_jump) {
@@ -47,8 +49,8 @@ void Level::update(double timestep, int player_lr, bool player_jump) {
 
     for (auto& interactable : objs.interactableObjs) {
         for (auto& interactor : objs.interactorObjs) {
-            if (interactor->canInteract(*interactable)) {
-                interactable->doAction(*interactor);
+            if (interactor->can_interact(*interactable)) {
+                interactable->do_action(*interactor);
             }
         }
     }

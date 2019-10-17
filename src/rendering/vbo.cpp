@@ -1,5 +1,7 @@
 #include "vbo.h"
+
 #include <iostream>
+#include <assert.h>
 
 VBO::VBO(const std::vector<GLfloat>& verticies) : num_verts(verticies.size()/4){
     GLenum error = glGetError();
@@ -64,4 +66,16 @@ void VBO::sub_data(size_t offset_bytes, size_t num_bytes, const char* bytes) {
     bind();
     glBufferSubData(GL_ARRAY_BUFFER, offset_bytes, num_bytes, bytes);
     unbind();
+}
+
+VBO VBO::from_quads(const std::vector<GLfloat>& quads) {
+    assert(quads.size() % (4*4) == 0);
+    std::vector<GLfloat> verts;
+    for (int i = 0; i < quads.size(); i += 4) {
+        verts.insert(verts.end(), quads.begin() + (i+0)*4, quads.begin() + (i+3)*4);
+        verts.insert(verts.end(), quads.begin() + (i+2)*4, quads.begin() + (i+4)*4);
+        verts.insert(verts.end(), quads.begin() + (i+0)*4, quads.begin() + (i+1)*4);
+    }
+
+    return VBO(verts);
 }

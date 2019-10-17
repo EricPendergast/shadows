@@ -55,6 +55,11 @@ void Player::render(WorldFrameBuffer& render_to) {
     model.draw();
 }
 
+bool Player::can_interact(const Interactable& interactable) {
+    auto [i_x, i_y] = interactable.get_position();
+    return i_x >= x && i_x <= x + width && i_y >= y && i_y <= y + height;
+}
+
 Manifold Player::get_manifold() {
     return collider.get_manifold();
 }
